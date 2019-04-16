@@ -1,0 +1,8 @@
+LIBRARY videoprt.sys
+EXPORTS
+VideoPortAcquireSpinLock
+VideoPortCreateSpinLock
+VideoPortDebugPrint
+VideoPortInitialize
+VideoPortReleaseSpinLock
+VideoPortZeroMemory

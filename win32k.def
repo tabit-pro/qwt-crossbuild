@@ -1,0 +1,17 @@
+LIBRARY win32k.sys
+EXPORTS
+EngAllocMem
+EngCreateDeviceBitmap
+EngCreateDeviceSurface
+EngCreateDriverObj
+EngCreatePalette
+EngDebugPrint
+EngDeleteDriverObj
+EngDeletePalette
+EngDeleteSurface
+EngDeviceIoControl
+EngFreeMem
+EngGetLastError
+EngMapEvent
+EngSetEvent
+EngUnmapEvent
