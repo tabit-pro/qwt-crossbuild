@@ -11,6 +11,11 @@ WORKDIR build
 COPY Makefile ./
 COPY *.* ./
 
+ENV WINEDEBUG=-all WINEARCH=win32 WINEPREFIX=/opt/wine/
+RUN curl -s -LJ https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks > \
+    /usr/local/bin/winetricks && chmod +x /usr/local/bin/winetricks
+RUN winetricks --unattended dotnet40
+
 # Get the latest source tree
 # FIXME: 
 # It would be more appropriate to link releases 
@@ -26,7 +31,7 @@ RUN curl -s -LJ --remote-name-all -C - \
     https://github.com/QubesOS/qubes-installer-qubes-os-windows-tools/archive/v4.0.1-3.tar.gz \
     https://github.com/QubesOS/qubes-vmm-xen-windows-pvdrivers/archive/v4.0.0.tar.gz \
     https://github.com/QubesOS/qubes-vmm-xen-win-pvdrivers-xeniface/archive/mm_ff24d3b2.tar.gz \
-    || true
+    || true 
 
 # Download the latest stable xen drivers
 RUN curl -s -LJ --remote-name-all -C - \
@@ -37,12 +42,8 @@ RUN curl -s -LJ --remote-name-all -C - \
     http://xenbits.xen.org/pvdrivers/win/8.2.2/xenvbd.tar \
     || true
 
-ENV WINEDEBUG=-all WINEARCH=win32 WINEPREFIX=/opt/wine/
 RUN curl -s -LJ --remote-name-all -C - \
     https://github.com/wixtoolset/wix3/releases/download/wix3111rtm/wix311-binaries.zip || true
-RUN curl -s -LJ https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks > \
-    /usr/local/bin/winetricks && chmod +x /usr/local/bin/winetricks
-RUN winetricks --unattended dotnet40
 
 # Extract wix binaries into the /opt directory
 RUN unzip -d /opt/wix/ wix311-binaries.zip

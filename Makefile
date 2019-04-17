@@ -207,4 +207,4 @@ qvgdi.dll:
 qvmini.sys:
 	$(DLLTOOL) -k -d videoprt.def -l $(OUTDIR)/libvideoprt.a
 	cd qubes-gui-agent-windows-*/qvideo/miniport && \
-	$(CC) *.c  -I ../../../include -I ../../include -I ./ -I $(OUTDIR) -I $(DDKPATH) -L $(OUTDIR) -lvideoprt -lntoskrnl -lhal -nostdlib -Wl,--subsystem,native -shared -e DriverEntry@8 -D_NTOSDEF_ -DNOCRYPT -D__INTRINSIC_DEFINED__InterlockedAdd64 $(DEBUG) -o $(OUTDIR)/$@
+	$(CC) *.c  -I ../../../include -I ../../include -I ./ -I $(OUTDIR) -I $(DDKPATH) -L $(OUTDIR) -lvideoprt -lntoskrnl -lhal -nostdlib -Wl,--subsystem,native -shared -e DriverEntry -D_NTOSDEF_ -DNOCRYPT -D__INTRINSIC_DEFINED__InterlockedAdd64 $(DEBUG) -o $(OUTDIR)/$@

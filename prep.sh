@@ -45,7 +45,6 @@ sed -i -e 's/#define.*QFN.*$/#define QFN "[QVMINI] "/' qubes-gui-agent-windows-*
 
 cp -f qubes-windows-utils-*/include/list.h qubes-gui-agent-windows-*/qvideo/miniport/
 sed -i -e "s/<ntddk.h>/<ntddk.h>\n#include <driverspecs.h>/" qubes-gui-agent-windows-*/qvideo/miniport/ddk_video.h
-patch -d qubes-gui-agent-windows-*/qvideo/miniport/ -p0 < qvmini-try-except2.patch
 sed -i '/CatalogFile/d' qubes-gui-agent-windows-*/qvideo/qvideo.inf
 mkdir -p include
 cp qubes-vmm-xen-windows-pvdrivers-*/include/*.h include/
@@ -60,6 +59,7 @@ cp file-sender.rc qubes-core-agent-windows-*/src/qrexec-services/file-sender/
 
 sed -i -e 's/\" __FUNCTION__ \"//g' qubes-gui-agent-windows-*/qvideo/gdi/support.h
 cp -f enable.c qubes-gui-agent-windows-*/qvideo/gdi/
+cp -f memory.c /build/qubes-gui-agent-windows-*/qvideo/miniport/
 cp *.h include/
 
 for i in Windows.h Wtsapi32.h WtsApi32.h Lmcons.h Shlwapi.h SetupAPI.h ShlObj.h Knownfolders.h Strsafe.h Shellapi.h; do 

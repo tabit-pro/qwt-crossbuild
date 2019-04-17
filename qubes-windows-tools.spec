@@ -1,6 +1,6 @@
 Name:		qubes-windows-tools
 Version:	4.0
-Release:	86
+Release:	87
 Summary:	Qubes Tools for Windows VMs
 Group:		Qubes
 License:	GPL
@@ -10,7 +10,7 @@ BuildArch:	noarch
 Source0:	qubes-tools-x64.msi
 Source1:	qubes-tools-x86.msi
 Source2:	iso-README.txt
-Source3:	QubesTools.zip
+#Source3:	QubesTools.zip
 
 %prep
 %setup -c -T
@@ -23,7 +23,7 @@ PV Drivers and Qubes Tools for Windows AppVMs. Bundled for Windows 7 64bit.
 mkdir -p iso-content
 cp %{SOURCE0} iso-content/
 cp %{SOURCE1} iso-content/
-cp %{SOURCE3} iso-content/
+#cp %{SOURCE3} iso-content/
 cp %{SOURCE2} iso-content/
 genisoimage -o qubes-windows-tools-%{version}.%{release}.iso -m .gitignore -JR iso-content
 
