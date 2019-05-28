@@ -2,9 +2,12 @@ FROM fedora-minimal:28
 
 RUN microdnf install -y mingw32-gcc mingw64-gcc \
     mono-core osslsigncode \
+    mingw32-winpthreads-static \
+    mingw64-winpthreads-static \
+    mingw32-gcc-c++ mingw64-gcc-c++ \
     tar unzip make curl vim-enhanced \
-    wine genisoimage patch git cabextract \
-    file rpm-build createrepo msitools
+    wine genisoimage patch git \
+    file rpm-build createrepo 
 
 RUN mkdir -p build
 WORKDIR build
