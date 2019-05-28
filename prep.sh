@@ -24,11 +24,12 @@ sed -i -e "s/#include <service.h>/#include <service.h>\n#include <netioapi.h>/" 
 sed -i -e "s/#include <devpkey.h>/#include <devpkey.h>\n#include \"customddkinc.h\"\n#include \"setupapifn.h\"/" qubes-core-agent-windows-*/src/prepare-volume/device.c 
 sed -i -e "s/#include <stdlib.h>/#include <stdlib.h>\n#include \"customddkinc.h\"/" qubes-core-agent-windows-*/src/prepare-volume/disk.c 
 sed -i -e "s/#include <qubes-string.h>/#include <qubes-string.h>\n#include \"customddkinc.h\"/" qubes-core-agent-windows-*/src/prepare-volume/prepare-volume.c 
+sed -i -e "/Qubes Tools/d" qubes-core-agent-windows-*/src/prepare-volume/prepare-volume.c
 sed -i -e "s/#include <strsafe.h>/#include \"customddkinc.h\"\n#include \"setupapifn.h\"/"  qubes-gui-agent-windows-*/install-helper/create-device/create-device.c 
 sed -i -e "s/#include <strsafe.h>/#include \"customddkinc.h\"\n#include \"setupapifn.h\"/"  qubes-gui-agent-windows-*/install-helper/disable-device/disable-device.c 
 sed -i '/TEXT/d' qubes-core-agent-windows-*/src/relocate-dir/main.c 
 sed -i -e "s/#include <intrin.h>//" qubes-vmm-xen-windows-pvdrivers-*/src/libxenvchan/io.c
-sed -i -e "s/InterlockedAnd8/InterlockedAnd/" qubes-vmm-xen-windows-pvdrivers-*/src/libxenvchan/io.c
+sed -i '/InterlockedAnd8/d' qubes-vmm-xen-windows-pvdrivers-*/src/libxenvchan/io.c
 sed -i 's/HANDLE/PXENCONTROL_CONTEXT/' qubes-core-vchan-xen-*/windows/src/libvchan_private.h 
 sed -i -e 's/^void SvcStop/static void SvcStop/' qubes-windows-utils-*/src/service.c 
 sed -i -e 's/^void WINAPI SvcMain/static void WINAPI SvcMain/' qubes-windows-utils-*/src/service.c 
