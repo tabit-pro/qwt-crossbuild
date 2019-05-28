@@ -1,13 +1,17 @@
 x64 : CC = /usr/bin/x86_64-w64-mingw32-gcc
+x64 : CXX = /usr/bin/x86_64-w64-mingw32-g++
 x64 : DLLTOOL=/usr/bin/x86_64-w64-mingw32-dlltool
 x64:  WINDRES=/usr/bin/x86_64-w64-mingw32-windres
+x64:  WINDMC=/usr/bin/x86_64-w64-mingw32-windmc
 x64 : DDKPATH=/usr/x86_64-w64-mingw32/sys-root/mingw/include/ddk
 x64 : ARCH=x64
 x64 : DEBUG=-U_DEBUG -UDBG -UDEBUG
 
 x86 : CC = /usr/bin/i686-w64-mingw32-gcc
+x86 : CXX = /usr/bin/i686-w64-mingw32-g++
 x86 : DLLTOOL=/usr/bin/i686-w64-mingw32-dlltool
 x86:  WINDRES=/usr/bin/i686-w64-mingw32-windres
+x86:  WINDMC=/usr/bin/i686-w64-mingw32-windmc
 x86 : DDKPATH=/usr/i686-w64-mingw32/sys-root/mingw/include/ddk
 x86 : ARCH=x86
 x86 : DEBUG=-U_DEBUG -UDBG -UDEBUG
@@ -55,9 +59,16 @@ wix:
 	cp qubes-installer-qubes-os-windows-tools-*/qubes.ico ./$(ARCH)
 	cd $(ARCH); \
 	$(WINEMU) $(WIXPATH)/candle.exe -arch $(ARCH) -ext WixDifxAppExtension -ext WixIIsExtension ../qubes-tools.wxs -o qubes-tools.wixobj; \
-	$(WINEMU) $(WIXPATH)/light.exe -sval qubes-tools.wixobj -ext WixDifxAppExtension -ext WixIIsExtension -ext WixUIExtension "Z:/opt/wix/difxapp_$(ARCH).wixlib" -o ../qubes-tools-$(ARCH).msi;
-	##$(WINEMU) $(WIXPATH)/candle.exe -arch $(ARCH) -ext WixBalExtension ../qubes-tools.wxb -o /qubes-tools-exe.wixobj; \
-	##$(WINEMU) $(WIXPATH)/light.exe -ext WixBalExtension -sval qubes-tools-exe.wixobj -o qubes-tools.exe;
+	$(WINEMU) $(WIXPATH)/light.exe -sval qubes-tools.wixobj -ext WixDifxAppExtension -ext WixUIExtension -ext WixIIsExtension -ext WixUtilExtension "Z:/opt/wix/difxapp_$(ARCH).wixlib" -o ../qubes-tools-$(ARCH).msi;
+
+devcon.exe: 
+	cd Windows-driver-samples/setup/devcon/ && \
+	$(WINDMC) msg.mc && \
+	$(WINDRES) devcon.rc rc.so && \
+	$(CXX) -municode -Wno-write-strings -DWIN32_LEAN_AND_MEAN=1 -DUNICODE -D_UNICODE *.cpp rc.so -lsetupapi -lole32 -static-libstdc++ -static-libgcc -static -lpthread -o $(OUTDIR)/$@
+
+pkihelper.exe: windows-utils.dll 
+	$(CC) pkihelper.c -I include -L $(OUTDIR) -lwindows-utils -o $(OUTDIR)/$@
 
 xencontrol.dll: 
 	cd qubes-vmm-xen-win-pvdrivers-xeniface-*/src/xencontrol/ && \
