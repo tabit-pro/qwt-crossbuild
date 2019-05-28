@@ -172,10 +172,12 @@ DowngradeErrorMessage="A later version of [ProductName] is already installed. Se
 			<File Id="QdbCmd" Source="qubesdb-cmd.exe"/>
 		    </Component>
 
-		    <Component Id='RelocateDir' Guid='{C4325378-B946-4C6C-A685-F3E39A10AF20}'>
-			<File Id='relocate_dir.exe' Source='relocate-dir.exe' KeyPath='yes' />
-		    </Component>
-		    
+                    <Component Id="RelocateDir" Guid="{C4325378-B946-4C6C-A685-F3E39A10AF20}">
+                        <File Id="relocate_dir.exe" Source="relocate-dir.exe" KeyPath="yes" />
+                        <RegistryValue Root="HKLM" Key="System\CurrentControlSet\Control\Session Manager" Name="BootExecute" Type="multiString" Action="append" Value="relocate-dir.exe C:\Users Q:\Users"/>
+			<RegistryValue Root="HKLM" Key="Software\Invisible Things Lab\Qubes Tools" Name="LogDir" Type="string" Value="Q:\QubesLogs"/> 
+                    </Component>
+
 		</Directory>
 
                 <Component Id="DisableUac">
