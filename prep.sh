@@ -38,6 +38,9 @@ sed -i -e 's/^DWORD QpsConnectClient/static DWORD QpsConnectClient/' qubes-windo
 sed -i -e 's/^void WINAPI SvcMain/static void WINAPI SvcMain/' qubes-windows-utils-*/src/pipe-server.c 
 sed -i -e 's/^void QpsDisconnectClientInternal/static void QpsDisconnectClientInternal/' qubes-windows-utils-*/src/pipe-server.c 
 sed -i -e 's/<winnt.h>/<winnt.h>\n#include <driverspecs.h>/' qubes-windows-utils-*/include/list.h 
+
+sed -i -e 's/<fcntl.h>/<fcntl.h>\n#include <driverspecs.h>/' Windows-driver-samples/setup/devcon/devcon.h
+
 sed -i -e 's/CFORCEINLINE/FORCEINLINE/' qubes-windows-utils-*/include/list.h 
 sed -i -e "s/<dderror.h>/<ntdef.h>\n#include <dderror.h>/" qubes-gui-agent-windows-*/qvideo/miniport/qvmini.h
 sed -i -e "s/<video.h>/<video.h>\n#include <windows.h>\n#include <specstrings.h>/" qubes-gui-agent-windows-*/qvideo/miniport/qvmini.h
