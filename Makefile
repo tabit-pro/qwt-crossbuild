@@ -145,7 +145,7 @@ qrexec-wrapper.exe:
 
 relocate-dir.exe:
 	cd qubes-core-agent-windows-*/src/relocate-dir && \
-	$(CC) *.c $(CFLAGS) -mno-stack-arg-probe -e NtProcessStartup -Wl,--subsystem,native -lntdll -nostdlib -D__INTRINSIC_DEFINED__InterlockedAdd64 -municode -o $(OUTDIR)/$@
+	$(CC) *.c $(CFLAGS) -e NtProcessStartup -Wl,--subsystem,native -L $(OUTDIR) -lntdll -nostdlib -D__INTRINSIC_DEFINED__InterlockedAdd64 -fstack-check -Wl,--stack,16777216 -mno-stack-arg-probe -municode -o $(OUTDIR)/$@
 
 clipboard-copy.exe:
 	cd qubes-core-agent-windows-*/src/qrexec-services/clipboard-copy && \
