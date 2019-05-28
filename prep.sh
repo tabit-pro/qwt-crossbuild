@@ -49,7 +49,6 @@ sed -i -e 's/#define.*QFN.*$/#define QFN "[QVMINI] "/' qubes-gui-agent-windows-*
 
 cp -f qubes-windows-utils-*/include/list.h qubes-gui-agent-windows-*/qvideo/miniport/
 sed -i -e "s/<ntddk.h>/<ntddk.h>\n#include <driverspecs.h>/" qubes-gui-agent-windows-*/qvideo/miniport/ddk_video.h
-sed -i '/CatalogFile/d' qubes-gui-agent-windows-*/qvideo/qvideo.inf
 mkdir -p include
 cp qubes-vmm-xen-windows-pvdrivers-*/include/*.h include/
 cp qubes-core-qubesdb-*/include/*.h include/
