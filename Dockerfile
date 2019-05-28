@@ -19,7 +19,10 @@ RUN curl -s -LJ https://raw.githubusercontent.com/Winetricks/winetricks/master/s
     /usr/local/bin/winetricks && chmod +x /usr/local/bin/winetricks
 RUN winetricks --unattended dotnet40
 
-# Get the latest source tree
+# Retrieve devcon tool from windows samples 
+RUN git clone https://github.com/microsoft/Windows-driver-samples
+
+# Get the latest qwt source tree
 # FIXME: 
 # It would be more appropriate to link releases 
 # in corresponding github projects,
