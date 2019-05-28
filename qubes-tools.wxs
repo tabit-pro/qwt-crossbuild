@@ -1,39 +1,40 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi' xmlns:iis='http://schemas.microsoft.com/wix/IIsExtension' xmlns:difx='http://schemas.microsoft.com/wix/DifxAppExtension'>
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension" xmlns:difx="http://schemas.microsoft.com/wix/DifxAppExtension">
 
 <?define PFILESDIR = ProgramFiles64Folder ?>
 <?define SYSDIR = System64Folder ?>
 
 <Product
-Id='*'
-Name='Qubes Windows Tools'
-UpgradeCode='{FB972F47-0D68-43EF-9820-92FDEB51DCD5}'
-Language='1033'
-Codepage='1252'
-Version='4.0'
-Manufacturer='Invisible Things Lab'
+Id="*"
+Name="Qubes Windows Tools"
+UpgradeCode="{FB972F47-0D68-43EF-9820-92FDEB51DCD5}"
+Language="1033"
+Codepage="1252"
+Version="4.0"
+Manufacturer="Invisible Things Lab"
 >
 
 <Package
-Id='*'
-Description='Qubes Windows Tools'
-Manufacturer='Invisible Things Lab'
-InstallerVersion='405'
-Languages='1033'
-Compressed='yes'
-SummaryCodepage='1252'
+Id="*"
+Description="Qubes Windows Tools"
+Manufacturer="Invisible Things Lab"
+InstallerVersion="405"
+Languages="1033"
+Compressed="yes"
+SummaryCodepage="1252"
+InstallPrivileges="elevated"
 />
 
-<MediaTemplate EmbedCab='yes'/>
+<MediaTemplate EmbedCab="yes"/>
 
 <MajorUpgrade
-AllowSameVersionUpgrades='no'
-DowngradeErrorMessage='A later version of [ProductName] is already installed. Setup will now exit.'
+AllowSameVersionUpgrades="no"
+DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit."
 />
 
-<!-- Skip the license dialog: it's displayed by the bundle, so no need to have it here as well. -->
+<!-- Skip the license dialog: it"s displayed by the bundle, so no need to have it here as well. -->
 <UI>
-  <UIRef Id='WixUI_Mondo'/>
+  <UIRef Id="WixUI_Mondo"/>
   <Publish Dialog="WelcomeDlg"
         Control="Next"
         Event="NewDialog"
@@ -46,133 +47,129 @@ DowngradeErrorMessage='A later version of [ProductName] is already installed. Se
         Order="2">1</Publish>
 </UI>
 
-<Property Id='SYSTEMSTARTOPTIONS'>
-    <RegistrySearch Id='SystemStartOptions'
-        Root='HKLM'
-        Key='SYSTEM\CurrentControlSet\Control'
-        Name='SystemStartOptions'
-        Type='raw'
+<Property Id="SYSTEMSTARTOPTIONS">
+    <RegistrySearch Id="SystemStartOptions"
+        Root="HKLM"
+        Key="SYSTEM\CurrentControlSet\Control"
+        Name="SystemStartOptions"
+        Type="raw"
     />
 </Property>
 
-<Directory Id='TARGETDIR' Name='SourceDir' DiskId='1'>
-    <Directory Id='$(var.PFILESDIR)'>
-	<Directory Id='SendToFolder'/>
-        <Directory Id='ITLProgramFilesDir' Name='Invisible Things Lab'>
-            <Directory Id='INSTALLDIR' Name='Qubes Tools'>
-                <Directory Id='LogDir' Name='log'>
-                    <Component Id='CreateLogDir' Guid='{61BC344A-BD13-4886-8DF8-007C40B2F31C}'>
+<Directory Id="TARGETDIR" Name="SourceDir" DiskId="1">
+    <Directory Id="$(var.PFILESDIR)">
+	<Directory Id="SendToFolder"/>
+        <Directory Id="ITLProgramFilesDir" Name="Invisible Things Lab">
+            <Directory Id="INSTALLDIR" Name="Qubes Tools">
+                <Directory Id="LogDir" Name="log">
+                    <Component Id="CreateLogDir" Guid="{61BC344A-BD13-4886-8DF8-007C40B2F31C}">
                         <CreateFolder/>
                     </Component>
                 </Directory>
 
-                <Component Id='Cert' Guid='BBCBDD9E-3170-4FAD-9608-E591E4C2BBBE'>
-                  <File Id='demo_cert' Name='demo_cert' DiskId='1' Source='authenticode.crt' />
-                  <iis:Certificate Id='demo_cert_root' Name='demo_cert' Request='no' BinaryKey='demo_cert' StoreLocation='localMachine' StoreName='root' Overwrite='no' />
-                  <iis:Certificate Id='demo_cert_trustedPublisher' Name='demo_cert' Request='no' BinaryKey='demo_cert' StoreLocation='localMachine' StoreName='trustedPublisher' Overwrite='no' />
+	        <Component Id="Cert" Guid="BBCBDD9E-3170-4FAD-9608-E591E4C2BBBE">
+                  <File Id="demo_cert" Name="demo_cert" DiskId="1" Source="authenticode.crt" />
+                  <iis:Certificate Id="demo_cert_root" Name="demo_cert" Request="no" BinaryKey="demo_cert" StoreLocation="localMachine" StoreName="root" Overwrite="no" />
+                  <iis:Certificate Id="demo_cert_trustedPublisher" Name="demo_cert" Request="no" BinaryKey="demo_cert" StoreLocation="localMachine" StoreName="trustedPublisher" Overwrite="no" />
                 </Component>
 
-                <Component Id='QubesRegistry'>
-                    <RegistryKey Root='HKLM' Key='Software\Invisible Things Lab\Qubes Tools'>
-                        <RegistryValue Type='string' Name='InstallDir' Value='[INSTALLDIR]'/>
-                        <RegistryValue Type='string' Name='LogDir' Value='[INSTALLDIR]\log'/>
-                        <RegistryValue Type='integer' Name='LogLevel' Value='5'/>
+                <Component Id="QubesRegistry">
+                    <RegistryKey Root="HKLM" Key="Software\Invisible Things Lab\Qubes Tools">
+                        <RegistryValue Type="string" Name="InstallDir" Value='[INSTALLDIR]'/>
+                        <RegistryValue Type="string" Name="LogDir" Value='[INSTALLDIR]\log'/>
+                        <RegistryValue Type="integer" Name="LogLevel" Value="1"/>
                     </RegistryKey>
-                    <RegistryKey Root='HKLM' Key='SYSTEM\CurrentControlSet\Control\Session Manager\Debug Print Filter'>
+                    <RegistryKey Root="HKLM" Key="SYSTEM\CurrentControlSet\Control\Session Manager\Debug Print Filter">
                         <!-- Default debug print filter masks for drivers. Mostly useful to not spam a debugger when testing. 0x3f is all predefined levels. -->
-                        <RegistryValue Type='integer' Name='IHVDRIVER' Value='3'/>
-                        <RegistryValue Type='integer' Name='IHVVIDEO' Value='3'/>
+                        <RegistryValue Type="integer" Name="IHVDRIVER" Value="3"/>
+                        <RegistryValue Type="integer" Name="IHVVIDEO" Value="3"/>
                     </RegistryKey>
-                    <Environment Id='QubesToolsEnv' Action='set' Name='QUBES_TOOLS' Part='all' Permanent='no' System='yes' Value='[INSTALLDIR]' />
+                    <Environment Id="QubesToolsEnv" Action="set" Name="QUBES_TOOLS" Part="all" Permanent="no" System="yes" Value='[INSTALLDIR]' />
                 </Component>
+		
+                <Directory Id="DriversDir" Name="Drivers">
 
-                <Directory Id='DriversDir' Name='Drivers'>
-
-		    <Directory Id='QvideoDir' Name='qvideo'>
-                        <Component Id='qvideo' Guid='{EC90C049-0025-4815-9106-6ABC438470A4}'>
-                            <File Id='qvgdi.dll' Source='qvgdi.dll'/>
-                            <File Id='qvmini.sys' Source='qvmini.sys'/>
-                            <File Id='qvideo.inf' Source='qvideo.inf'/>
-                            <!-- moved to custom table below -->
-                            <!-- <difx:Driver Sequence='10' Legacy='yes' PlugAndPlayPrompt='no' ForceInstall='yes'/>-->
+		    <Directory Id="QvideoDir" Name="qvideo">
+                        <Component Id="qvideo" Guid="{EC90C049-0025-4815-9106-6ABC438470A4}">
+                            <File Id="qvgdi.dll" Source="qvgdi.dll"/>
+                            <File Id="qvmini.sys" Source="qvmini.sys"/>
+                            <File Id="qvideo.inf" Source="qvideo.inf"/>
                         </Component>
                     </Directory>
 		    
-                    <Directory Id='XenbusDir' Name='xenbus'>
-			<Component Id='XenbusDriver' Guid='{FAC4C476-2F1C-4970-B5E1-8FD95A9BBCB9}'>
-                            <File Id='XenbusInf' Source='xenbus.inf' KeyPath='yes' />
-                            <File Id='XenbusCat' Source='xenbus.cat' />
-                            <File Id='XenbusSys' Source='xenbus.sys' />
-                            <File Id='XenSys' Source='xen.sys' />
-                            <File Id='XenfiltSys' Source='xenfilt.sys' />
-                            <File Id='XenbusCoinst' Source='xenbus_coinst.dll' />
-                            <File Id='XenbusMonitorDll' Source='xenbus_monitor.dll' />
-                            <File Id='XenbusMonitorExe' Source='xenbus_monitor.exe' />
-                            <difx:Driver />
+                    <Directory Id="XenbusDir" Name="xenbus">
+			<Component Id="XenbusDriver" Guid="{FAC4C476-2F1C-4970-B5E1-8FD95A9BBCB9}">
+                            <File Id="XenbusInf" Source="xenbus.inf" KeyPath="yes" />
+                            <File Id="XenbusCat" Source="xenbus.cat" />
+                            <File Id="XenbusSys" Source="xenbus.sys" />
+                            <File Id="XenSys" Source="xen.sys" />
+                            <File Id="XenfiltSys" Source="xenfilt.sys" />
+                            <File Id="XenbusCoinst" Source="xenbus_coinst.dll" />
+                            <File Id="XenbusMonitorDll" Source="xenbus_monitor.dll" />
+                            <File Id="XenbusMonitorExe" Source="xenbus_monitor.exe" />
+			    <difx:Driver />
 			</Component>
                     </Directory>
 
-		    <Directory Id='XenifaceDir' Name='xeniface'>
-                        <Component Id='XenifaceDriver' Guid='{D464EDB0-CF0D-4FE5-A160-210BF246C3A4}'>
-                            <File Id='XenifaceInf' Source='xeniface.inf' KeyPath='yes' />
-                            <File Id='XenifaceCat' Source='xeniface.cat' />
-                            <File Id='XenifaceSys' Source='xeniface.sys' />
-                            <File Id='XenagentDll' Source='xenagent.dll' />
-                            <File Id='XenagentExe' Source='xenagent.exe' />
-                            <File Id='XenifaceCoinst' Source='xeniface_coinst.dll' />
+		    <Directory Id="XenifaceDir" Name="xeniface">
+                        <Component Id="XenifaceDriver" Guid="{D464EDB0-CF0D-4FE5-A160-210BF246C3A4}">
+                            <File Id="XenifaceInf" Source="xeniface.inf" KeyPath="yes" />
+                            <File Id="XenifaceCat" Source="xeniface.cat" />
+                            <File Id="XenifaceSys" Source="xeniface.sys" />
+                            <File Id="XenagentDll" Source="xenagent.dll" />
+                            <File Id="XenagentExe" Source="xenagent.exe" />
+                            <File Id="XenifaceCoinst" Source="xeniface_coinst.dll" />
                         </Component>
                     </Directory>
 
-                    <Directory Id='XennetDir' Name='xennet'>
-                        <Component Id='XennetDriver' Guid='{AEFEC088-0B30-4EFC-8416-5E3675AC03D0}'>
-                            <File Id='XennetInf' Source='xennet.inf' KeyPath='yes' />
-                            <File Id='XennetCat' Source='xennet.cat' />
-                            <File Id='XennetSys' Source='xennet.sys' />
-                            <File Id='XennetCoinst' Source='xennet_coinst.dll' />
+                    <Directory Id="XennetDir" Name="xennet">
+                        <Component Id="XennetDriver" Guid="{AEFEC088-0B30-4EFC-8416-5E3675AC03D0}">
+                            <File Id="XennetInf" Source="xennet.inf" KeyPath="yes" />
+                            <File Id="XennetCat" Source="xennet.cat" />
+                            <File Id="XennetSys" Source="xennet.sys" />
+                            <File Id="XennetCoinst" Source="xennet_coinst.dll" />
                         </Component>
                     </Directory>
 
-                    <Directory Id='XenvbdDir' Name='xenvbd'>
-                        <Component Id='XenvbdDriver' Guid='{87BAEE21-4695-4B75-A484-0A6136B70516}'>
-                            <File Id='XenvbdInf' Source='xenvbd.inf' KeyPath='yes' />
-                            <File Id='XenvbdCat' Source='xenvbd.cat' />
-                            <File Id='XenvbdSys' Source='xenvbd.sys' />
-                            <File Id='XendiskSys' Source='xendisk.sys' />
-                            <File Id='XencrshSys' Source='xencrsh.sys' />
-                            <File Id='XenvbdCoinst' Source='xenvbd_coinst.dll' />
+                    <Directory Id="XenvbdDir" Name="xenvbd">
+                        <Component Id="XenvbdDriver" Guid="{87BAEE21-4695-4B75-A484-0A6136B70516}">
+                            <File Id="XenvbdInf" Source="xenvbd.inf" KeyPath="yes" />
+                            <File Id="XenvbdCat" Source="xenvbd.cat" />
+                            <File Id="XenvbdSys" Source="xenvbd.sys" />
+                            <File Id="XendiskSys" Source="xendisk.sys" />
+                            <File Id="XencrshSys" Source="xencrsh.sys" />
+                            <File Id="XenvbdCoinst" Source="xenvbd_coinst.dll" />
                         </Component>
                     </Directory>
 
-		    <Directory Id='XenvifDir' Name='xenvif'>
-                        <Component Id='XenvifDriver' Guid='{90BC2F5A-7414-4FF6-96E4-5789DDB1AECF}'>
-                            <File Id='XenvifInf' Source='xenvif.inf' KeyPath='yes' />
-                            <File Id='XenvifCat' Source='xenvif.cat' />
-                            <File Id='XenvifSys' Source='xenvif.sys' />
-                            <File Id='XenvifCoinst' Source='xenvif_coinst.dll' />
+		    <Directory Id="XenvifDir" Name="xenvif">
+                        <Component Id="XenvifDriver" Guid="{90BC2F5A-7414-4FF6-96E4-5789DDB1AECF}">
+                            <File Id="XenvifInf" Source="xenvif.inf" KeyPath="yes" />
+                            <File Id="XenvifCat" Source="xenvif.cat" />
+                            <File Id="XenvifSys" Source="xenvif.sys" />
+                            <File Id="XenvifCoinst" Source="xenvif_coinst.dll" />
                         </Component>
                     </Directory>
 		    
                 </Directory>
 		
-		<Directory Id='$(var.SYSDIR)'>
-		    <Component Id='XenUserDlls' Guid='{1BA9B085-AFC2-4248-9DF2-5E85692DC707}'>
-			<File Id='xencontrol' Source='xencontrol.dll' KeyPath='yes' />
-			<File Id='libxenvchan' Source='libxenvchan.dll' />
-			<File Id='xenvchantest' Source='xenvchan-test.exe' />
-			<File Id='vchantest' Source='vchan-test.exe' />
+		<Directory Id="$(var.SYSDIR)">
+		    <Component Id="XenUserDlls" Guid="{1BA9B085-AFC2-4248-9DF2-5E85692DC707}">
+			<File Id="xencontrol" Source="xencontrol.dll" KeyPath="yes" />
+			<File Id="libxenvchan" Source="libxenvchan.dll" />
 		    </Component>
 
-		    <Component Id='WindowsUtilsDll' Guid='{B701294F-7A5E-48C8-B1D4-74968E4479D7}'>
-			<File Id='windows_utils.dll' Source='windows-utils.dll' KeyPath='yes' />
+		    <Component Id="WindowsUtilsDll" Guid="{B701294F-7A5E-48C8-B1D4-74968E4479D7}">
+			<File Id="windows_utils.dll" Source="windows-utils.dll" KeyPath="yes" />
 		    </Component>
 
-		    <Component Id='VchanDll' Guid='{A7483192-22F6-47AC-AD77-E5CE3091B879}'>
-			<File Id='libvchan.dll' Source='libvchan.dll' KeyPath='yes' />
+		    <Component Id="VchanDll" Guid="{A7483192-22F6-47AC-AD77-E5CE3091B879}">
+			<File Id="libvchan.dll" Source="libvchan.dll" KeyPath="yes" />
 		    </Component>
 
-		    <Component Id='QubesDbClient' Guid='{E9742F11-6E77-44FC-8A53-168BE2D9273A}'>
-			<File Id='QdbClient' Source='qubesdb-client.dll' KeyPath='yes'/>
-			<File Id='QdbCmd' Source='qubesdb-cmd.exe'/>
+		    <Component Id="QubesDbClient" Guid="{E9742F11-6E77-44FC-8A53-168BE2D9273A}">
+			<File Id="QdbClient" Source="qubesdb-client.dll" KeyPath="yes"/>
+			<File Id="QdbCmd" Source="qubesdb-cmd.exe"/>
 		    </Component>
 
 		    <Component Id='RelocateDir' Guid='{C4325378-B946-4C6C-A685-F3E39A10AF20}'>
@@ -181,19 +178,19 @@ DowngradeErrorMessage='A later version of [ProductName] is already installed. Se
 		    
 		</Directory>
 
-                <Component Id='DisableUac'>
-                    <RegistryKey Root='HKLM' Key='Software\Microsoft\Windows\CurrentVersion\Policies\System'>
-                        <RegistryValue Type='integer' Name='EnableLUA' Value='0'/>
+                <Component Id="DisableUac">
+                    <RegistryKey Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Policies\System">
+                        <RegistryValue Type="integer" Name="EnableLUA" Value="0"/>
                     </RegistryKey>
                 </Component>
 
-                <Directory Id='BinDir' Name='bin'>
-                    <Component Id='PowerSettings'>
-                        <File Id='power_settings.bat' Source='power_settings.bat' KeyPath='yes'/>
+                <Directory Id="BinDir" Name="bin">
+                    <Component Id="PowerSettings">
+                        <File Id="power_settings.bat" Source="power_settings.bat" KeyPath="yes"/>
                     </Component>
 
-                    <Component Id='PrepareVolume' Guid='{220A22F3-0B73-4A4C-B825-53132A88D1DF}'>
-                        <File Id='prepare_volume.exe' Source='prepare-volume.exe' KeyPath='yes' />
+                    <Component Id="PrepareVolume" Guid="{220A22F3-0B73-4A4C-B825-53132A88D1DF}">
+                        <File Id="diskpart.txt" Source="diskpart.txt" KeyPath="yes" />
                     </Component>
 		    
                     <Component Id='GuiAgent' Guid='{69131C28-618B-4662-9AFC-70767E50F05D}'>
@@ -206,8 +203,8 @@ DowngradeErrorMessage='A later version of [ProductName] is already installed. Se
                         <RegistryValue Root="HKLM" Key="Software\Invisible Things Lab\Qubes Tools\qga" Name="DisableCursor" Type="integer" Value='1'/>
                         <RegistryValue Root="HKLM" Key="Software\Invisible Things Lab\Qubes Tools\qga" Name="SeamlessMode" Type="integer" Value='0'/>
                     </Component>
-                    <Component Id='QgaWatchdog' Guid='{5A490AD9-203D-4634-9ABA-4FB02416D0BC}'>
-                        <File Id='QgaWatchdog.exe' Source='QgaWatchdog.exe' KeyPath="yes"/>
+                    <Component Id="QgaWatchdog" Guid="{5A490AD9-203D-4634-9ABA-4FB02416D0BC}">
+                        <File Id="QgaWatchdog.exe" Source="QgaWatchdog.exe" KeyPath="yes"/>
                         <ServiceInstall
                         Id="ServiceInstaller"
                         Type="ownProcess"
@@ -225,161 +222,165 @@ DowngradeErrorMessage='A later version of [ProductName] is already installed. Se
                         <ServiceControl Id="QgaWatchdogService" Remove="uninstall" Name="QgaWatchdog" Wait="no" />
                     </Component>
 		    
-                    <Component Id='QubesDbDaemon' Guid='{1CE95F90-FBD1-4D1D-B955-C31D42F84D3C}'>
-                        <File Id='QdbDaemon' Source='qubesdb-daemon.exe' KeyPath='yes'/>
+                    <Component Id="QubesDbDaemon" Guid="{1CE95F90-FBD1-4D1D-B955-C31D42F84D3C}">
+                        <File Id="QdbDaemon" Source="qubesdb-daemon.exe" KeyPath="yes"/>
                         <ServiceInstall
-                        Id='QdbService'
-                        Type='ownProcess'
-                        Vital='yes'
-                        Name='QdbDaemon'
-                        DisplayName='QubesDB daemon'
-                        Description='Qubes configuration database agent'
-                        Start='auto'
-                        Account='LocalSystem'
-                        ErrorControl='ignore'
-                        Interactive='no'
-                        Arguments='0'
+                        Id="QdbService"
+                        Type="ownProcess"
+                        Vital="yes"
+                        Name="QdbDaemon"
+                        DisplayName="QubesDB daemon"
+                        Description="Qubes configuration database agent"
+                        Start="auto"
+                        Account="LocalSystem"
+                        ErrorControl="ignore"
+                        Interactive="no"
+                        Arguments="0"
                         />
 
                         <ServiceControl
-                        Id='QdbServiceControl'
-                        Stop='both'
-                        Remove='uninstall'
-                        Name='QdbDaemon'
-                        Wait='yes'
+                        Id="QdbServiceControl"
+                        Stop="both"
+                        Remove="uninstall"
+                        Name="QdbDaemon"
+                        Wait="yes"
                         />
                     </Component>
 		    
-                    <Component Id='QrexecAgent' Guid='{0e26617f-e5d9-4943-a08e-cf29013e9d72}'>
-                        <File Id='qrexec_agent.exe' Source='qrexec-agent.exe' KeyPath='yes'/>
+                    <Component Id="QrexecAgent" Guid="{0e26617f-e5d9-4943-a08e-cf29013e9d72}">
+                        <File Id="qrexec_agent.exe" Source="qrexec-agent.exe" KeyPath="yes"/>
 
                         <ServiceInstall
-                        Id='QrexecService'
-                        Type='ownProcess'
-                        Vital='yes'
-                        Name='QrexecAgent'
-                        DisplayName='Qubes RPC Agent'
-                        Description='Qubes remote execute agent'
-                        Start='auto'
-                        Account='LocalSystem'
-                        ErrorControl='ignore'
-                        Interactive='no'
+                        Id="QrexecService"
+                        Type="ownProcess"
+                        Vital="yes"
+                        Name="QrexecAgent"
+                        DisplayName="Qubes RPC Agent"
+                        Description="Qubes remote execute agent"
+                        Start="auto"
+                        Account="LocalSystem"
+                        ErrorControl="ignore"
+                        Interactive="no"
                         >
-                            <ServiceDependency Id='QdbDaemon' />
+                            <ServiceDependency Id="QdbDaemon" />
                         </ServiceInstall>
 
                         <ServiceControl
-                        Id='QrexecServiceControl'
-                        Stop='both'
-                        Remove='uninstall'
-                        Name='QrexecAgent'
-                        Wait='yes'
+                        Id="QrexecServiceControl"
+                        Stop="both"
+                        Remove="uninstall"
+                        Name="QrexecAgent"
+                        Wait="yes"
                         />
                     </Component>
-                    <Component Id='QrexecClientVm' Guid='{1e74cee2-523b-4870-8e24-49d4945c4a5c}'>
-                        <File Id='ask_vm_and_run.exe' Source='ask-vm-and-run.exe' KeyPath='yes'>
+                    <Component Id="QrexecClientVm" Guid="{1e74cee2-523b-4870-8e24-49d4945c4a5c}">
+                        <File Id="ask_vm_and_run.exe" Source="ask-vm-and-run.exe" KeyPath="yes">
                         </File>
                     </Component>
-                    <Component Id='QrexecWrapper' Guid='{EC103A81-6828-4ABA-9706-644DBBD4D615}'>
-                        <File Id='qrexec_wrapper.exe' Source='qrexec-wrapper.exe' KeyPath='yes'/>
+                    <Component Id="QrexecWrapper" Guid="{EC103A81-6828-4ABA-9706-644DBBD4D615}">
+                        <File Id="qrexec_wrapper.exe" Source="qrexec-wrapper.exe" KeyPath="yes"/>
                     </Component>
-                    <Component Id='AskVmAndRun' Guid='{b5700d68-2ceb-4764-9e4b-11ae33b2d05b}'>
-                        <File Id='qrexec_client_vm.exe' Source='qrexec-client-vm.exe' KeyPath='yes'>
+                    <Component Id="AskVmAndRun" Guid="{b5700d68-2ceb-4764-9e4b-11ae33b2d05b}">
+                        <File Id="qrexec_client_vm.exe" Source="qrexec-client-vm.exe" KeyPath="yes">
                             <Shortcut
-                            Id='qopen_dvm_sendto_shortcut'
-                            Name='Edit in DispVM'
-                            Directory='SendToFolder'
+                            Id="qopen_dvm_sendto_shortcut"
+                            Name="Edit in DispVM"
+                            Directory="SendToFolder"
                             Arguments='@dispvm|qubes.OpenInVM|[QubesRPCServicesDir]\open-in-vm.exe'
-                            Show='minimized'
+                            Show="minimized"
                             />
 
                             <Shortcut
-                            Id='CopyToVm'
-                            Name='Copy to other VM'
-                            Directory='SendToFolder'
+                            Id="CopyToVm"
+                            Name="Copy to other VM"
+                            Directory="SendToFolder"
                             Arguments='@default|qubes.Filecopy|[QubesRPCServicesDir]\file-sender.exe'
                             />
 
+
                             <Shortcut
-                            Id='EditInVm'
-                            Name='Edit in VM'
-                            Directory='SendToFolder'
+                            Id="EditInVm"
+                            Name="Edit in VM"
+                            Directory="SendToFolder"
                             Arguments='@default|qubes.OpenInVM|[QubesRPCServicesDir]\open-in-vm.exe'
                             />
                         </File>
                     </Component>
-                    <Component Id='NetworkSetup' Guid='{7201739e-35fb-11e3-9760-00163e5e6c10}'>
-                        <File Id='network_setup.exe' Source='network-setup.exe' KeyPath='yes'/>
+
+                    <Component Id="NetworkSetupRegistry" Guid="{7201739e-35fb-11e3-9760-00163e5e6c11}">
+                        <RemoveRegistryValue Root="HKLM" Key="System\CurrentControlSet\Services\WinHttpAutoProxySvc" Name="DependOnService"/>
+                    </Component>
+                    <Component Id="NetworkSetup" Guid="{7201739e-35fb-11e3-9760-00163e5e6c10}">
+                        <File Id="network_setup.exe" Source="network-setup.exe" KeyPath="yes"/>
 
                         <ServiceInstall
-                        Id='NetworkSetupService'
-                        Type='ownProcess'
-                        Vital='yes'
-                        Name='QubesNetworkSetup'
-                        DisplayName='Qubes Network Setup'
-                        Description='Setup network according to Qubes VM settings'
-                        Start='auto'
-                        Account='LocalSystem'
-                        ErrorControl='ignore'
-                        Interactive='no'
-                        Arguments='-service'
+                        Id="NetworkSetupService"
+                        Type="ownProcess"
+                        Vital="yes"
+                        Name="QubesNetworkSetup"
+                        DisplayName="Qubes Network Setup"
+                        Description="Setup network according to Qubes VM settings"
+                        Start="auto"
+                        Account="LocalSystem"
+                        ErrorControl="ignore"
+                        Interactive="no"
+                        Arguments="-service"
                         >
-                            <ServiceDependency Id='iphlpsvc' />
-                            <ServiceDependency Id='QdbDaemon' />
+                            <ServiceDependency Id="iphlpsvc" />
+                            <ServiceDependency Id="QdbDaemon" />
                         </ServiceInstall>
 
                         <ServiceControl
-                        Id='NetworkSetupServiceControl'
-                        Stop='both'
-                        Remove='uninstall'
-                        Name='QubesNetworkSetup'
-                        Wait='yes'
+                        Id="NetworkSetupServiceControl"
+                        Stop="both"
+                        Remove="uninstall"
+                        Name="QubesNetworkSetup"
+                        Wait="yes"
                         />
                     </Component>
-                    <Component Id='ServicePolicy' Guid='{F9818E4E-76C4-40DE-A8F3-945336C954B1}'>
-                        <File Id='service_policy.exe' Source='service-policy.exe' KeyPath='yes' />
-                        <File Id='service_policy.cfg' Source='service-policy.cfg' />
+                    <Component Id="ServicePolicy" Guid="{F9818E4E-76C4-40DE-A8F3-945336C954B1}">
+                        <File Id="disable_svc.bat" Source="disable_svc.bat" />
                     </Component>
-                    <Component Id='AdvertiseTools' Guid='{DEDA44D9-6A58-4DE7-902A-643FB594B93C}'>
-                        <File Id='advertise_tools.exe' Source='advertise-tools.exe' KeyPath='yes'/>
+                    <Component Id="AdvertiseTools" Guid="{DEDA44D9-6A58-4DE7-902A-643FB594B93C}">
+                        <File Id="advertise_tools.exe" Source="advertise-tools.exe" KeyPath="yes"/>
                     </Component>
 
                 </Directory>
 
-                <Directory Id='QubesRPCDir' Name='qubes-rpc'>
-                    <Component Id='QrexecServicesConfig' Guid='{9efff253-25a8-40ed-861a-0d576f0ca439}'>
-                        <File Id='qubes.Filecopy' Source='qubes.Filecopy' KeyPath='yes'/>
-                        <File Id='qubes.ClipboardCopy' Source='qubes.ClipboardCopy'/>
-                        <File Id='qubes.ClipboardPaste' Source='qubes.ClipboardPaste'/>
-                        <File Id='qubes.VMShell' Source='qubes.VMShell'/>
-                        <File Id='qubes.OpenInVM' Name='qubes.OpenInVM' Source='qubes.OpenInVM'/>
-                        <File Id='qubes.WaitForSession' Source='qubes.WaitForSession'/>
-                        <File Id='qubes.SetGuiMode' Source='qubes.SetGuiMode'/>
-                        <File Id='qubes.GetAppMenus' Source='qubes.GetAppMenus'/>
-                        <File Id='qubes.StartApp' Source='qubes.StartApp'/>
-                        <File Id='qubes.GetImageRGBA' Source='qubes.GetImageRGBA'/>
-                        <File Id='qubes.SetDateTime' Source='qubes.SetDateTime'/>
-                        <File Id='qubes.OpenURL' Source='qubes.OpenURL'/>
+                <Directory Id="QubesRPCDir" Name="qubes-rpc">
+                    <Component Id="QrexecServicesConfig" Guid="{9efff253-25a8-40ed-861a-0d576f0ca439}">
+                        <File Id="qubes.Filecopy" Source="qubes.Filecopy" KeyPath="yes"/>
+                        <File Id="qubes.ClipboardCopy" Source="qubes.ClipboardCopy"/>
+                        <File Id="qubes.ClipboardPaste" Source="qubes.ClipboardPaste"/>
+                        <File Id="qubes.VMShell" Source="qubes.VMShell"/>
+                        <File Id="qubes.OpenInVM" Name="qubes.OpenInVM" Source="qubes.OpenInVM"/>
+                        <File Id="qubes.WaitForSession" Source="qubes.WaitForSession"/>
+                        <File Id="qubes.SetGuiMode" Source="qubes.SetGuiMode"/>
+                        <File Id="qubes.GetAppMenus" Source="qubes.GetAppMenus"/>
+                        <File Id="qubes.StartApp" Source="qubes.StartApp"/>
+                        <File Id="qubes.GetImageRGBA" Source="qubes.GetImageRGBA"/>
+                        <File Id="qubes.SetDateTime" Source="qubes.SetDateTime"/>
+                        <File Id="qubes.OpenURL" Source="qubes.OpenURL"/>
                     </Component>
                 </Directory>
 
 
-                <Directory Id='QubesRPCServicesDir' Name='qubes-rpc-services'>
-                    <Component Id='QrexecServices' Guid='{2543621b-2d67-4726-9a3b-7a1c471a1e19}'>
-                        <File Id='file_sender.exe' Source='file-sender.exe' KeyPath='yes'/>
-                        <File Id='file_receiver.exe' Source='file-receiver.exe'/>
-                        <File Id='clipboard_copy.exe' Source='clipboard-copy.exe'/>
-                        <File Id='clipboard_paste.exe' Source='clipboard-paste.exe'/>
-                        <File Id='vm_file_editor.exe' Source='vm-file-editor.exe'/>
-                        <File Id='open_in_vm.exe' Source='open-in-vm.exe'/>
-                        <File Id='wait_for_logon.exe' Source='wait-for-logon.exe'/>
-                        <File Id='set_gui_mode.exe' Source='set-gui-mode.exe'/>
-                        <File Id='get_appmenus.ps1' Source='get-appmenus.ps1'/>
-                        <File Id='start_app.ps1' Source='start-app.ps1'/>
-                        <File Id='get_image_rgba.exe' Source='get-image-rgba.exe'/>
-                        <File Id='window_icon_updater.exe' Source='window-icon-updater.exe'/>
-                        <File Id='set_time.ps1' Source='set-time.ps1'/>
-                        <File Id='open_url.exe' Source='open-url.exe'/>
+                <Directory Id="QubesRPCServicesDir" Name="qubes-rpc-services">
+                    <Component Id="QrexecServices" Guid="{2543621b-2d67-4726-9a3b-7a1c471a1e19}">
+                        <File Id="file_sender.exe" Source="file-sender.exe" KeyPath="yes"/>
+                        <File Id="file_receiver.exe" Source="file-receiver.exe"/>
+                        <File Id="clipboard_copy.exe" Source="clipboard-copy.exe"/>
+                        <File Id="clipboard_paste.exe" Source="clipboard-paste.exe"/>
+                        <File Id="vm_file_editor.exe" Source="vm-file-editor.exe"/>
+                        <File Id="open_in_vm.exe" Source="open-in-vm.exe"/>
+                        <File Id="wait_for_logon.exe" Source="wait-for-logon.exe"/>
+                        <File Id="set_gui_mode.exe" Source="set-gui-mode.exe"/>
+                        <File Id="get_appmenus.ps1" Source="get-appmenus.ps1"/>
+                        <File Id="start_app.ps1" Source="start-app.ps1"/>
+                        <File Id="get_image_rgba.exe" Source="get-image-rgba.exe"/>
+                        <File Id="window_icon_updater.exe" Source="window-icon-updater.exe"/>
+                        <File Id="set_time.ps1" Source="set-time.ps1"/>
+                        <File Id="open_url.exe" Source="open-url.exe"/>
                     </Component>
                 </Directory>
 		
@@ -390,8 +391,6 @@ DowngradeErrorMessage='A later version of [ProductName] is already installed. Se
 
 <Binary Id='demo_cert' SourceFile='authenticode.crt' />
 
-<Binary Id='Uninstaller' SourceFile='uninstaller.exe' />
-<Binary Id='advertise_tools.exe' SourceFile='advertise-tools.exe' />
 
 <Binary Id="CreateDeviceHelper" SourceFile="create-device.exe"/>
 <Binary Id="DisableDevHelper" SourceFile="disable-device.exe"/>
@@ -451,41 +450,8 @@ BinaryKey='Uninstaller'
 ExeCommand=''
 />
 
-<Property Id="CMD">
-  <DirectorySearch Id="SysDir" Path="[SystemFolder]" Depth="1">
-    <FileSearch Id="CmdExe" Name="cmd.exe"  />
-  </DirectorySearch>
-</Property>
-
-<CustomAction
-Id='SetPowerSettings'
-Return='ignore'
-Impersonate='no'
-Execute='deferred'
-Property='CMD'
-ExeCommand='/c "[BinDir]\power_settings.bat"'
-/>
-
-<!-- This is here instead of in the qrexec module because on upgrade we need to run this
-before the qrexec module is processed by MSI (restart after old version uninstall happens first). -->
-<!-- 0 is the argument for advertising that tools are not installed. -->
-<CustomAction
-Id='UnadvertiseTools'
-BinaryKey='advertise_tools.exe'
-Return='ignore'
-Execute='immediate'
-Impersonate='yes'
-ExeCommand='0'
-/>
-
-<CustomAction
-Id="RunServicePolicy"
-Return="ignore"
-Impersonate="no"
-Execute="deferred"
-FileKey="service_policy.exe"
-ExeCommand='"[BinDir]\service-policy.cfg"'
-/>
+<CustomAction Id="Set_PowerSettings" Property="PowerSettings" Value='"cmd.exe" /c "[BinDir]power_settings.bat"'/>
+<CustomAction Id="PowerSettings" Impersonate="no" BinaryKey="WixCA" DllEntry="WixQuietExec" Execute="deferred" Return="ignore"/>
 
 
 <InstallExecuteSequence>
@@ -495,182 +461,162 @@ ExeCommand='"[BinDir]\service-policy.cfg"'
     <Custom Action="RegisterVideoDevice" After="InstallFiles">
         ?qvideo=2 AND $qvideo=3
     </Custom>
-    <Custom Action="RollbackDisableSVGA" Before="DisableSVGA">
-        $qvideo=3
-    </Custom>
-    <Custom Action="DisableSVGA" Before="InstallFinalize">
+
+    <Custom Action="DisableSVGA" After="MsiProcessDrivers">
         ?qvideo=2 AND $qvideo=3
     </Custom>
+
     <!-- enable it back on uninstall -->
     <Custom Action="EnableSVGA" Before="InstallFinalize">
         REMOVE="ALL" AND ?qvideo=3 AND $qvideo=2
     </Custom>
     
-    <Custom Action='RunPrepareVolume' Before='InstallFinalize'>$PrepareVolume=3 AND NOT Installed AND NOT REMOVE</Custom>
-
-  <Custom Action='RunServicePolicy' After='InstallFiles'>$ServicePolicy=3 AND NOT Installed AND NOT REMOVE</Custom>
-
-  <!-- Require reboot after install/uninstall. -->
-  <ScheduleReboot Before="InstallFinalize" />
+    <Custom Action="RunPrepareVolume" Before="InstallFinalize">
+	$PrepareVolume=3 AND NOT Installed AND NOT REMOVE
+    </Custom>
 
   <!-- Notify dom0 that tools are uninstalled on uninstall/upgrade
   (upgrade requires an intermediate reboot and the tools are not functioning yet then). -->
   <Custom Action='UnadvertiseTools' Before='RemoveExistingProducts'>REMOVE="ALL" OR WIX_UPGRADE_DETECTED</Custom>
 
-  <!-- Perform custom uninstall cleanup, needed for pvdrivers because MSI can't revert system changes done by driver coinstallers (like inserting device stack filters). -->
-  <Custom Action="UninstallCleanup" After="InstallInitialize">REMOVE="ALL" OR WIX_UPGRADE_DETECTED</Custom>
+    <!-- Require reboot after install/uninstall. -->
+    <ScheduleReboot Before="InstallFinalize" />
 
-  <!-- Force reboot immediately after uninstalling previous version on upgrade,
-  it's normally suppressed until after the new version is installed.
-  Do not reboot if we're already running after reboot. -->
-  <ForceReboot After="UninstallCleanup">WIX_UPGRADE_DETECTED AND NOT AFTERREBOOT</ForceReboot>
+    <!-- Run power settings update if the feature is being installed. -->
+    <Custom Action="Set_PowerSettings" Before="PowerSettings" />
+    <Custom Action="PowerSettings" Before="InstallFinalize">
+	<![CDATA[&PowerSettings=3]]>
+    </Custom>
 
-  <!-- Run power settings update if the feature is being installed. -->
-  <Custom Action='SetPowerSettings' Before='InstallFinalize'><![CDATA[&PowerSettings=3]]></Custom>
 </InstallExecuteSequence>
 
 <Feature
-Id='Complete'
-AllowAdvertise='no'
-Absent='disallow'
-Display='expand'
-Title='Qubes Windows Tools'
-Description='Qubes Windows Tools'
-ConfigurableDirectory='INSTALLDIR'
+Id="Complete"
+AllowAdvertise="no"
+Absent="disallow"
+Display="expand"
+Title="Qubes Windows Tools"
+Description="Qubes Windows Tools"
+ConfigurableDirectory="INSTALLDIR"
 >
     <Feature
-    Id='Common'
-    AllowAdvertise='no'
-    Absent='disallow'
-    Title='Shared components'
-    Description='Shared libraries for Qubes Windows Tools.'
+    Id="Common"
+    AllowAdvertise="no"
+    Absent="disallow"
+    Title="Shared components"
+    Description="Shared libraries for Qubes Windows Tools."
     >
-        <ComponentRef Id='QubesRegistry'/>
-        <ComponentRef Id='CreateLogDir'/>
-        <ComponentRef Id='WindowsUtilsDll'/>
-        <ComponentRef Id='VchanDll'/>
-        <ComponentRef Id='XenUserDlls'/>
-        <ComponentRef Id='QubesDbClient'/>
-        <ComponentRef Id='QubesDbDaemon'/>
+        <ComponentRef Id="QubesRegistry"/>
+        <ComponentRef Id="CreateLogDir"/>
+        <ComponentRef Id="WindowsUtilsDll"/>
+        <ComponentRef Id="VchanDll"/>
+        <ComponentRef Id="XenUserDlls"/>
+        <ComponentRef Id="QubesDbClient"/>
+        <ComponentRef Id="QubesDbDaemon"/>
     </Feature>
 
     <Feature
-    Id='XenPvDrivers'
-    AllowAdvertise='no'
-    Absent='allow'
-    Title='Xen PV Drivers'
-    Description='Paravirtualization drivers for Xen.'
+    Id="XenPvDrivers"
+    AllowAdvertise="no"
+    Absent="allow"
+    Title="Xen PV Drivers"
+    Description="Paravirtualization drivers for Xen."
     >
         <Feature
-        Id='XenBase'
-        AllowAdvertise='no'
-        Absent='disallow'
-        Title='Base Xen PV Drivers'
-        Description='Xen paravirtual bus and interface drivers.'
+        Id="XenBase"
+        AllowAdvertise="no"
+        Absent="disallow"
+        Title="Base Xen PV Drivers"
+        Description="Xen paravirtual bus and interface drivers."
         >
-            <ComponentRef Id='XenbusDriver'/>
-            <ComponentRef Id='XenifaceDriver'/>
+            <ComponentRef Id="XenbusDriver"/>
+            <ComponentRef Id="XenifaceDriver"/>
         </Feature>
 
         <Feature
-        Id='XenDisk'
-        AllowAdvertise='no'
-        Absent='allow'
-        Title='Xen PV Disk Drivers'
-        Description='Xen paravirtual disk drivers.'
-        Level='1001'
+        Id="XenDisk"
+        AllowAdvertise="no"
+        Absent="allow"
+        Title="Xen PV Disk Drivers"
+        Description="Xen paravirtual disk drivers."
+	Level="1001"
         >
-            <ComponentRef Id='XenvbdDriver'/>
+            <ComponentRef Id="XenvbdDriver"/>
         </Feature>
 
         <Feature
-        Id='XenNetwork'
-        AllowAdvertise='no'
-        Absent='allow'
-        Title='Xen PV Network Drivers'
-        Description='Xen paravirtual network class and device drivers.'
+        Id="XenNetwork"
+        AllowAdvertise="no"
+        Absent="allow"
+        Title="Xen PV Network Drivers"
+        Description="Xen paravirtual network class and device drivers."
         >
-            <ComponentRef Id='XenvifDriver'/>
-            <ComponentRef Id='XennetDriver'/>
+            <ComponentRef Id="XenvifDriver"/>
+            <ComponentRef Id="XennetDriver"/>
         </Feature>
     </Feature>
 
     <Feature
-    Id='CoreAgent'
-    AllowAdvertise='no'
-    Absent='allow'
-    Title='Qubes Core Agent'
-    Description='Core services of Qubes Windows Tools. Contains Qubes RPC Agent and basic services like file copy, clipboard handling, etc.'
+    Id="CoreAgent"
+    AllowAdvertise="no"
+    Absent="allow"
+    Title="Qubes Core Agent"
+    Description="Core services of Qubes Windows Tools. Contains Qubes RPC Agent and basic services like file copy, clipboard handling, etc."
     >
-        <ComponentRef Id='QrexecAgent'/>
-        <ComponentRef Id='QrexecClientVm'/>
-        <ComponentRef Id='QrexecWrapper'/>
-        <ComponentRef Id='AskVmAndRun'/>
-        <ComponentRef Id='NetworkSetup'/>
-        <ComponentRef Id='ServicePolicy'/>
-        <ComponentRef Id='QrexecServicesConfig'/>
-        <ComponentRef Id='QrexecServices'/>
-        <ComponentRef Id='AdvertiseTools'/>
+        <ComponentRef Id="QrexecAgent"/>
+        <ComponentRef Id="QrexecClientVm"/>
+        <ComponentRef Id="QrexecWrapper"/>
+        <ComponentRef Id="AskVmAndRun"/>
+        <ComponentRef Id="NetworkSetupRegistry"/>
+        <ComponentRef Id="NetworkSetup"/>
+        <ComponentRef Id="ServicePolicy"/>
+        <ComponentRef Id="QrexecServicesConfig"/>
+        <ComponentRef Id="QrexecServices"/>
+        <ComponentRef Id="AdvertiseTools"/>
     </Feature>
 
     <Feature
-    Id='MoveProfiles'
-    AllowAdvertise='no'
-    Absent='allow'
-    Title='Move user profiles'
-    Description='Moves user profiles directory (c:\Users) to the HVM&amp;s private disk (private.img).'>
-        <ComponentRef Id='RelocateDir'/>
-        <ComponentRef Id='PrepareVolume'/>
+    Id="MoveProfiles"
+    AllowAdvertise="no"
+    Absent="allow"
+    Title="Move user profiles"
+    Description="Moves user profiles directory (c:\Users) to the HVM&amp;s private disk (private.img)."
+    >
+    	<ComponentRef Id="RelocateDir"/>
+        <ComponentRef Id="PrepareVolume"/>
     </Feature>
 
     <Feature
-    Id='GuiAgentWindows'
-    AllowAdvertise='no'
-    Absent='allow'
-    Title='Qubes GUI Agent'
-    Description='Windows Agent for seamless GUI integration. This feature requires Windows 7 and testsigning enabled.'
+    Id="GuiAgentWindows"
+    AllowAdvertise="no"
+    Absent="allow"
+    Title="Qubes GUI Agent"
+    Description="Windows Agent for seamless GUI integration."
     >
-        <Condition Level="0">
-            <![CDATA[(VersionNT >= 602) OR NOT (SYSTEMSTARTOPTIONS >< "TESTSIGNING")]]>
-        </Condition>
-	<ComponentRef Id='Cert'/>
-        <ComponentRef Id='GuiAgent'/>
-        <ComponentRef Id='QgaWatchdog'/>
-        <ComponentRef Id='qvideo'/>
+        <ComponentRef Id="Cert"/>
+        <ComponentRef Id="GuiAgent"/>
+        <ComponentRef Id="QgaWatchdog"/>
+        <ComponentRef Id="qvideo"/>
     </Feature>
 
     <Feature
-    Id='GuiAgentWindowsUnavailable'
-    AllowAdvertise='no'
-    Absent='allow'
-    Title='(unavailable) Qubes GUI Agent'
-    Description='Windows Agent for seamless GUI integration. This feature requires Windows 7 and testsigning enabled.'
-    Level='0'
+    Id="DisableUac"
+    AllowAdvertise="no"
+    Absent="allow"
+    Title="Disable UAC"
+    Description="Disable User Account Control."
     >
-        <Condition Level="1001">
-            <![CDATA[(VersionNT >= 602) OR NOT (SYSTEMSTARTOPTIONS >< "TESTSIGNING")]]>
-        </Condition>
-    </Feature>
-
-
-    <Feature
-    Id='DisableUac'
-    AllowAdvertise='no'
-    Absent='allow'
-    Title='Disable UAC'
-    Description='Disable User Account Control.'
-    >
-        <ComponentRef Id='DisableUac'/>
+        <ComponentRef Id="DisableUac"/>
     </Feature>
 
     <Feature
-    Id='PowerSettings'
-    AllowAdvertise='no'
-    Absent='allow'
-    Title='Update Windows power settings'
-    Description='Sets the active Windows power scheme to High Performance and disables automatic sleep/hibernation.'
+    Id="PowerSettings"
+    AllowAdvertise="no"
+    Absent="allow"
+    Title="Update Windows power settings"
+    Description="Sets the active Windows power scheme to High Performance and disables automatic sleep/hibernation."
     >
-        <ComponentRef Id='PowerSettings'/>
+        <ComponentRef Id="PowerSettings"/>
     </Feature>
     
 </Feature>
