@@ -395,71 +395,31 @@ DowngradeErrorMessage="A later version of [ProductName] is already installed. Se
 <Binary Id='demo_cert' SourceFile='authenticode.crt' />
 
 
-<Binary Id="CreateDeviceHelper" SourceFile="create-device.exe"/>
-<Binary Id="DisableDevHelper" SourceFile="disable-device.exe"/>
+<SetProperty Id="SignQvideoDriver" Value='"[BinDir]pkihelper.exe" -v -p "[DriversDir]qvideo"' Sequence="execute" Before="SignQvideoDriver"/>
+<CustomAction Id="SignQvideoDriver" Impersonate="no" BinaryKey="WixCA" DllEntry="WixQuietExec" Execute="deferred" Return="ignore"/>
 
-<CustomAction
-Id='RunPrepareVolume'
-Return='ignore'
-Impersonate='no'
-Execute='deferred'
-FileKey='prepare_volume.exe'
-ExeCommand='51728'
-/>
+<SetProperty Id="RunPrepareVolume" Value='"[SystemFolder]diskpart.exe" /s "[BinDir]diskpart.txt"' Sequence="execute" Before="RunPrepareVolume"/>
+<CustomAction Id="RunPrepareVolume" Impersonate="no" BinaryKey="WixCA" DllEntry="WixQuietExec" Execute="deferred" Return="ignore"/>
 
-<CustomAction
-Id="RegisterVideoDevice"
-Return="check"
-Impersonate="no"
-Execute="deferred"
-BinaryKey="CreateDeviceHelper"
-ExeCommand='"[QvideoDir]qvideo.inf" ITL_QubesVideo'
-/>
+<SetProperty Id="RegisterVideoDevice" Value='"[BinDir]/devcon.exe" install "[DriversDir]qvideo\qvideo.inf" ITL_QubesVideo' Sequence="execute" Before="RegisterVideoDevice"/>
+<CustomAction Id="RegisterVideoDevice" Impersonate="no" BinaryKey="WixCA" DllEntry="WixQuietExec" Execute="deferred" Return="ignore"/>
 
 <!-- Disable all PCI Display devices. Our device is ROOT device -->
-<CustomAction
-Id="DisableSVGA"
-Return="ignore"
-Impersonate="no"
-Execute="deferred"
-BinaryKey="DisableDevHelper"
-ExeCommand='-d Display'
-/>
+<SetProperty Id="DisableSVGA" Value='"[BinDir]/devcon.exe" disable =Display *PCI*' Sequence="execute" Before="DisableSVGA"/>
+<CustomAction Id="DisableSVGA" Impersonate="no" BinaryKey="WixCA" DllEntry="WixQuietExec" Execute="deferred" Return="ignore"/>
 
-<CustomAction
-Id="RollbackDisableSVGA"
-Return="ignore"
-Impersonate="no"
-Execute="rollback"
-BinaryKey="DisableDevHelper"
-ExeCommand='-e Display'
-/>
-
-<CustomAction
-Id="EnableSVGA"
-Return="ignore"
-Impersonate="no"
-Execute="deferred"
-BinaryKey="DisableDevHelper"
-ExeCommand='-e Display'
-/>
-
-<CustomAction
-Id='UninstallCleanup'
-Return='check'
-Impersonate='no'
-Execute='deferred'
-BinaryKey='Uninstaller'
-ExeCommand=''
-/>
+<SetProperty Id="EnableSVGA" Value='"[BinDir]/devcon.exe" enable =Display *PCI*' Sequence="execute" Before="EnableSVGA"/>
+<CustomAction Id="EnableSVGA" Impersonate="no" BinaryKey="WixCA" DllEntry="WixQuietExec" Execute="deferred" Return="ignore"/>
 
 <CustomAction Id="Set_PowerSettings" Property="PowerSettings" Value='"cmd.exe" /c "[BinDir]power_settings.bat"'/>
 <CustomAction Id="PowerSettings" Impersonate="no" BinaryKey="WixCA" DllEntry="WixQuietExec" Execute="deferred" Return="ignore"/>
 
+<CustomAction Id="Set_DisableSvc" Property="DisableSvc" Value='"cmd.exe" /c "[BinDir]disable_svc.bat"' />
+<CustomAction Id="DisableSvc" BinaryKey="WixCA" DllEntry="CAQuietExec" Execute="deferred" Return="ignore" Impersonate="no" />
 
 <InstallExecuteSequence>
 
-    <Custom Action="InstallCertificates" Before='MsiProcessDrivers' />
+    <Custom Action="SignQvideoDriver" Before="MsiProcessDrivers" />
 
     <Custom Action="RegisterVideoDevice" After="InstallFiles">
         ?qvideo=2 AND $qvideo=3
@@ -478,9 +438,8 @@ ExeCommand=''
 	$PrepareVolume=3 AND NOT Installed AND NOT REMOVE
     </Custom>
 
-  <!-- Notify dom0 that tools are uninstalled on uninstall/upgrade
-  (upgrade requires an intermediate reboot and the tools are not functioning yet then). -->
-  <Custom Action='UnadvertiseTools' Before='RemoveExistingProducts'>REMOVE="ALL" OR WIX_UPGRADE_DETECTED</Custom>
+    <Custom Action="Set_DisableSvc" Before="DisableSvc" />
+    <Custom Action="DisableSvc" After="InstallFiles" />
 
     <!-- Require reboot after install/uninstall. -->
     <ScheduleReboot Before="InstallFinalize" />
