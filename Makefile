@@ -52,6 +52,9 @@ wix:
 	cp qubes-core-agent-windows-*/src/qrexec-services/qubes.* ./$(ARCH)
 	cp qubes-core-agent-windows-*/src/qrexec-services/*.ps1 ./$(ARCH)
 	cp qubes-installer-qubes-os-windows-tools-*/power_settings.bat ./$(ARCH)
+	cp disable_svc.bat ./$(ARCH)
+	cp diskpart.txt ./$(ARCH)
+	cp authenticode.crt ./$(ARCH)
 	cp qubes-gui-agent-windows-*/qvideo/qvideo.inf ./$(ARCH)
 	cp qubes-installer-qubes-os-windows-tools-*/iso-README.txt ./
 	cp qubes-installer-qubes-os-windows-tools-*/license.rtf ./$(ARCH)
