@@ -1,4 +1,4 @@
-FROM fedora-minimal:28
+FROM registry.fedoraproject.org/fedora-minimal:28
 
 RUN microdnf install -y mingw32-gcc mingw64-gcc \
     mono-core osslsigncode libfaketime \

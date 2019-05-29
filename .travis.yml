@@ -4,7 +4,6 @@ services:
   - docker
 
 before_install:
-  - docker pull registry.fedoraproject.org/fedora-minimal:28
   - docker build -t tabit/qwt .
   - mkdir -p qwtiso
 
