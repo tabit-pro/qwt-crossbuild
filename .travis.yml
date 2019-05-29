@@ -7,7 +7,7 @@ before_install:
 - mkdir -p qwtiso
 script:
 - docker run -v $(pwd):/src -v qwtiso:/build/noarch -it tabit/qwt sh -c "sh prep.sh
-  && make x64 && cp qubes-tools-x64.msi /build/noarch && rpmbuild -bb --define '_sourcedir /build' --define '_rpmdir /build' *.spec"
+ && make x86 && make x64 && cp qubes-tools-x64.msi /build/noarch && rpmbuild -bb --define '_sourcedir /build' --define '_rpmdir /build' *.spec"
 deploy:
   provider: releases
   api_key:
