@@ -23,8 +23,8 @@ In comparison with the original ITL's Qubes Tools qwt-crossbuild contains severa
 
 ```shell_session
 $ git clone https://github.com/tabit-pro/qwt-crossbuild .
-$ docker build --rm -t qubes .
+$ docker build -t tabit/qwt .
 $ mkdir -p ~/qwtiso
-$ docker run -v ~/qwtiso:/build/noarch -v $PWD/qubes-windows-tools.spec:/build/qubes-windows-tools.spec -v $PWD/Makefile:/build/Makefile -it qubes sh -c "make x86 && make x64 && rpmbuild -bb --define '_sourcedir /build' --define '_rpmdir /build' *.spec && cd noarch && createrepo ./"
+$ docker run -v $(pwd):/src -v ~/qwtiso:/build/noarch -it tabit/qwt sh -c "sh prep.sh && make x86 && make x64 && rpmbuild -bb --define '_sourcedir /build' --define '_rpmdir /build' *.spec && cd noarch && createrepo ./"
 ```
 

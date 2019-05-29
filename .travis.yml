@@ -8,4 +8,4 @@ before_install:
   - mkdir -p qwtiso
 
 script:
-  - docker run -v $(pwd):/src -v qwtiso:/build/noarch -it tabit/qwt sh -c "sh prep.sh && make x64 && rpmbuild -bb --define '_sourcedir /build' --define '_rpmdir /build' *.spec && cd noarch && createrepo ./"
+  - docker run -v $(pwd):/src -v qwtiso:/build/noarch -it tabit/qwt sh -c "sh prep.sh && make x86 && make x64 && rpmbuild -bb --define '_sourcedir /build' --define '_rpmdir /build' *.spec && cd noarch && createrepo ./"
