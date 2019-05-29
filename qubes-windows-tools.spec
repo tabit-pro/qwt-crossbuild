@@ -1,6 +1,6 @@
 Name:		qubes-windows-tools
 Version:	4.0
-Release:	206
+Release:	209
 Summary:	Qubes Tools for Windows VMs
 Group:		Qubes
 License:	GPL

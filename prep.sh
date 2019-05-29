@@ -1,5 +1,17 @@
 #!/bin/bash
 
+sh setup-demo-cert.sh
+
+for i in $(ls /downloads/*.tar.gz); do tar -zxvf $i; done
+cat /downloads/xen*.tar | tar -xvf - -i
+mkdir -p x86; mkdir -p x64;
+mv /downloads/Windows-driver-samples ./
+
+cp -f /src/* ./ || true
+
+# FIXME:
+# replace ugly sed stuff with a proper patchset
+
 sed -i -e 's/, __VA_ARGS__/,##__VA_ARGS__/' qubes-vmm-xen-win-pvdrivers-xeniface-*/src/xencontrol/xencontrol_private.h
 sed -i -e 's/, __VA_ARGS__/,##__VA_ARGS__/' qubes-vmm-xen-windows-pvdrivers-*/src/libxenvchan/io.c 
 sed -i -e 's/, __VA_ARGS__/,##__VA_ARGS__/' qubes-vmm-xen-windows-pvdrivers-*/src/libxenvchan/init.c 

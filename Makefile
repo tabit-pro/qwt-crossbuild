@@ -29,19 +29,17 @@ WINEARCH=win32
 WINEDEBUG=warn+dll
 TIMESTAMP='last sunday 00:00'
 
-prep86: 
+prep: 
 	mkdir -p x86
-
-prep64:
 	mkdir -p x64
 
 clean:
 	rm -rf {x86,x64}
 	rm -f *.msi
 
-x64: prep64 $(TARGETS) sign wix
+x64: prep $(TARGETS) sign wix
 
-x86: prep86 $(TARGETS) sign wix
+x86: prep $(TARGETS) sign wix
 
 sign:
 	mv $(ARCH)/qvmini.sys $(ARCH)/qvmini_unsigned.sys
