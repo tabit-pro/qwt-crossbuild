@@ -10,8 +10,8 @@ In comparison with the original ITL's Qubes Tools qwt-crossbuild contains severa
 - [x] hide command prompt windows during setup execution (WixQuiteExec)
 - [x] sign and install drivers without prompt (libwdi-based pkihelper utility)
 - [x] remove format dialog (diskpart instead of prepare-volume)
-- [x] troubleshoot bsod errors (0x101, 0xc5, 0x50)
-- [ ] prepare utils for reproducible build
+- [ ] troubleshoot bsod errors (0x101, 0xc5, 0x50 - the toughest elusive fighters)
+- [ ] prepare reproducible/deterministic build (binaries, msi, iso)
 
 # QWT Runtime prerequisuites
 

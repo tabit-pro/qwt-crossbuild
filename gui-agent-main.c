@@ -679,11 +679,9 @@ static ULONG ProcessUpdatedWindows(IN HDC screenDC)
         return ERROR_SUCCESS;
     }
 
-    // Update the window list - check for new/destroyed windows.
-    AddAllWindows();
-
     // Update all watched windows.
     EnterCriticalSection(&g_csWatchedWindows);
+    status = AddAllWindows();
 
     entry = (WINDOW_DATA *)g_WatchedWindowsList.Flink;
     while (entry != (WINDOW_DATA *)&g_WatchedWindowsList)
@@ -909,6 +907,10 @@ static ULONG WINAPI WatchForEvents(void)
             {
                 LogInfo("A vchan client has connected");
 
+                // needs to be set before enumerating windows so maps get sent
+                // (and before sending anything really)
+                g_VchanClientConnected = TRUE;
+
                 if (ERROR_SUCCESS != SendProtocolVersion())
                 {
                     LogError("SendProtocolVersion failed");
@@ -959,10 +961,6 @@ static ULONG WINAPI WatchForEvents(void)
                     exitLoop = TRUE;
                     break;
                 }
-
-                // needs to be set before enumerating windows so maps get sent
-                // (and before sending anything really)
-                g_VchanClientConnected = TRUE;
 
                 break;
             }

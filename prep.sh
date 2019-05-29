@@ -61,7 +61,7 @@ cp qubes-vmm-xen-win-pvdrivers-xeniface-*/include/*.h include/
 cp file-sender.rc qubes-core-agent-windows-*/src/qrexec-services/file-sender/
 
 sed -i -e 's/\" __FUNCTION__ \"//g' qubes-gui-agent-windows-*/qvideo/gdi/support.h
-cp -f qvideo-memory.c qubes-gui-agent-windows-*/qvideo/miniport/
+cp -f qvideo-memory.c qubes-gui-agent-windows-*/qvideo/miniport/memory.c
 cp -f gui-agent-main.c qubes-gui-agent-windows-*/gui-agent/main.c
 cp *.h include/
 

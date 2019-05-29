@@ -442,7 +442,7 @@ DowngradeErrorMessage="A later version of [ProductName] is already installed. Se
     <Custom Action="DisableSvc" After="InstallFiles" />
 
     <!-- Require reboot after install/uninstall. -->
-    <ScheduleReboot Before="InstallFinalize" />
+    <ScheduleReboot After="InstallFinalize" />
 
     <!-- Run power settings update if the feature is being installed. -->
     <Custom Action="Set_PowerSettings" Before="PowerSettings" />
