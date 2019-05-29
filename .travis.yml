@@ -1,5 +1,5 @@
 language: bash
-if: tag IS present
+#if: tag IS present
 services:
 - docker
 before_install:
