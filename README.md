@@ -1,6 +1,8 @@
 # qwt-crossbuild
 Qubes Windows Tools crossbuild environment based on mingw, wine and docker
 
+[![Build Status](https://travis-ci.org/tabit-pro/qwt-crossbuild.svg?branch=master)](https://travis-ci.org/tabit-pro/qwt-crossbuild)
+
 In comparison with the original ITL's Qubes Tools qwt-crossbuild contains several in-progress improvements:
 
 - [x] rebuild QWT utils (mingw, x86, x86\_64)
