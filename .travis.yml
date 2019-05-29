@@ -6,14 +6,13 @@ before_install:
 - docker build -t tabit/qwt .
 - mkdir -p qwtiso
 script:
-- docker run -v $(pwd):/src -v qwtiso:/build/noarch -it tabit/qwt sh -c "sh prep.sh
- && make x86 && make x64 && cp qubes-tools-x64.msi /build/noarch && rpmbuild -bb --define '_sourcedir /build' --define '_rpmdir /build' *.spec"
+- docker run -v $(pwd):/src -v qwtiso:/build/noarch -it tabit/qwt sh -c "sh prep.sh && make x86 && make x64 && cp qubes-tools-x64.msi /build/noarch && rpmbuild -bb --define '_sourcedir /build' --define '_rpmdir /build' *.spec"
+- ls -lh qwtiso/
 deploy:
   provider: releases
   api_key:
     secure: DbDusCnzkapqK9f6gI1I3ThdSrzkumiuTX3SqsjxqZbdhWUlbj0Jew+Cs8dkBfpEHCEdZBvvTqKJWO1jpA3wP9hoS4RdRrTZeaPH01eO2mcLxs1I2jCCImTOsTG8xa7hrTMlYiO5ExBkAJMKd1tJmAw7Blt/RSn6V3rTe3Ur4RznFKHg7IWoezmrEh2z9Y7+0zdyA/Ktq4sTpZIqkl4+E9fn36AQEhiPThRmTKNb5EkGNfDILY/Q4CCKqMdDPJRpPey+GyGoYAwLWlRhuHP8u0eAUC0A0dCqhDYfCpHzCbqqEiikKAduLl3TeeyT908G9UBWhPqp/dnvPBUH1nSPzqcClNRiUfqHfHhjVZFlSTXsavpk8N910y9fqaSmgCRHT3IhptxF2JcQ8numh9lucK9EjXfL/Zo99neVANbRnr+aJqrwnbmu6j47Wr2TKAgFFlh/rFsjLovOA84Brl3hwGnkWRJ/e7TL3sn0hsqMGJ90pRgIytyFz9NqBcLTuob3wY1eV1HKH0/vV3mpFt7ObpwR+MlSy5xsxsFZADTKcQ9Ksc9nVZjYZDAn+mJ5eOo72mU1gnxpRnCn9IF7/ZYE95QAAx9TZEdlbBRxUXG9HU3FMYJkfvt4O3fSvd4JJwrTb6s+KKn6HefcgxemG7TINQKtOAVj6DMmu/36lYKi6gE=
   file_glob: true
-  file: qwtiso/qubes-tools-x64.msi
   file:
     - qwtiso/qubes-tools-x64.msi
     - qwtiso/qubes-windows-tools*.rpm
