@@ -13,7 +13,7 @@ In comparison with the original ITL's Qubes Tools qwt-crossbuild contains severa
 - [ ] troubleshoot bsod errors (0x101, 0xc5, 0x50 - the toughest elusive fighters)
 - [x] prepare reproducible/deterministic build (binaries only)
 
-# QWT Runtime prerequisuites
+## QWT Runtime prerequisuites
 
 1. Fully updated Windows 7/10
 1. Testsigning
