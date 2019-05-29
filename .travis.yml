@@ -18,5 +18,7 @@ deploy:
     - qwtiso/qubes-tools-x64.msi
     - qwtiso/qubes-windows-tools*.rpm
   skip_cleanup: true
+  prerelease: true
+  all_branches: true
   on:
     repo: tabit-pro/qwt-crossbuild
