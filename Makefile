@@ -1,6 +1,7 @@
 x64 : CC = /usr/bin/x86_64-w64-mingw32-gcc
 x64 : CXX = /usr/bin/x86_64-w64-mingw32-g++
 x64 : DLLTOOL=/usr/bin/x86_64-w64-mingw32-dlltool
+x64 : STRIP=/usr/bin/x86_64-w64-mingw32-strip
 x64:  WINDRES=/usr/bin/x86_64-w64-mingw32-windres
 x64:  WINDMC=/usr/bin/x86_64-w64-mingw32-windmc
 x64 : DDKPATH=/usr/x86_64-w64-mingw32/sys-root/mingw/include/ddk
@@ -10,6 +11,7 @@ x64 : DEBUG=-U_DEBUG -UDBG -UDEBUG
 x86 : CC = /usr/bin/i686-w64-mingw32-gcc
 x86 : CXX = /usr/bin/i686-w64-mingw32-g++
 x86 : DLLTOOL=/usr/bin/i686-w64-mingw32-dlltool
+x86 : STRIP=/usr/bin/i686-w64-mingw32-strip
 x86:  WINDRES=/usr/bin/i686-w64-mingw32-windres
 x86:  WINDMC=/usr/bin/i686-w64-mingw32-windmc
 x86 : DDKPATH=/usr/i686-w64-mingw32/sys-root/mingw/include/ddk
@@ -17,8 +19,7 @@ x86 : ARCH=x86
 x86 : DEBUG=-U_DEBUG -UDBG -UDEBUG
 
 CFLAGS += -I . -I $(PWD)/include  -I $(PWD)/$(ARCH) -I $(DDKPATH) -std=c11 -fgnu89-inline -DUNICODE -D_UNICODE $(DEBUG) -mwindows -D_WIN32_WINNT=0x0600
-LDFLAGS += -L $(PWD)/$(ARCH) -L $(PWD)/xeniface/$(ARCH) -lxencontrol -lversion -lshlwapi -lwtsapi32 -luserenv -liphlpapi -lwsock32 -lsetupapi -lrpcrt4 -lole32 -lntdll -luuid -lcomctl32 -lgdi32 -lwinmm -Wl,--as-needed
-BACKEND_VMM = xen
+LDFLAGS += -L $(PWD)/$(ARCH) -L $(PWD)/xeniface/$(ARCH) -lxencontrol -lversion -lshlwapi -lwtsapi32 -luserenv -liphlpapi -lwsock32 -lsetupapi -lrpcrt4 -lole32 -lntdll -luuid -lcomctl32 -lgdi32 -lwinmm -Wl,--as-needed -Wl,--no-insert-timestamp
 TARGETS = devcon.exe relocate-dir.exe pkihelper.exe xencontrol.dll libxenvchan.dll libvchan.dll windows-utils.dll qubesdb-client.dll qubesdb-cmd.exe qubesdb-daemon.exe advertise-tools.exe ask-vm-and-run.exe network-setup.exe qrexec-agent.exe qrexec-client-vm.exe qrexec-wrapper.exe clipboard-copy.exe clipboard-paste.exe file-receiver.exe file-sender.exe get-image-rgba.exe open-in-vm.exe open-url.exe set-gui-mode.exe vm-file-editor.exe wait-for-logon.exe window-icon-updater.exe gui-agent.exe QgaWatchdog.exe qvgdi.dll qvmini.sys
 OUTDIR = $(PWD)/$(ARCH)
 WINEMU=wine
@@ -26,6 +27,7 @@ WIXPATH=/opt/wix
 WINEPREFIX=/opt/wine
 WINEARCH=win32
 WINEDEBUG=warn+dll
+TIMESTAMP='last sunday 00:00'
 
 prep86: 
 	mkdir -p x86
@@ -44,8 +46,8 @@ x86: prep86 $(TARGETS) sign wix
 sign:
 	mv $(ARCH)/qvmini.sys $(ARCH)/qvmini_unsigned.sys
 	mv $(ARCH)/qvgdi.dll $(ARCH)/qvgdi_unsigned.dll
-	osslsigncode sign -pass pass -certs authenticode.spc -key authenticode.pvk -n "Qubes Tools" -t http://timestamp.verisign.com/scripts/timstamp.dll -in $(ARCH)/qvmini_unsigned.sys -out $(ARCH)/qvmini.sys
-	osslsigncode sign -pass pass -certs authenticode.spc -key authenticode.pvk -n "Qubes Tools" -t http://timestamp.verisign.com/scripts/timstamp.dll -in $(ARCH)/qvgdi_unsigned.dll -out $(ARCH)/qvgdi.dll
+	faketime $(TIMESTAMP) osslsigncode sign -pass pass -certs authenticode.spc -key authenticode.pvk -n "Qubes Tools" -in $(ARCH)/qvmini_unsigned.sys -out $(ARCH)/qvmini.sys
+	faketime $(TIMESTAMP) osslsigncode sign -pass pass -certs authenticode.spc -key authenticode.pvk -n "Qubes Tools" -in $(ARCH)/qvgdi_unsigned.dll -out $(ARCH)/qvgdi.dll
 
 wix:
 	cp xen*/$(ARCH)/xen*.{dll,inf,cat,sys,exe} ./$(ARCH)
@@ -68,10 +70,10 @@ devcon.exe:
 	cd Windows-driver-samples/setup/devcon/ && \
 	$(WINDMC) msg.mc && \
 	$(WINDRES) devcon.rc rc.so && \
-	$(CXX) -municode -Wno-write-strings -DWIN32_LEAN_AND_MEAN=1 -DUNICODE -D_UNICODE *.cpp rc.so -lsetupapi -lole32 -static-libstdc++ -static-libgcc -static -lpthread -o $(OUTDIR)/$@
+	$(CXX) -municode -Wno-write-strings $(LDFLAGS) -DWIN32_LEAN_AND_MEAN=1 -DUNICODE -D_UNICODE *.cpp rc.so -lsetupapi -lole32 -static-libstdc++ -static-libgcc -static -lpthread -o $(OUTDIR)/$@
 
 pkihelper.exe: windows-utils.dll 
-	$(CC) pkihelper.c -I include -L $(OUTDIR) -lwindows-utils -o $(OUTDIR)/$@
+	$(CC) pkihelper.c -I include -L $(OUTDIR) -Wl,--no-insert-timestamp -lwindows-utils -o $(OUTDIR)/$@
 
 xencontrol.dll: 
 	cd qubes-vmm-xen-win-pvdrivers-xeniface-*/src/xencontrol/ && \
@@ -145,7 +147,7 @@ qrexec-wrapper.exe:
 
 relocate-dir.exe:
 	cd qubes-core-agent-windows-*/src/relocate-dir && \
-	$(CC) *.c $(CFLAGS) -e NtProcessStartup -Wl,--subsystem,native -L $(OUTDIR) -lntdll -nostdlib -D__INTRINSIC_DEFINED__InterlockedAdd64 -fstack-check -Wl,--stack,16777216 -mno-stack-arg-probe -municode -o $(OUTDIR)/$@
+	$(CC) *.c $(CFLAGS) -e NtProcessStartup -Wl,--subsystem,native -L $(OUTDIR) -lntdll -nostdlib -D__INTRINSIC_DEFINED__InterlockedAdd64 -fstack-check -Wl,--stack,16777216 -mno-stack-arg-probe -municode -Wl,--no-insert-timestamp -o $(OUTDIR)/$@
 
 clipboard-copy.exe:
 	cd qubes-core-agent-windows-*/src/qrexec-services/clipboard-copy && \
@@ -210,12 +212,14 @@ disable-device.exe:
 	$(CC) *.c $(CFLAGS) $(LDFLAGS) -mconsole -municode -o $(OUTDIR)/$@
 
 qvgdi.dll:
-	$(DLLTOOL) -k -d win32k.def -l $(OUTDIR)/libwin32k.a
+	$(DLLTOOL) -k -d win32k.def -t win32k -l $(OUTDIR)/libwin32k.a
+	$(STRIP) --enable-deterministic-archives --strip-dwo $(OUTDIR)/libwin32k.a
 	rm -f qubes-gui-agent-windows-*/qvideo/gdi/support.c
 	cd qubes-gui-agent-windows-*/qvideo/gdi && \
-	$(CC) *.c  -I ../../../include -I ../../include -I ./ -I $(OUTDIR) -I $(DDKPATH) -L $(OUTDIR) -lwin32k -lntoskrnl -lhal -lwmilib -nostdlib -municode -DUNICODE -D_UNICODE -Wl,--subsystem,native -e DrvEnableDriver -shared -D__INTRINSIC_DEFINED__InterlockedAdd64 $(DEBUG) -o $(OUTDIR)/$@
+	$(CC) *.c  -I ../../../include -I ../../include -I ./ -I $(OUTDIR) -I $(DDKPATH) -L $(OUTDIR) -lwin32k -lntoskrnl -lhal -lwmilib -nostdlib -municode -DUNICODE -D_UNICODE -Wl,--subsystem,native -Wl,--no-insert-timestamp -e DrvEnableDriver -shared -D__INTRINSIC_DEFINED__InterlockedAdd64 $(DEBUG) -o $(OUTDIR)/$@
 
 qvmini.sys:
-	$(DLLTOOL) -k -d videoprt.def -l $(OUTDIR)/libvideoprt.a
+	$(DLLTOOL) -k -d videoprt.def -t videoprt -l $(OUTDIR)/libvideoprt.a
+	$(STRIP) --enable-deterministic-archives --strip-dwo $(OUTDIR)/libvideoprt.a
 	cd qubes-gui-agent-windows-*/qvideo/miniport && \
-	$(CC) *.c  -I ../../../include -I ../../include -I ./ -I $(OUTDIR) -I $(DDKPATH) -L $(OUTDIR) -lvideoprt -lntoskrnl -lhal -nostdlib -municode -DUNICODE -D_UNICODE -Wl,--subsystem,native -shared -e DriverEntry -D_NTOSDEF_ -DNOCRYPT -D__INTRINSIC_DEFINED__InterlockedAdd64 $(DEBUG) -o $(OUTDIR)/$@
+	$(CC) *.c  -I ../../../include -I ../../include -I ./ -I $(OUTDIR) -I $(DDKPATH) -L $(OUTDIR) -lvideoprt -lntoskrnl -lhal -nostdlib -municode -DUNICODE -D_UNICODE -Wl,--subsystem,native -Wl,--no-insert-timestamp -shared -e DriverEntry -D_NTOSDEF_ -DNOCRYPT -D__INTRINSIC_DEFINED__InterlockedAdd64 $(DEBUG) -o $(OUTDIR)/$@

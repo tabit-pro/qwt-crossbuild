@@ -11,7 +11,7 @@ In comparison with the original ITL's Qubes Tools qwt-crossbuild contains severa
 - [x] sign and install drivers without prompt (libwdi-based pkihelper utility)
 - [x] remove format dialog (diskpart instead of prepare-volume)
 - [ ] troubleshoot bsod errors (0x101, 0xc5, 0x50 - the toughest elusive fighters)
-- [ ] prepare reproducible/deterministic build (binaries, msi, iso)
+- [x] prepare reproducible/deterministic build (binaries only)
 
 # QWT Runtime prerequisuites
 
