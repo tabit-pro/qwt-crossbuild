@@ -18,9 +18,11 @@ x86 : DDKPATH=/usr/i686-w64-mingw32/sys-root/mingw/include/ddk
 x86 : ARCH=x86
 x86 : DEBUG=-U_DEBUG -UDBG -UDEBUG
 
-CFLAGS += -I . -I $(PWD)/include  -I $(PWD)/$(ARCH) -I $(DDKPATH) -std=c11 -fgnu89-inline -DUNICODE -D_UNICODE $(DEBUG) -mwindows -D_WIN32_WINNT=0x0600
+QWTVERSION = -D__MINGW__ -DQTW_FILEVERSION=4,0,0,0 -DQTW_FILEVERSION_STR='\"4.0.0.0\0\"' -DQTW_PRODUCTVERSION=QTW_FILEVERSION -DQTW_PRODUCTVERSION_STR=QTW_FILEVERSION_STR
+HPATH = -I . -I $(PWD) -I $(PWD)/include -I $(DDKPATH) -I $(PWD)/qubes-windows-utils-*/include/ -I $(PWD)/qubes-vmm-xen-windows-pvdrivers-*/include/ -I $(PWD)/qubes-core-qubesdb-*/include/ -I $(PWD)/qubes-core-agent-windows-*/src/qrexec-services/common/ -I $(PWD)/qubes-gui-agent-windows-*/include/ -I $(PWD)/qubes-gui-common-*/include/ -I $(PWD)/qubes-windows-utils-*/include/ -I $(PWD)/qubes-core-vchan-xen-*/windows/include/ -I $(PWD)/qubes-vmm-xen-win-pvdrivers-xeniface-*/include/
+CFLAGS += -std=c11 -fgnu89-inline -D__MINGW__ -D_INC_TCHAR -DNO_SHLWAPI_STRFCNS -DUNICODE -D_UNICODE $(DEBUG) -mwindows -D_WIN32_WINNT=0x0600 $(HPATH)
 LDFLAGS += -L $(PWD)/$(ARCH) -L $(PWD)/xeniface/$(ARCH) -lxencontrol -lversion -lshlwapi -lwtsapi32 -luserenv -liphlpapi -lwsock32 -lsetupapi -lrpcrt4 -lole32 -lntdll -luuid -lcomctl32 -lgdi32 -lwinmm -Wl,--as-needed -Wl,--no-insert-timestamp
-TARGETS = devcon.exe relocate-dir.exe pkihelper.exe xencontrol.dll libxenvchan.dll libvchan.dll windows-utils.dll qubesdb-client.dll qubesdb-cmd.exe qubesdb-daemon.exe advertise-tools.exe ask-vm-and-run.exe network-setup.exe qrexec-agent.exe qrexec-client-vm.exe qrexec-wrapper.exe clipboard-copy.exe clipboard-paste.exe file-receiver.exe file-sender.exe get-image-rgba.exe open-in-vm.exe open-url.exe set-gui-mode.exe vm-file-editor.exe wait-for-logon.exe window-icon-updater.exe gui-agent.exe QgaWatchdog.exe qvgdi.dll qvmini.sys
+TARGETS = vchan-test.exe xenvchan-test.exe prepare-volume.exe service-policy.exe create-device.exe disable-device.exe devcon.exe relocate-dir.exe pkihelper.exe xencontrol.dll libxenvchan.dll libvchan.dll windows-utils.dll qubesdb-client.dll qubesdb-cmd.exe qubesdb-daemon.exe advertise-tools.exe ask-vm-and-run.exe network-setup.exe qrexec-agent.exe qrexec-client-vm.exe qrexec-wrapper.exe clipboard-copy.exe clipboard-paste.exe file-receiver.exe file-sender.exe get-image-rgba.exe open-in-vm.exe open-url.exe set-gui-mode.exe vm-file-editor.exe wait-for-logon.exe window-icon-updater.exe gui-agent.exe QgaWatchdog.exe qvgdi.dll qvmini.sys
 OUTDIR = $(PWD)/$(ARCH)
 WINEMU=wine
 WIXPATH=/opt/wix
@@ -28,10 +30,29 @@ WINEPREFIX=/opt/wine
 WINEARCH=win32
 WINEDEBUG=warn+dll
 TIMESTAMP='last sunday 00:00'
+UPPERLIST=Windows.h Wtsapi32.h WtsApi32.h Lmcons.h Shlwapi.h SetupAPI.h ShlObj.h Knownfolders.h Strsafe.h Shellapi.h
+UPPERPATH=/usr/x86_64-w64-mingw32/sys-root/mingw/include
+
+
+sources:
+	mkdir -p devcon
+	svn --force export https://github.com/microsoft/Windows-driver-samples/trunk/setup/devcon && tar -czvf devcon.tar.gz devcon
+	spectool -g *.spec
+
+gencert:
+	openssl req -x509 -newkey rsa:4096 -passout pass:"pass" -keyout authenticode.key -out authenticode.crt -days 365 -subj "/C=CA/ST=DemoState/L=DemoDepartment/O=DemoCompany/OU=DemoUnit/CN=demo/emailAddress=root@demo"
+	/usr/bin/openssl pkcs12 -export -out authenticode.pfx -inkey authenticode.key -in authenticode.crt -passout pass:"pass" -passin pass:"pass"
+	/usr/bin/openssl pkcs12 -in authenticode.pfx -nocerts -nodes -out key.pem -password pass:"pass"
+	/usr/bin/openssl rsa -in key.pem -outform PVK -pvk-strong -out authenticode.pvk -passout pass:"pass"
+	/usr/bin/openssl pkcs12 -in authenticode.pfx -nokeys -nodes -out cert.pem -passin pass:"pass"
+	/usr/bin/openssl crl2pkcs7 -nocrl -certfile cert.pem -outform DER -out authenticode.spc
 
 prep: 
 	mkdir -p x86
 	mkdir -p x64
+	mkdir -p include
+	mkdir -p include
+	for value in ${UPPERLIST}; do ln -sf ${UPPERPATH}/$${value,,} include/$$value; done;
 
 clean:
 	rm -rf {x86,x64}
@@ -65,17 +86,17 @@ wix:
 	$(WINEMU) $(WIXPATH)/light.exe -sval qubes-tools.wixobj -ext WixDifxAppExtension -ext WixUIExtension -ext WixIIsExtension -ext WixUtilExtension "Z:/opt/wix/difxapp_$(ARCH).wixlib" -o ../qubes-tools-$(ARCH).msi;
 
 devcon.exe: 
-	cd Windows-driver-samples/setup/devcon/ && \
+	cd devcon/ && \
 	$(WINDMC) msg.mc && \
 	$(WINDRES) devcon.rc rc.so && \
-	$(CXX) -municode -Wno-write-strings $(LDFLAGS) -DWIN32_LEAN_AND_MEAN=1 -DUNICODE -D_UNICODE *.cpp rc.so -lsetupapi -lole32 -static-libstdc++ -static-libgcc -static -lpthread -o $(OUTDIR)/$@
+	$(CXX) -municode -Wno-write-strings $(LDFLAGS) -D__MINGW__ -DWIN32_LEAN_AND_MEAN=1 -DUNICODE -D_UNICODE *.cpp rc.so -lsetupapi -lole32 -static-libstdc++ -static-libgcc -static -lpthread -o $(OUTDIR)/$@
 
 pkihelper.exe: windows-utils.dll 
-	$(CC) pkihelper.c -I include -L $(OUTDIR) -Wl,--no-insert-timestamp -lwindows-utils -o $(OUTDIR)/$@
+	$(CC) pkihelper.c $(CFLAGS) -L $(OUTDIR) -Wl,--no-insert-timestamp -lwindows-utils -o $(OUTDIR)/$@
 
 xencontrol.dll: 
 	cd qubes-vmm-xen-win-pvdrivers-xeniface-*/src/xencontrol/ && \
-	$(CC) xencontrol.c -lsetupapi -I ../../include -DXENCONTROL_EXPORTS -DUNICODE -shared -o $(OUTDIR)/$@
+	$(CC) $(CFLAGS) xencontrol.c -lsetupapi -I ../../include -DXENCONTROL_EXPORTS -DUNICODE -shared -o $(OUTDIR)/$@
 
 uninstaller.exe:
 	cd qubes-installer-qubes-os-windows-tools-*/uninstaller/ && \
@@ -90,18 +111,18 @@ libxenvchan.dll: xencontrol.dll
 	$(CC) *.c $(CFLAGS) $(LDFLAGS) -DXENVCHAN_EXPORTS -D_NTOS_ -shared -o $(OUTDIR)/$@
 
 xenvchan-test.exe: libxenvchan.dll windows-utils.dll
-	$(CC) xenvchan-test.c $(CFLAGS) -L$(PWD)/$(ARCH) -lxencontrol -lxenvchan -lwindows-utils -o $(OUTDIR)/$@
+	$(CC) qubes-vmm-xen-windows-pvdrivers-*/src/xenvchan-test/xenvchan-test.c $(CFLAGS) -L$(PWD)/$(ARCH) -lxencontrol -lxenvchan -lwindows-utils -o $(OUTDIR)/$@
 
 libvchan.dll: libxenvchan.dll
 	cd qubes-core-vchan-xen-*/windows/src && \
 	$(CC) dllmain.c io.c init.c $(CFLAGS) $(LDFLAGS) -lxenvchan -shared -o $(OUTDIR)/$@
 
 vchan-test.exe: libvchan.dll windows-utils.dll
-	$(CC) vchan-test.c $(CFLAGS) -L$(PWD)/$(ARCH) -lwindows-utils -lvchan -o $(OUTDIR)/$@
+	$(CC) qubes-core-vchan-xen-*/windows/src/vchan-test.c $(CFLAGS) -L$(PWD)/$(ARCH) -lwindows-utils -lvchan -o $(OUTDIR)/$@
 
 windows-utils.dll: libvchan.dll 
 	cd qubes-windows-utils-*/src && \
-	$(CC) *.c $(CFLAGS) $(LDFLAGS) -lvchan -DWINDOWSUTILS_EXPORTS -DNO_SHLWAPI_STRFCNS -shared -o $(OUTDIR)/$@
+	$(CC) *.c $(CFLAGS) $(LDFLAGS) -lvchan -DWINDOWSUTILS_EXPORTS -shared -o $(OUTDIR)/$@
 
 qubesdb-client.dll: windows-utils.dll
 	cd qubes-core-qubesdb-*/client && \
@@ -113,7 +134,7 @@ qubesdb-cmd.exe: qubesdb-client.dll
 
 qubesdb-daemon.exe: qubesdb-client.dll
 	cd qubes-core-qubesdb-*/daemon && \
-	$(CC) db-cmds.c db-daemon.c db-core.c buffer.c $(CFLAGS) $(LDFLAGS) -lwindows-utils -lqubesdb-client -lvchan -DWIN32 -o $(OUTDIR)/$@ 
+	$(CC) db-cmds.c db-daemon.c db-core.c buffer.c $(CFLAGS) $(LDFLAGS) -D_STRSAFE_H_INCLUDED_ -lwindows-utils -lqubesdb-client -lvchan -DWIN32 -o $(OUTDIR)/$@ 
 
 advertise-tools.exe:
 	cd qubes-core-agent-windows-*/src/advertise-tools && \
@@ -127,7 +148,7 @@ network-setup.exe:
 	cd qubes-core-agent-windows-*/src/network-setup && \
 	$(CC) *.c $(CFLAGS) $(LDFLAGS) -lqubesdb-client -lwindows-utils  -municode -o $(OUTDIR)/$@
 
-prepare-volume.exe:
+prepare-volume.exe: qubesdb-client.dll
 	cd qubes-core-agent-windows-*/src/prepare-volume && \
 	$(CC) *.c $(CFLAGS) $(LDFLAGS) -lqubesdb-client -lwindows-utils -municode -o $(OUTDIR)/$@
 
@@ -157,12 +178,12 @@ clipboard-paste.exe:
 
 file-receiver.exe:
 	cd qubes-core-agent-windows-*/src/qrexec-services/file-receiver && \
-	$(CC) *.c ../common/filecopy*.c $(CFLAGS) $(LDFLAGS) -lqubesdb-client -lwindows-utils -municode -D_WIN32_WINNT_WIN7 -DNO_SHLWAPI_STRFCNS -o $(OUTDIR)/$@
+	$(CC) *.c ../common/filecopy*.c $(CFLAGS) $(LDFLAGS) -lqubesdb-client -lwindows-utils -municode -D_WIN32_WINNT_WIN7 -o $(OUTDIR)/$@
 
 file-sender.exe:
 	cd qubes-core-agent-windows-*/src/qrexec-services/file-sender && \
         $(WINDRES) -i 'file-sender.rc' -o 'file-sender.res' -O coff && \
-        $(CC) *.c file-sender.res ../common/filecopy*.c $(CFLAGS) $(LDFLAGS) -lqubesdb-client -lwindows-utils -municode -D_WIN32_WINNT_WIN7 -DNO_SHLWAPI_STRFCNS -o $(OUTDIR)/$@
+        $(CC) *.c file-sender.res ../common/filecopy*.c $(CFLAGS) $(LDFLAGS) -lqubesdb-client -lwindows-utils -municode -D_WIN32_WINNT_WIN7 -o $(OUTDIR)/$@
 
 get-image-rgba.exe:
 	cd qubes-core-agent-windows-*/src/qrexec-services/get-image-rgba && \
@@ -194,7 +215,7 @@ window-icon-updater.exe:
 
 gui-agent.exe:
 	cd qubes-gui-agent-windows-*/gui-agent && \
-        $(WINDRES) -i 'qga.rc' -o 'qga.res' -O coff && \
+	$(WINDRES) $(QWTVERSION) -I ../include -i qga.rc -o qga.res -O coff && \
 	$(CC) *.c qga.res $(CFLAGS) $(LDFLAGS) -lvchan -municode -DUNICODE -D_UNICODE -lwindows-utils -lqubesdb-client -lpsapi -o $(OUTDIR)/qga.exe
 
 QgaWatchdog.exe:
@@ -214,10 +235,11 @@ qvgdi.dll:
 	$(STRIP) --enable-deterministic-archives --strip-dwo $(OUTDIR)/libwin32k.a
 	rm -f qubes-gui-agent-windows-*/qvideo/gdi/support.c
 	cd qubes-gui-agent-windows-*/qvideo/gdi && \
-	$(CC) *.c  -I ../../../include -I ../../include -I ./ -I $(OUTDIR) -I $(DDKPATH) -L $(OUTDIR) -lwin32k -lntoskrnl -lhal -lwmilib -nostdlib -municode -DUNICODE -D_UNICODE -Wl,--subsystem,native -Wl,--no-insert-timestamp -e DrvEnableDriver -shared -D__INTRINSIC_DEFINED__InterlockedAdd64 $(DEBUG) -o $(OUTDIR)/$@
+	$(CC) *.c $(HPATH) -L $(OUTDIR) -lwin32k -lntoskrnl -lhal -lwmilib -nostdlib -municode -DUNICODE -D_UNICODE -D__MINGW__ -Wl,--subsystem,native -Wl,--no-insert-timestamp -e DrvEnableDriver -shared -D__INTRINSIC_DEFINED__InterlockedAdd64 $(DEBUG) -o $(OUTDIR)/$@
 
 qvmini.sys:
 	$(DLLTOOL) -k -d videoprt.def -t videoprt -l $(OUTDIR)/libvideoprt.a
 	$(STRIP) --enable-deterministic-archives --strip-dwo $(OUTDIR)/libvideoprt.a
 	cd qubes-gui-agent-windows-*/qvideo/miniport && \
-	$(CC) *.c  -I ../../../include -I ../../include -I ./ -I $(OUTDIR) -I $(DDKPATH) -L $(OUTDIR) -lvideoprt -lntoskrnl -lhal -nostdlib -municode -DUNICODE -D_UNICODE -Wl,--subsystem,native -Wl,--no-insert-timestamp -shared -e DriverEntry -D_NTOSDEF_ -DNOCRYPT -D__INTRINSIC_DEFINED__InterlockedAdd64 $(DEBUG) -o $(OUTDIR)/$@
+	rm -f list.h && \
+	$(CC) *.c $(HPATH) -L $(OUTDIR) -lvideoprt -lntoskrnl -lhal -nostdlib -municode -DUNICODE -D_UNICODE -D__MINGW__ -Wl,--subsystem,native -Wl,--no-insert-timestamp -shared -e DriverEntry -D_NTOSDEF_ -DNOCRYPT -D__INTRINSIC_DEFINED__InterlockedAdd64 $(DEBUG) -o $(OUTDIR)/$@

@@ -1,0 +1,80 @@
+--- a/qubes-vmm-xen-windows-pvdrivers-4.0.0/src/xenvchan-test/xenvchan-test.c	2018-07-11 14:24:59.000000000 +0000
++++ b/qubes-vmm-xen-windows-pvdrivers-4.0.0/src/xenvchan-test/xenvchan-test.c	2019-06-04 13:54:19.865279307 +0000
+@@ -40,6 +40,7 @@
+ #include <xencontrol.h>
+ 
+ #include <strsafe.h>
++#include "log.h"
+ 
+ void XifLogger(XENCONTROL_LOG_LEVEL level, const CHAR *function, const WCHAR *format, va_list args)
+ {
+@@ -48,20 +49,12 @@
+     fprintf(stderr, "[X] %s: %S\n", function, buf);
+ }
+ 
+-#if defined(DEBUG) || defined(_DEBUG) || defined(DBG)
+-#define Log(msg, ...) fprintf(stderr, __FUNCTION__ ": " msg "\n", __VA_ARGS__)
+-#else
+-#define Log(msg, ...)
+-#endif
+-
+-#define perror(msg) fprintf(stderr, __FUNCTION__ ": " msg " failed: error 0x%x\n", GetLastError())
+-
+ int libxenvchan_write_all(struct libxenvchan *ctrl, char *buf, int size)
+ {
+     int written = 0;
+     int ret;
+ 
+-    Log("> size %d", size);
++    LogInfo("> size %d", size);
+     while (written < size)
+     {
+         ret = libxenvchan_write(ctrl, buf + written, size - written);
+@@ -88,7 +81,7 @@
+             exit(1);
+         }
+         written += tx;
+-        Log("stdout written %d, total %d", tx, written);
++        LogInfo("stdout written %d, total %d", tx, written);
+     }
+ }
+ 
+@@ -109,9 +102,9 @@
+     while (1)
+     {
+         size = rand() % (BUFSIZE - 1) + 1;
+-        Log("reading %d", size);
++        LogInfo("reading %d", size);
+         size = libxenvchan_read(ctrl, buf, size);
+-        Log("read %d", size);
++        LogInfo("read %d", size);
+         fprintf(stderr, "#");
+         if (size < 0)
+         {
+@@ -138,14 +131,14 @@
+             libxenvchan_close(ctrl);
+             exit(1);
+         }
+-        Log("stdin read %d", tx);
++        LogInfo("stdin read %d", tx);
+ 
+         if (tx == 0)
+             break;
+ 
+-        Log("writing %d", tx);
++        LogInfo("writing %d", tx);
+         size = libxenvchan_write_all(ctrl, buf, tx);
+-        Log("written %d", size);
++        LogInfo("written %d", size);
+         fprintf(stderr, "#");
+         
+         if (size < 0)
+@@ -197,7 +190,7 @@
+ 
+     XcSetLogLevel(ctrl->xc, XLL_DEBUG);
+     ctrl->blocking = 1;
+-    Log("blocking: %d", ctrl->blocking);
++    LogInfo("blocking: %d", ctrl->blocking);
+ 
+     srand(seed);
+     fprintf(stderr, "seed=%d\n", seed);

@@ -1,0 +1,38 @@
+--- a/qubes-core-agent-windows-4.0.0/src/prepare-volume/disk.h	2018-07-11 14:32:41.000000000 +0000
++++ b/qubes-core-agent-windows-4.0.0/src/prepare-volume/disk.h	2019-06-04 13:58:46.986895027 +0000
+@@ -21,6 +21,35 @@
+ 
+ #pragma once
+ #include "prepare-volume.h"
++#ifdef __MINGW__
++#include <devpropdef.h>
++#include <setupapi.h>
++
++#define SetupDiGetDeviceProperty __MINGW_NAME_AW(SetupDiGetDeviceProperty)
++
++WINSETUPAPI WINBOOL WINAPI SetupDiGetDevicePropertyW(HDEVINFO DeviceInfoSet,PSP_DEVINFO_DATA DeviceInfoData,const DEVPROPKEY *PropertyKey,DEVPROPTYPE *PropertyType,PBYTE PropertyBuffer,DWORD PropertyBufferSize,PDWORD RequiredSize,DWORD Flags);
++
++DEFINE_DEVPROPKEY(DEVPKEY_Device_HardwareIds,            0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 3);     // DEVPROP_TYPE_STRING_LIST
++DEFINE_DEVPROPKEY(DEVPKEY_Device_Class,                  0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 9);     // DEVPROP_TYPE_STRING
++DEFINE_DEVPROPKEY(DEVPKEY_Device_LocationInfo,           0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 15);    // DEVPROP_TYPE_STRING
++#define IOCTL_DISK_SET_DISK_ATTRIBUTES      CTL_CODE(IOCTL_DISK_BASE, 0x003d, METHOD_BUFFERED,     FILE_READ_ACCESS | FILE_WRITE_ACCESS)
++
++#define DISK_ATTRIBUTE_OFFLINE              0x0000000000000001
++#define DISK_ATTRIBUTE_READ_ONLY            0x0000000000000002
++
++typedef struct _SET_DISK_ATTRIBUTES {
++
++    ULONG Version;
++    BOOLEAN Persist;
++    BOOLEAN RelinquishOwnership;
++    BOOLEAN Reserved1[2];
++    ULONGLONG Attributes;
++    ULONGLONG AttributesMask;
++    GUID Owner;
++
++} SET_DISK_ATTRIBUTES, *PSET_DISK_ATTRIBUTES;
++
++#endif
+ 
+ // string form needed for creating device names
+ #define DISK_INTERFACE_GUID	L"{53f56307-b6bf-11d0-94f2-00a0c91efb8b}"

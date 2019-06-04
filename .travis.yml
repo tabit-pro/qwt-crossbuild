@@ -6,8 +6,6 @@ before_install:
 - docker build -t tabit/qwt .
 script:
 - docker run -v $(pwd):/src -v ${TRAVIS_BUILD_DIR}:/build/noarch -it tabit/qwt sh -c "sh prep.sh && make x86 && make x64 && cp -f qubes-tools-x64.msi /build/noarch && rpmbuild -bb --define '_sourcedir /build' --define '_rpmdir /build' *.spec"
-- pwd
-- find ${TRAVIS_BUILD_DIR} -name *.rpm
 deploy:
   provider: releases
   skip_cleanup: true

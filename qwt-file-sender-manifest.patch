@@ -1,0 +1,5 @@
+--- /dev/null	2019-06-04 13:54:13.374264345 +0000
++++ b/qubes-core-agent-windows-4.0.0/src/qrexec-services/file-sender/file-sender.rc	2019-06-04 14:31:46.744458387 +0000
+@@ -0,0 +1,2 @@
++#include "winuser.h"
++1 RT_MANIFEST file-sender.exe.manifest

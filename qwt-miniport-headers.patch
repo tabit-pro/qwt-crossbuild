@@ -1,0 +1,32 @@
+--- a/qubes-gui-agent-windows-4.0.0/qvideo/miniport/qvmini.h	2018-07-11 16:29:59.000000000 +0000
++++ b/qubes-gui-agent-windows-4.0.0/qvideo/miniport/qvmini.h	2019-06-04 14:05:15.073789568 +0000
+@@ -20,11 +20,19 @@
+  */
+ 
+ #pragma warning(disable: 4201)
++#ifdef __MINGW__
++#include <ntdef.h>
++#endif
+ #include <dderror.h>
+ #include <devioctl.h>
+ #include <miniport.h>
+ #include <ntddvdeo.h>
+ #include <video.h>
++#ifdef __MINGW__
++#include <windows.h>
++#define __inout_bcount SAL__inout_bcount
++#endif
++
+ 
+ // miniport headers don't include list macros for some ungodly reason...
+ #include "list.h"
+--- a/qubes-gui-agent-windows-4.0.0/qvideo/miniport/ddk_video.h	2018-07-11 16:29:59.000000000 +0000
++++ b/qubes-gui-agent-windows-4.0.0/qvideo/miniport/ddk_video.h	2019-06-04 15:30:01.789514545 +0000
+@@ -20,6 +20,7 @@
+  */
+ 
+ #include <ntddk.h>
++#include <driverspecs.h>
+ 
+ //
+ // Debugging statements. This will remove all the debug information from the

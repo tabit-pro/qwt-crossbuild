@@ -1,0 +1,46 @@
+--- a/qubes-gui-agent-windows-4.0.0/qvideo/miniport/memory.c	2018-07-11 16:29:59.000000000 +0000
++++ b/qubes-gui-agent-windows-4.0.0/qvideo/miniport/memory.c	2019-06-04 14:10:43.450546482 +0000
+@@ -184,11 +184,14 @@
+ 
+     VideoDebugPrint((0, QFN "mapping pfns of buffer %p, kva %p\n", Buffer, Buffer->KernelVa));
+ #pragma prefast(suppress: 6320) // we want to catch all exceptions
++#ifndef __MINGW__
+     __try
+     {
++#endif
+         Buffer->PfnUserVa = MmMapLockedPagesSpecifyCache(Buffer->PfnMdl, UserMode, MmCached, NULL, FALSE, NormalPagePriority);
+         // make the map read only
+         status = MmProtectMdlSystemAddress(Buffer->PfnMdl, PAGE_READONLY);
++#ifndef __MINGW__
+     }
+     __except (EXCEPTION_EXECUTE_HANDLER)
+     {
+@@ -196,6 +199,7 @@
+         VideoDebugPrint((0, QFN "exception 0x%x\n", status));
+         goto cleanup;
+     }
++#endif
+ 
+     Buffer->Process = PsGetCurrentProcess();
+     VideoDebugPrint((0, QFN "PfnUserVa %p, process %p\n", Buffer->PfnUserVa, Buffer->Process));
+@@ -221,9 +225,12 @@
+ 
+     VideoDebugPrint((0, QFN "unmapping pfns of buffer %p, kva %p\n", Buffer, Buffer->KernelVa));
+ #pragma prefast(suppress: 6320) // we want to catch all exceptions
++#ifndef __MINGW__
+     __try
+     {
++#endif
+         MmUnmapLockedPages(Buffer->PfnUserVa, Buffer->PfnMdl);
++#ifndef __MINGW__
+     }
+     __except (EXCEPTION_EXECUTE_HANDLER)
+     {
+@@ -231,6 +238,7 @@
+         VideoDebugPrint((0, QFN "exception 0x%x\n", status));
+         goto cleanup;
+     }
++#endif
+ 
+     Buffer->PfnUserVa = NULL;
+     Buffer->Process = NULL;

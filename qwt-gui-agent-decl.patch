@@ -1,0 +1,20 @@
+--- a/qubes-gui-agent-windows-4.0.0/gui-agent/main.c	2018-07-11 16:29:59.000000000 +0000
++++ b/qubes-gui-agent-windows-4.0.0/gui-agent/main.c	2019-06-04 14:21:24.499024104 +0000
+@@ -72,7 +72,7 @@
+ 
+ HANDLE g_ShutdownEvent = NULL;
+ 
+-ULONG ProcessUpdatedWindows(IN HDC screenDC);
++static ULONG ProcessUpdatedWindows(IN HDC screenDC);
+ 
+ #ifdef DEBUG
+ // diagnostic: dump all watched windows
+@@ -1132,7 +1132,7 @@
+     return ERROR_SUCCESS;
+ }
+ 
+-int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
++int CALLBACK wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
+ {
+     if (ERROR_SUCCESS != Init())
+         return perror("Init");

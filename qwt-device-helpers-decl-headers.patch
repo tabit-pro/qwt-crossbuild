@@ -1,0 +1,37 @@
+--- a/qubes-gui-agent-windows-4.0.0/install-helper/create-device/create-device.c	2018-07-11 16:29:59.000000000 +0000
++++ b/qubes-gui-agent-windows-4.0.0/install-helper/create-device/create-device.c	2019-06-04 13:34:20.934515682 +0000
+@@ -26,6 +26,16 @@
+ #include <cfgmgr32.h>
+ #include <devpkey.h>
+ #include <strsafe.h>
++#ifdef __MINGW__
++#include <devpropdef.h>
++
++DEFINE_DEVPROPKEY(DEVPKEY_Device_HardwareIds,            0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 3);     // DEVPROP_TYPE_STRING_LIST
++DEFINE_DEVPROPKEY(DEVPKEY_Device_Class,                  0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 9);     // DEVPROP_TYPE_STRING
++
++#define SetupDiGetDeviceProperty __MINGW_NAME_AW(SetupDiGetDeviceProperty)
++
++WINSETUPAPI WINBOOL WINAPI SetupDiGetDevicePropertyW(HDEVINFO DeviceInfoSet,PSP_DEVINFO_DATA DeviceInfoData,const DEVPROPKEY *PropertyKey,DEVPROPTYPE *PropertyType,PBYTE PropertyBuffer,DWORD PropertyBufferSize,PDWORD RequiredSize,DWORD Flags);
++#endif
+ 
+ void Usage(IN const WCHAR *selfName)
+ {
+--- a/qubes-gui-agent-windows-4.0.0/install-helper/disable-device/disable-device.c	2018-07-11 16:29:59.000000000 +0000
++++ b/qubes-windows-tools-4.0/qubes-gui-agent-windows-4.0.0/install-helper/disable-device/disable-device.c	2019-06-04 13:35:01.925610167 +0000
+@@ -27,6 +27,15 @@
+ #include <cfgmgr32.h>
+ #include <devpkey.h>
+ #include <strsafe.h>
++#ifdef __MINGW__
++#include <devpropdef.h>
++
++DEFINE_DEVPROPKEY(DEVPKEY_Device_HardwareIds,            0xa45c254e, 0xdf1c, 0x4efd, 0x80, 0x20, 0x67, 0xd1, 0x46, 0xa8, 0x50, 0xe0, 3);     // DEVPROP_TYPE_STRING_LIST
++
++#define SetupDiGetDeviceProperty __MINGW_NAME_AW(SetupDiGetDeviceProperty)
++
++WINSETUPAPI WINBOOL WINAPI SetupDiGetDevicePropertyW(HDEVINFO DeviceInfoSet,PSP_DEVINFO_DATA DeviceInfoData,const DEVPROPKEY *PropertyKey,DEVPROPTYPE *PropertyType,PBYTE PropertyBuffer,DWORD PropertyBufferSize,PDWORD RequiredSize,DWORD Flags);
++#endif
+ 
+ void Usage(IN const WCHAR *selfName)
+ {

@@ -1,0 +1,18 @@
+--- a/qubes-core-vchan-xen-4.0.5/windows/src/libvchan_private.h 2018-10-09 18:28:20.000000000 +0000
++++ b/qubes-core-vchan-xen-4.0.5/windows/src/libvchan_private.h 2019-06-03 14:38:15.045200192 +0000
+@@ -35,9 +35,13 @@
+     int remote_domain;
+ };
+
+-int libvchan__check_domain_alive(HANDLE xc_handle, int dom);
++int libvchan__check_domain_alive(PXENCONTROL_CONTEXT xc_handle, int dom);
+ void _Log(XENCONTROL_LOG_LEVEL logLevel, PCHAR function, PWCHAR format, ...);
+
+-#define Log(level, msg, ...) _Log(level, __FUNCTION__, L"(%p)" L##msg L"\n", ctrl, __VA_ARGS__)
++#ifdef __MINGW__
++#define Log(level, msg, ...) _Log(level, __FUNCTION__, ctrl, L"(%p) " L##msg L"\n", ctrl, ##__VA_ARGS__)
++#else
++#define Log(level, msg, ...) _Log(level, __FUNCTION__, ctrl, L"(%p) " L##msg L"\n", ctrl, __VA_ARGS__)
++#endif
+
+ #endif

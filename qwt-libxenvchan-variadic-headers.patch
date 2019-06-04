@@ -1,0 +1,48 @@
+--- a/qubes-vmm-xen-windows-pvdrivers-4.0.0/src/libxenvchan/init.c      2018-07-11 14:24:59.000000000 +0000
++++ b/qubes-vmm-xen-windows-pvdrivers-4.0.0/src/libxenvchan/init.c      2019-06-03 14:38:06.794181173 +0000
+@@ -82,7 +82,11 @@
+     va_end(args);
+ }
+
++#ifdef __MINGW__
++#define Log(level, msg, ...) _Log(level, __FUNCTION__, ctrl, L"(%p) " L##msg L"\n", ctrl, ##__VA_ARGS__)
++#else
+ #define Log(level, msg, ...) _Log(level, __FUNCTION__, ctrl, L"(%p) " L##msg L"\n", ctrl, __VA_ARGS__)
++#endif
+
+ static int init_gnt_srv(struct libxenvchan *ctrl, USHORT domain)
+ {
+--- a/qubes-vmm-xen-windows-pvdrivers-4.0.0/src/libxenvchan/io.c        2018-07-11 14:24:59.000000000 +0000
++++ b/qubes-vmm-xen-windows-pvdrivers-4.0.0/src/libxenvchan/io.c        2019-06-03 14:38:06.794181173 +0000
+@@ -33,7 +33,9 @@
+ #include <stdio.h>
+ #include <stdint.h>
+ #include <string.h>
++#ifndef __MINGW__
+ #include <intrin.h>
++#endif
+
+ #include "libxenvchan.h"
+
+@@ -60,7 +62,11 @@
+     va_end(args);
+ }
+
++#ifdef __MINGW__
++#define Log(level, msg, ...) _Log(level, __FUNCTION__, ctrl, L"(%p) " L##msg L"\n", ctrl, ##__VA_ARGS__)
++#else
+ #define Log(level, msg, ...) _Log(level, __FUNCTION__, ctrl, L"(%p) " L##msg L"\n", ctrl, __VA_ARGS__)
++#endif
+
+ #define inline __inline
+ #define xen_mb()  _ReadWriteBarrier()
+@@ -68,7 +74,9 @@
+ #define xen_wmb() _WriteBarrier()
+
+ #define __sync_or_and_fetch(a, b)   ((*(a)) |= (b))
++#ifndef __MINGW__
+ #define __sync_fetch_and_and        InterlockedAnd8
++#endif
+
+ static inline uint32_t rd_prod(struct libxenvchan *ctrl)
+ {

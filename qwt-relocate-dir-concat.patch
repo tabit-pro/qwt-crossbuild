@@ -1,0 +1,20 @@
+--- a/qubes-core-agent-windows-4.0.0/src/relocate-dir/main.c    2018-07-11 14:32:41.000000000 +0000
++++ b/qubes-core-agent-windows-4.0.0/src/relocate-dir/main.c    2019-06-03 14:38:06.789181161 +0000
+@@ -209,6 +209,8 @@
+     return status;
+ }
+
++#define conc(str1,str2) #str1 " " #str2
++
+ NTSTATUS wmain(INT argc, WCHAR *argv[], WCHAR *envp[], ULONG DebugFlag OPTIONAL)
+ {
+     NTSTATUS status;
+@@ -216,7 +218,7 @@
+     TIME_FIELDS tf;
+     LARGE_INTEGER systemTime, localTime;
+
+-    NtLog(TRUE, L"move-profiles (" TEXT(__DATE__) L" " TEXT(__TIME__) L")\n");
++    NtLog(TRUE, L"move-profiles (" conc(TEXT(__DATE__),TEXT(__TIME__)) L")\n");
+
+     status = EnablePrivileges();
+     if (!NT_SUCCESS(status))

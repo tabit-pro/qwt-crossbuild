@@ -1,0 +1,65 @@
+--- a/qubes-core-vchan-xen-4.0.5/windows/src/vchan-test.c	2018-10-09 18:28:20.000000000 +0000
++++ b/qubes-core-vchan-xen-4.0.5/windows/src/vchan-test.c	2019-06-04 13:54:19.688278901 +0000
+@@ -19,6 +19,7 @@
+  *
+  */
+ 
++#include <windows.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+@@ -26,14 +27,7 @@
+ #include <strsafe.h>
+ #include <xencontrol.h>
+ #include "libvchan.h"
+-
+-#if defined(DEBUG) || defined(_DEBUG) || defined(DBG)
+-#define Log(msg, ...) fprintf(stderr, __FUNCTION__ ": " msg "\n", __VA_ARGS__)
+-#else
+-#define Log(msg, ...)
+-#endif
+-
+-#define perror(msg) fprintf(stderr, __FUNCTION__ ": " msg " failed: error 0x%x\n", GetLastError())
++#include "log.h"
+ 
+ int libvchan_write_all(libvchan_t *ctrl, char *buf, int size)
+ {
+@@ -66,7 +60,7 @@
+             exit(1);
+         }
+         written += tx;
+-        Log("stdout written %d, total %d", tx, written);
++        LogInfo("stdout written %d, total %d", tx, written);
+     }
+ }
+ 
+@@ -88,9 +82,9 @@
+     while (1)
+     {
+         size = rand() % (BUFSIZE - 1) + 1;
+-        Log("reading %d", size);
++        LogInfo("reading %d", size);
+         size = libvchan_read(ctrl, buf, size);
+-        Log("read %d", size);
++        LogInfo("read %d", size);
+         fprintf(stderr, "#");
+ 
+         if (size < 0)
+@@ -123,14 +117,14 @@
+             exit(1);
+         }
+ 
+-        Log("stdin read %d", tx);
++        LogInfo("stdin read %d", tx);
+ 
+         if (tx == 0)
+             break;
+ 
+-        Log("writing %d", tx);
++        LogInfo("writing %d", tx);
+         size = libvchan_write_all(ctrl, buf, tx);
+-        Log("written %d", size);
++        LogInfo("written %d", size);
+         fprintf(stderr, "#");
+ 
+         if (size < 0)
