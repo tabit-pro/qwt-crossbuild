@@ -31,10 +31,10 @@ In comparison with the original ITL's Qubes Tools qwt-crossbuild contains severa
 | Clipboard Copy/Paste | + | + | ? | |
 | Application shortcuts | + | + | ? | |
 | Copy/Edit in Disposible VM | + | + | ? | |
-| Block device attach | + | + | ? | Requires Xen PV Driver to be installed (not enabled by default) |
+| Block device attach | + | + | ? | Xen PV Driver required (not enabled by default) |
 | USB device attach | - | - | - | Except storage devices |
 | Audio | - | - | - | |
-| Memory Balancing | ? | ? | ? | Supported by Xen Drivers, testing requires |
+| Memory Balancing | ? | ? | ? | Supported by Xen Drivers, testing required |
 
 ## Build QWT
 
@@ -42,6 +42,6 @@ In comparison with the original ITL's Qubes Tools qwt-crossbuild contains severa
 $ git clone https://github.com/tabit-pro/qwt-crossbuild .
 $ docker build -t tabit/qwt .
 $ mkdir -p ~/qwtiso
-$ docker run -v $(pwd):/src -v ~/qwtiso:/build/noarch -it tabit/qwt sh -c "sh prep.sh && make x86 && make x64 && rpmbuild -bb --define '_sourcedir /build' --define '_rpmdir /build' *.spec && cd noarch && createrepo ./"
+$ docker run -v $(pwd):/src -v ~/qwtiso:/build/noarch -it tabit/qwt sh -c "cp -fr /src/* ./ || true && make sources && rpmbuild -bb --define '_sourcedir /build' --define '_rpmdir /build' *.spec && cd noarch && createrepo ./"
 ```
 
