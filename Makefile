@@ -92,7 +92,7 @@ devcon.exe:
 	$(CXX) -municode -Wno-write-strings $(LDFLAGS) -D__MINGW__ -DWIN32_LEAN_AND_MEAN=1 -DUNICODE -D_UNICODE *.cpp rc.so -lsetupapi -lole32 -static-libstdc++ -static-libgcc -static -lpthread -o $(OUTDIR)/$@
 
 pkihelper.exe: windows-utils.dll 
-	$(CC) pkihelper.c $(CFLAGS) -L $(OUTDIR) -Wl,--no-insert-timestamp -lwindows-utils -o $(OUTDIR)/$@
+	$(CC) pkihelper.c $(HPATH) -L $(OUTDIR) -Wl,--no-insert-timestamp -lwindows-utils -o $(OUTDIR)/$@
 
 xencontrol.dll: 
 	cd qubes-vmm-xen-win-pvdrivers-xeniface-*/src/xencontrol/ && \
