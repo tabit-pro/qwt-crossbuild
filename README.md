@@ -17,9 +17,24 @@ In comparison with the original ITL's Qubes Tools qwt-crossbuild contains severa
 
 ## QWT Runtime prerequisuites
 
-1. Fully updated Windows 7/10
-1. Testsigning
+1. Fully/partially updated Windows 7/10
+1. Testsigning mode on
 1. Backup
+
+## Feature status
+| Feature | Windows 7 x64 (en,ru)| Windows 10 x64 (en,ru) | Windows 7/10 x86 |  Comments |
+| --- | :---: | :---: | :---: |  --- |
+| Qubes Video Driver | + | - | ? |  |
+| Qubes Network Setup | + | + | ? | |
+| Private Volume Setup (move profiles)  | + | + | ? | |
+| File sender/receiver | + | + | ? | |
+| Clipboard Copy/Paste | + | + | ? | |
+| Application shortcuts | + | + | ? | |
+| Copy/Edit in Disposible VM | + | + | ? | |
+| Block device attach | + | + | ? | Requires Xen PV Driver to be installed (not enabled by default) |
+| USB device attach | - | - | - | Except storage devices |
+| Audio | - | - | - | |
+| Memory Balancing | ? | ? | ? | Supported by Xen Drivers, testing requires |
 
 ## Build QWT
 
