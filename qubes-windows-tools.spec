@@ -1,13 +1,13 @@
 Name:		qubes-windows-tools
 Version:	4.0
-Release:	211
+Release:	217
 Summary:	Qubes Tools for Windows VMs
 Group:		Qubes
 License:	GPL
 Obsoletes:	qubes-core-dom0-pvdrivers
 BuildRequires:	genisoimage
 BuildRequires:	mingw32-gcc mingw64-gcc
-BuildRequires:	mono-core osslsigncode libfaketime
+BuildRequires:	mono-core
 BuildRequires:	mingw32-winpthreads-static
 BuildRequires:	mingw64-winpthreads-static
 BuildRequires:	mingw32-gcc-c++ mingw64-gcc-c++
@@ -99,10 +99,9 @@ patch51:        qwt-vchan-test.patch
 for i in $(ls %{_sourcedir}/qubes*.tar.gz);
 do tar -zxvf $i; done;
 cat %{_sourcedir}/xen*.tar | tar -xvf - -i
-cp %{S:100} %{S:14} %{S:15} %{S:16} %{S:17} %{S:18} %{S:19} ./
-make gencert
+cp -f %{S:100} %{S:14} %{S:15} %{S:16} %{S:17} %{S:18} %{S:19} ./
 make prep
-cp %{S:11} %{S:12} %{S:13} include/
+cp -f %{S:11} %{S:12} %{S:13} include/
 
 %autopatch -p1
 

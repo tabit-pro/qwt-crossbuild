@@ -39,14 +39,6 @@ sources:
 	svn --force export https://github.com/microsoft/Windows-driver-samples/trunk/setup/devcon && tar -czvf devcon.tar.gz devcon
 	spectool -g *.spec
 
-gencert:
-	openssl req -x509 -newkey rsa:4096 -passout pass:"pass" -keyout authenticode.key -out authenticode.crt -days 365 -subj "/C=CA/ST=DemoState/L=DemoDepartment/O=DemoCompany/OU=DemoUnit/CN=demo/emailAddress=root@demo"
-	/usr/bin/openssl pkcs12 -export -out authenticode.pfx -inkey authenticode.key -in authenticode.crt -passout pass:"pass" -passin pass:"pass"
-	/usr/bin/openssl pkcs12 -in authenticode.pfx -nocerts -nodes -out key.pem -password pass:"pass"
-	/usr/bin/openssl rsa -in key.pem -outform PVK -pvk-strong -out authenticode.pvk -passout pass:"pass"
-	/usr/bin/openssl pkcs12 -in authenticode.pfx -nokeys -nodes -out cert.pem -passin pass:"pass"
-	/usr/bin/openssl crl2pkcs7 -nocrl -certfile cert.pem -outform DER -out authenticode.spc
-
 prep: 
 	mkdir -p x86
 	mkdir -p x64
@@ -61,12 +53,6 @@ x64: prep $(TARGETS) wix
 
 x86: prep $(TARGETS) wix
 
-sign:
-	mv $(ARCH)/qvmini.sys $(ARCH)/qvmini_unsigned.sys
-	mv $(ARCH)/qvgdi.dll $(ARCH)/qvgdi_unsigned.dll
-	faketime $(TIMESTAMP) osslsigncode sign -pass pass -certs authenticode.spc -key authenticode.pvk -n "Qubes Tools" -in $(ARCH)/qvmini_unsigned.sys -out $(ARCH)/qvmini.sys
-	faketime $(TIMESTAMP) osslsigncode sign -pass pass -certs authenticode.spc -key authenticode.pvk -n "Qubes Tools" -in $(ARCH)/qvgdi_unsigned.dll -out $(ARCH)/qvgdi.dll
-
 wix:
 	cp xen*/$(ARCH)/xen*.{dll,inf,cat,sys,exe} ./$(ARCH)
 	cp qubes-core-agent-windows-*/src/qrexec-services/qubes.* ./$(ARCH)
@@ -74,7 +60,6 @@ wix:
 	cp qubes-installer-qubes-os-windows-tools-*/power_settings.bat ./$(ARCH)
 	cp disable_svc.bat ./$(ARCH)
 	cp diskpart.txt ./$(ARCH)
-	cp authenticode.crt ./$(ARCH)
 	cp qubes-gui-agent-windows-*/qvideo/qvideo.inf ./$(ARCH)
 	cp qubes-installer-qubes-os-windows-tools-*/iso-README.txt ./
 	cp qubes-installer-qubes-os-windows-tools-*/license.rtf ./$(ARCH)

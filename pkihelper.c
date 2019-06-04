@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <getopt.h>
 #include <wincrypt.h>
 #include <stdint.h>
 #include <config.h>
 #include <ctype.h>
-#include "getopt.h"
 
 /* Helper functions to access DLLs */
 static __inline HMODULE GetLibraryHandle(char* szDLLName)

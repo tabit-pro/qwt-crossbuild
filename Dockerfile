@@ -1,8 +1,7 @@
-FROM registry.fedoraproject.org/fedora-minimal:28
+FROM registry.fedoraproject.org/fedora-minimal:30
 
 RUN microdnf install -y mingw32-gcc mingw64-gcc \
     mono-core mono-locale-extras mono-extras \
-    osslsigncode libfaketime \
     mingw32-winpthreads-static \
     mingw64-winpthreads-static \
     mingw32-gcc-c++ mingw64-gcc-c++ \

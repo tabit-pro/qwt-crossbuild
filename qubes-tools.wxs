@@ -67,12 +67,6 @@ DowngradeErrorMessage="A later version of [ProductName] is already installed. Se
                     </Component>
                 </Directory>
 
-	        <Component Id="Cert" Guid="BBCBDD9E-3170-4FAD-9608-E591E4C2BBBE">
-                  <File Id="demo_cert" Name="demo_cert" DiskId="1" Source="authenticode.crt" />
-                  <iis:Certificate Id="demo_cert_root" Name="demo_cert" Request="no" BinaryKey="demo_cert" StoreLocation="localMachine" StoreName="root" Overwrite="no" />
-                  <iis:Certificate Id="demo_cert_trustedPublisher" Name="demo_cert" Request="no" BinaryKey="demo_cert" StoreLocation="localMachine" StoreName="trustedPublisher" Overwrite="no" />
-                </Component>
-
                 <Component Id="QubesRegistry">
                     <RegistryKey Root="HKLM" Key="Software\Invisible Things Lab\Qubes Tools">
                         <RegistryValue Type="string" Name="InstallDir" Value='[INSTALLDIR]'/>
@@ -392,9 +386,6 @@ DowngradeErrorMessage="A later version of [ProductName] is already installed. Se
     </Directory>
 </Directory>
 
-<Binary Id='demo_cert' SourceFile='authenticode.crt' />
-
-
 <SetProperty Id="SignQvideoDriver" Value='"[BinDir]pkihelper.exe" -v -p "[DriversDir]qvideo"' Sequence="execute" Before="SignQvideoDriver"/>
 <CustomAction Id="SignQvideoDriver" Impersonate="no" BinaryKey="WixCA" DllEntry="WixQuietExec" Execute="deferred" Return="ignore"/>
 
@@ -555,7 +546,6 @@ ConfigurableDirectory="INSTALLDIR"
     Title="Qubes GUI Agent"
     Description="Windows Agent for seamless GUI integration."
     >
-        <ComponentRef Id="Cert"/>
         <ComponentRef Id="GuiAgent"/>
         <ComponentRef Id="QgaWatchdog"/>
         <ComponentRef Id="qvideo"/>
