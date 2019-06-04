@@ -51,16 +51,15 @@ prep:
 	mkdir -p x86
 	mkdir -p x64
 	mkdir -p include
-	mkdir -p include
 	for value in ${UPPERLIST}; do ln -sf ${UPPERPATH}/$${value,,} include/$$value; done;
 
 clean:
 	rm -rf {x86,x64}
 	rm -f *.msi
 
-x64: prep $(TARGETS) sign wix
+x64: prep $(TARGETS) wix
 
-x86: prep $(TARGETS) sign wix
+x86: prep $(TARGETS) wix
 
 sign:
 	mv $(ARCH)/qvmini.sys $(ARCH)/qvmini_unsigned.sys
