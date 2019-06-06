@@ -1,17 +1,17 @@
 Name:		qubes-windows-tools
 Version:	4.0
-Release:	217
+Release:	219
 Summary:	Qubes Tools for Windows VMs
 Group:		Qubes
 License:	GPL
 Obsoletes:	qubes-core-dom0-pvdrivers
 BuildRequires:	genisoimage
 BuildRequires:	mingw32-gcc mingw64-gcc
-BuildRequires:	mono-core
 BuildRequires:	mingw32-winpthreads-static
 BuildRequires:	mingw64-winpthreads-static
 BuildRequires:	mingw32-gcc-c++ mingw64-gcc-c++
-BuildRequires:	wine genisoimage git
+BuildRequires:	wine
+BuildRequires:	svn
 BuildArch:	noarch
 # Retrieve devcon tool from windows samples
 # svn export https://github.com/microsoft/Windows-driver-samples/trunk/setup/devcon | tar -czvf devcon.tar.gz devcon
@@ -109,11 +109,12 @@ cp -f %{S:11} %{S:12} %{S:13} include/
 PV Drivers and Qubes Tools for Windows AppVMs.
 
 %build
-make x86
+
+#make x86
 make x64
 
 mkdir -p iso-content
-cp qubes-tools-x86.msi iso-content/
+#cp qubes-tools-x86.msi iso-content/
 cp qubes-tools-x64.msi iso-content/
 genisoimage -o qubes-windows-tools-%{version}.%{release}.iso -m .gitignore -JR iso-content
 

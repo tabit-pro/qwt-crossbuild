@@ -1,7 +1,6 @@
-FROM registry.fedoraproject.org/fedora-minimal:30
+FROM registry.fedoraproject.org/fedora-minimal:28
 
 RUN microdnf install -y mingw32-gcc mingw64-gcc \
-    mono-core mono-locale-extras mono-extras \
     mingw32-winpthreads-static \
     mingw64-winpthreads-static \
     mingw32-gcc-c++ mingw64-gcc-c++ \
@@ -9,7 +8,7 @@ RUN microdnf install -y mingw32-gcc mingw64-gcc \
     wine genisoimage patch git svn \
     spectool file rpm-build createrepo 
 
-ENV WINEDEBUG=-all WINEARCH=win32 WINEPREFIX=/opt/wine/
+ENV WINEDEBUG=-all WINEARCH=win32 WINEPREFIX=/opt/wine
 RUN curl -s -LJ https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks > \
     /usr/local/bin/winetricks && chmod +x /usr/local/bin/winetricks
 RUN winetricks --unattended dotnet40
