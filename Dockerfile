@@ -20,5 +20,5 @@ RUN curl -s -LJ --remote-name-all -C - \
 RUN unzip -d /opt/wix/ wix311-binaries.zip
 
 WORKDIR /build
-COPY *.* ./
+COPY * ./
 

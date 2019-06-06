@@ -19,7 +19,7 @@ x86 : ARCH=x86
 x86 : DEBUG=-U_DEBUG -UDBG -UDEBUG
 
 QWTVERSION = -D__MINGW__ -DQTW_FILEVERSION=4,0,0,0 -DQTW_FILEVERSION_STR='\"4.0.0.0\0\"' -DQTW_PRODUCTVERSION=QTW_FILEVERSION -DQTW_PRODUCTVERSION_STR=QTW_FILEVERSION_STR
-HPATH = -I . -I $(PWD) -I $(PWD)/include -I $(DDKPATH) -I $(PWD)/qubes-windows-utils-*/include/ -I $(PWD)/qubes-vmm-xen-windows-pvdrivers-*/include/ -I $(PWD)/qubes-core-qubesdb-*/include/ -I $(PWD)/qubes-core-agent-windows-*/src/qrexec-services/common/ -I $(PWD)/qubes-gui-agent-windows-*/include/ -I $(PWD)/qubes-gui-common-*/include/ -I $(PWD)/qubes-windows-utils-*/include/ -I $(PWD)/qubes-core-vchan-xen-*/windows/include/ -I $(PWD)/qubes-vmm-xen-win-pvdrivers-xeniface-*/include/
+HPATH = -I . -I $(PWD) -I $(PWD)/include -I $(DDKPATH) -I $(PWD)/qubes-gui-agent-windows-mingw/include/mingw/ -I $(PWD)/qubes-core-agent-windows-*/include/ -I $(PWD)/qubes-windows-utils-*/include/ -I $(PWD)/qubes-vmm-xen-windows-pvdrivers-*/include/ -I $(PWD)/qubes-core-qubesdb-*/include/ -I $(PWD)/qubes-core-agent-windows-*/src/qrexec-services/common/ -I $(PWD)/qubes-gui-agent-windows-*/include/ -I $(PWD)/qubes-gui-common-*/include/ -I $(PWD)/qubes-windows-utils-*/include/ -I $(PWD)/qubes-core-vchan-xen-*/windows/include/ -I $(PWD)/qubes-vmm-xen-win-pvdrivers-xeniface-*/include/
 CFLAGS += -std=c11 -fgnu89-inline -D__MINGW__ -D_INC_TCHAR -DNO_SHLWAPI_STRFCNS -DUNICODE -D_UNICODE $(DEBUG) -mwindows -D_WIN32_WINNT=0x0600 $(HPATH)
 LDFLAGS += -L $(PWD)/$(ARCH) -L $(PWD)/xeniface/$(ARCH) -lxencontrol -lversion -lshlwapi -lwtsapi32 -luserenv -liphlpapi -lwsock32 -lsetupapi -lrpcrt4 -lole32 -lntdll -luuid -lcomctl32 -lgdi32 -lwinmm -Wl,--as-needed -Wl,--no-insert-timestamp
 TARGETS = vchan-test.exe xenvchan-test.exe prepare-volume.exe create-device.exe disable-device.exe devcon.exe relocate-dir.exe pkihelper.exe xencontrol.dll libxenvchan.dll libvchan.dll windows-utils.dll qubesdb-client.dll qubesdb-cmd.exe qubesdb-daemon.exe advertise-tools.exe ask-vm-and-run.exe network-setup.exe qrexec-agent.exe qrexec-client-vm.exe qrexec-wrapper.exe clipboard-copy.exe clipboard-paste.exe file-receiver.exe file-sender.exe get-image-rgba.exe open-in-vm.exe open-url.exe set-gui-mode.exe vm-file-editor.exe wait-for-logon.exe window-icon-updater.exe gui-agent.exe QgaWatchdog.exe qvgdi.dll qvmini.sys
@@ -30,9 +30,6 @@ WINEPREFIX=/opt/wine
 WINEARCH=win32
 WINEDEBUG=warn+dll
 TIMESTAMP='last sunday 00:00'
-UPPERLIST=Windows.h Wtsapi32.h WtsApi32.h Lmcons.h Shlwapi.h SetupAPI.h ShlObj.h Knownfolders.h Strsafe.h Shellapi.h
-UPPERPATH=/usr/x86_64-w64-mingw32/sys-root/mingw/include
-
 
 sources:
 	mkdir -p devcon
@@ -166,8 +163,7 @@ file-receiver.exe:
 
 file-sender.exe:
 	cd qubes-core-agent-windows-*/src/qrexec-services/file-sender && \
-        $(WINDRES) -i 'file-sender.rc' -o 'file-sender.res' -O coff && \
-        $(CC) *.c file-sender.res ../common/filecopy*.c $(CFLAGS) $(LDFLAGS) -lqubesdb-client -lwindows-utils -municode -D_WIN32_WINNT_WIN7 -o $(OUTDIR)/$@
+        $(CC) *.c ../common/filecopy*.c $(CFLAGS) $(LDFLAGS) -lqubesdb-client -lwindows-utils -municode -D_WIN32_WINNT_WIN7 -o $(OUTDIR)/$@
 
 get-image-rgba.exe:
 	cd qubes-core-agent-windows-*/src/qrexec-services/get-image-rgba && \
