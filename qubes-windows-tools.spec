@@ -4,16 +4,15 @@
 
 Name:		qubes-windows-tools
 Version:	4.0
-Release:	220
+Release:	223
 Summary:	Qubes Tools for Windows VMs
 Group:		Qubes
 License:	GPL
 Obsoletes:	qubes-core-dom0-pvdrivers
 BuildRequires:	genisoimage
-BuildRequires:	mingw32-gcc mingw64-gcc
-BuildRequires:	mingw32-winpthreads-static
+BuildRequires:	mingw64-gcc
 BuildRequires:	mingw64-winpthreads-static
-BuildRequires:	mingw32-gcc-c++ mingw64-gcc-c++
+BuildRequires:	mingw64-gcc-c++
 BuildRequires:	wine
 BuildRequires:	svn
 BuildArch:	noarch
@@ -31,12 +30,12 @@ Source7:	https://codeload.github.com/marmarek/qubes-installer-qubes-os-windows-t
 Source8:	https://codeload.github.com/marmarek/qubes-vmm-xen-windows-pvdrivers/zip/%{devbranch}#/qubes-vmm-xen-windows-pvdrivers-%{devbranch}.zip
 Source9:	https://codeload.github.com/marmarek/qubes-vmm-xen-win-pvdrivers-xeniface/zip/%{devbranch}#/qubes-vmm-xen-win-pvdrivers-xeniface-%{devbranch}.zip
 
+Source10: 	https://raw.githubusercontent.com/llvm-mirror/compiler-rt/master/lib/builtins/assembly.h
+
 # Add local sources
-Source14:	videoprt.def
-Source15:	win32k.def
 Source16:	disable_svc.bat
 Source17:	pkihelper.c
-Source18:	qubes-tools.wxs
+#Source18:	qubes-tools.wxs
 Source19:	diskpart.txt
 Source100:	Makefile
 
@@ -59,14 +58,20 @@ patch40:        qwt-gui-agent-cpu-usage.patch
 patch50:        qwt-xenvchan-test.patch
 patch51:        qwt-vchan-test.patch
 
+# build with inlined __chkstk_ms
+patch52:	qwt-chkstk.patch
+
 %prep
 %setup -c
 for i in $(ls %{_sourcedir}/qubes*.zip);
 do unzip $i; done;
 cat %{_sourcedir}/xen*.tar | tar -xvf - -i
-cp -f %{S:100} %{S:14} %{S:15} %{S:16} %{S:17} %{S:18} %{S:19} ./
-make prep
-sed -i -e '/version.h/d' qubes-gui-agent-windows-mingw/include/version_common.rc
+cp -f %{S:100} %{S:16} %{S:19} ./
+mkdir -p include
+
+cp -f %{S:10} include
+
+cp -f %{S:17} qubes-gui-agent-windows-*/install-helper/pkihelper/pkihelper.c
 
 %autopatch -p1
 
@@ -75,12 +80,18 @@ PV Drivers and Qubes Tools for Windows AppVMs.
 
 %build
 
-make x86
-make x64
+make all
+
+cp -f /build/WixFragments/*.wxs ./
+export WINEMU=wine; export WINEPREFIX=/opt/wine; export WINEARCH=win32
+export WINEDEBUG=fixme-all; export WIXPATH=/opt/wix; export MSIOS=win7
+export MSIARCH=x64; export WIN_BUILD_TYPE=chk; export DDK_ARCH=x64
+export VERSION=4.0.0.0;
+${WINEMU} ${WIXPATH}/candle.exe -arch ${DDK_ARCH} -ext WixDifxAppExtension -ext WixIIsExtension *.wxs;
+${WINEMU} ${WIXPATH}/light.exe -sval *.wixobj -ext WixDifxAppExtension -ext WixUIExtension -ext WixIIsExtension -ext WixUtilExtension "Z:/opt/wix/difxapp_${DDK_ARCH}.wixlib" -o qubes-tools-${DDK_ARCH}.msi
 
 mkdir -p iso-content
-cp qubes-tools-x86.msi iso-content/
-cp qubes-tools-x64.msi iso-content/
+cp qubes-tools-${DDK_ARCH}.msi iso-content/
 genisoimage -o qubes-windows-tools-%{version}.%{release}.iso -m .gitignore -JR iso-content
 
 %install
