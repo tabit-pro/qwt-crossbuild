@@ -1,5 +1,5 @@
---- a/qubes-gui-agent-windows-4.0.0/qvideo/gdi/enable.c	2018-07-11 16:29:59.000000000 +0000
-+++ b/qubes-gui-agent-windows-4.0.0/qvideo/gdi/enable.c	2019-06-04 14:13:16.561899403 +0000
+--- a/qubes-gui-agent-windows-mingw/qvideo/gdi/enable.c	2018-07-11 16:29:59.000000000 +0000
++++ b/qubes-gui-agent-windows-mingw/qvideo/gdi/enable.c	2019-06-04 14:13:16.561899403 +0000
 @@ -26,12 +26,14 @@
  
  #define STATUS_SUCCESS 0

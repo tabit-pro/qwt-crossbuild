@@ -85,63 +85,68 @@ DowngradeErrorMessage="A later version of [ProductName] is already installed. Se
 
 		    <Directory Id="QvideoDir" Name="qvideo">
                         <Component Id="qvideo" Guid="{EC90C049-0025-4815-9106-6ABC438470A4}">
-                            <File Id="qvgdi.dll" Source="qvgdi.dll"/>
-                            <File Id="qvmini.sys" Source="qvmini.sys"/>
-                            <File Id="qvideo.inf" Source="qvideo.inf"/>
+                            <File Id="qvgdi.dll" Source="bin\$(env.DDK_ARCH)\qvgdi.dll"/>
+                            <File Id="qvmini.sys" Source="bin\$(env.DDK_ARCH)\qvmini.sys"/>
+                            <File Id="qvideo.inf" Source="bin\$(env.DDK_ARCH)\qvideo.inf"/>
+			    <difx:Driver PlugAndPlayPrompt='no'/>
                         </Component>
                     </Directory>
 		    
                     <Directory Id="XenbusDir" Name="xenbus">
 			<Component Id="XenbusDriver" Guid="{FAC4C476-2F1C-4970-B5E1-8FD95A9BBCB9}">
-                            <File Id="XenbusInf" Source="xenbus.inf" KeyPath="yes" />
-                            <File Id="XenbusCat" Source="xenbus.cat" />
-                            <File Id="XenbusSys" Source="xenbus.sys" />
-                            <File Id="XenSys" Source="xen.sys" />
-                            <File Id="XenfiltSys" Source="xenfilt.sys" />
-                            <File Id="XenbusCoinst" Source="xenbus_coinst.dll" />
-                            <File Id="XenbusMonitorDll" Source="xenbus_monitor.dll" />
-                            <File Id="XenbusMonitorExe" Source="xenbus_monitor.exe" />
-			    <difx:Driver />
+                            <File Id="XenbusInf" Source="xenbus\$(env.DDK_ARCH)\xenbus.inf" KeyPath="yes" />
+                            <File Id="XenbusCat" Source="xenbus\$(env.DDK_ARCH)\xenbus.cat" />
+                            <File Id="XenbusSys" Source="xenbus\$(env.DDK_ARCH)\xenbus.sys" />
+                            <File Id="XenSys" Source="xenbus\$(env.DDK_ARCH)\xen.sys" />
+                            <File Id="XenfiltSys" Source="xenbus\$(env.DDK_ARCH)\xenfilt.sys" />
+                            <File Id="XenbusCoinst" Source="xenbus\$(env.DDK_ARCH)\xenbus_coinst.dll" />
+                            <File Id="XenbusMonitorDll" Source="xenbus\$(env.DDK_ARCH)\xenbus_monitor.dll" />
+                            <File Id="XenbusMonitorExe" Source="xenbus\$(env.DDK_ARCH)\xenbus_monitor.exe" />
+			    <difx:Driver PlugAndPlayPrompt='no'/>
 			</Component>
                     </Directory>
 
 		    <Directory Id="XenifaceDir" Name="xeniface">
                         <Component Id="XenifaceDriver" Guid="{D464EDB0-CF0D-4FE5-A160-210BF246C3A4}">
-                            <File Id="XenifaceInf" Source="xeniface.inf" KeyPath="yes" />
-                            <File Id="XenifaceCat" Source="xeniface.cat" />
-                            <File Id="XenifaceSys" Source="xeniface.sys" />
-                            <File Id="XenagentDll" Source="xenagent.dll" />
-                            <File Id="XenagentExe" Source="xenagent.exe" />
-                            <File Id="XenifaceCoinst" Source="xeniface_coinst.dll" />
+                            <File Id="XenifaceInf" Source="xeniface\$(env.DDK_ARCH)\xeniface.inf" KeyPath="yes" />
+                            <File Id="XenifaceCat" Source="xeniface\$(env.DDK_ARCH)\xeniface.cat" />
+                            <File Id="XenifaceSys" Source="xeniface\$(env.DDK_ARCH)\xeniface.sys" />
+                            <File Id="XenagentDll" Source="xeniface\$(env.DDK_ARCH)\xenagent.dll" />
+                            <File Id="XenagentExe" Source="xeniface\$(env.DDK_ARCH)\xenagent.exe" />
+                            <File Id="XenifaceCoinst" Source="xeniface\$(env.DDK_ARCH)\xeniface_coinst.dll" />
+			    <difx:Driver PlugAndPlayPrompt='no'/>
                         </Component>
                     </Directory>
 
                     <Directory Id="XennetDir" Name="xennet">
                         <Component Id="XennetDriver" Guid="{AEFEC088-0B30-4EFC-8416-5E3675AC03D0}">
-                            <File Id="XennetInf" Source="xennet.inf" KeyPath="yes" />
-                            <File Id="XennetCat" Source="xennet.cat" />
-                            <File Id="XennetSys" Source="xennet.sys" />
-                            <File Id="XennetCoinst" Source="xennet_coinst.dll" />
+                            <File Id="XennetInf" Source="xennet\$(env.DDK_ARCH)\xennet.inf" KeyPath="yes" />
+                            <File Id="XennetCat" Source="xennet\$(env.DDK_ARCH)\xennet.cat" />
+                            <File Id="XennetSys" Source="xennet\$(env.DDK_ARCH)\xennet.sys" />
+                            <File Id="XennetCoinst" Source="xennet\$(env.DDK_ARCH)\xennet_coinst.dll" />
+			    <difx:Driver PlugAndPlayPrompt='no'/>
                         </Component>
                     </Directory>
 
                     <Directory Id="XenvbdDir" Name="xenvbd">
                         <Component Id="XenvbdDriver" Guid="{87BAEE21-4695-4B75-A484-0A6136B70516}">
-                            <File Id="XenvbdInf" Source="xenvbd.inf" KeyPath="yes" />
-                            <File Id="XenvbdCat" Source="xenvbd.cat" />
-                            <File Id="XenvbdSys" Source="xenvbd.sys" />
-                            <File Id="XendiskSys" Source="xendisk.sys" />
-                            <File Id="XencrshSys" Source="xencrsh.sys" />
-                            <File Id="XenvbdCoinst" Source="xenvbd_coinst.dll" />
+                            <File Id="XenvbdInf" Source="xenvbd\$(env.DDK_ARCH)\xenvbd.inf" KeyPath="yes" />
+                            <File Id="XenvbdCat" Source="xenvbd\$(env.DDK_ARCH)\xenvbd.cat" />
+                            <File Id="XenvbdSys" Source="xenvbd\$(env.DDK_ARCH)\xenvbd.sys" />
+                            <File Id="XendiskSys" Source="xenvbd\$(env.DDK_ARCH)\xendisk.sys" />
+                            <File Id="XencrshSys" Source="xenvbd\$(env.DDK_ARCH)\xencrsh.sys" />
+                            <File Id="XenvbdCoinst" Source="xenvbd\$(env.DDK_ARCH)\xenvbd_coinst.dll" />
+			    <difx:Driver PlugAndPlayPrompt='no'/>
                         </Component>
                     </Directory>
 
 		    <Directory Id="XenvifDir" Name="xenvif">
                         <Component Id="XenvifDriver" Guid="{90BC2F5A-7414-4FF6-96E4-5789DDB1AECF}">
-                            <File Id="XenvifInf" Source="xenvif.inf" KeyPath="yes" />
-                            <File Id="XenvifCat" Source="xenvif.cat" />
-                            <File Id="XenvifSys" Source="xenvif.sys" />
-                            <File Id="XenvifCoinst" Source="xenvif_coinst.dll" />
+                            <File Id="XenvifInf" Source="xenvif\$(env.DDK_ARCH)\xenvif.inf" KeyPath="yes" />
+                            <File Id="XenvifCat" Source="xenvif\$(env.DDK_ARCH)\xenvif.cat" />
+                            <File Id="XenvifSys" Source="xenvif\$(env.DDK_ARCH)\xenvif.sys" />
+                            <File Id="XenvifCoinst" Source="xenvif\$(env.DDK_ARCH)\xenvif_coinst.dll" />
+			    <difx:Driver PlugAndPlayPrompt='no'/>
                         </Component>
                     </Directory>
 		    
@@ -149,25 +154,25 @@ DowngradeErrorMessage="A later version of [ProductName] is already installed. Se
 		
 		<Directory Id="$(var.SYSDIR)">
 		    <Component Id="XenUserDlls" Guid="{1BA9B085-AFC2-4248-9DF2-5E85692DC707}">
-			<File Id="xencontrol" Source="xencontrol.dll" KeyPath="yes" />
-			<File Id="libxenvchan" Source="libxenvchan.dll" />
+			<File Id="xencontrol" Source="bin\$(env.DDK_ARCH)\xencontrol.dll" KeyPath="yes" />
+			<File Id="libxenvchan" Source="bin\$(env.DDK_ARCH)\libxenvchan.dll" />
 		    </Component>
 
 		    <Component Id="WindowsUtilsDll" Guid="{B701294F-7A5E-48C8-B1D4-74968E4479D7}">
-			<File Id="windows_utils.dll" Source="windows-utils.dll" KeyPath="yes" />
+			<File Id="windows_utils.dll" Source="bin\$(env.DDK_ARCH)\windows-utils.dll" KeyPath="yes" />
 		    </Component>
 
 		    <Component Id="VchanDll" Guid="{A7483192-22F6-47AC-AD77-E5CE3091B879}">
-			<File Id="libvchan.dll" Source="libvchan.dll" KeyPath="yes" />
+			<File Id="libvchan.dll" Source="bin\$(env.DDK_ARCH)\libvchan.dll" KeyPath="yes" />
 		    </Component>
 
 		    <Component Id="QubesDbClient" Guid="{E9742F11-6E77-44FC-8A53-168BE2D9273A}">
-			<File Id="QdbClient" Source="qubesdb-client.dll" KeyPath="yes"/>
-			<File Id="QdbCmd" Source="qubesdb-cmd.exe"/>
+			<File Id="QdbClient" Source="bin\$(env.DDK_ARCH)\qubesdb-client.dll" KeyPath="yes"/>
+			<File Id="QdbCmd" Source="bin\$(env.DDK_ARCH)\qubesdb-cmd.exe"/>
 		    </Component>
 
                     <Component Id="RelocateDir" Guid="{C4325378-B946-4C6C-A685-F3E39A10AF20}">
-                        <File Id="relocate_dir.exe" Source="relocate-dir.exe" KeyPath="yes" />
+                        <File Id="relocate_dir.exe" Source="bin\$(env.DDK_ARCH)\relocate-dir.exe" KeyPath="yes" />
                         <RegistryValue Root="HKLM" Key="System\CurrentControlSet\Control\Session Manager" Name="BootExecute" Type="multiString" Action="append" Value="relocate-dir.exe C:\Users Q:\Users"/>
 			<RegistryValue Root="HKLM" Key="Software\Invisible Things Lab\Qubes Tools" Name="LogDir" Type="string" Value="Q:\QubesLogs"/> 
                     </Component>
@@ -186,22 +191,22 @@ DowngradeErrorMessage="A later version of [ProductName] is already installed. Se
                     </Component>
 
                     <Component Id="PrepareVolume" Guid="{220A22F3-0B73-4A4C-B825-53132A88D1DF}">
-                        <File Id="diskpart.txt" Source="diskpart.txt" KeyPath="yes" />
+                        <File Id="diskpart.txt" Source="bin\$(env.DDK_ARCH)\diskpart.txt" KeyPath="yes" />
                     </Component>
 		    
                     <Component Id="GuiAgent" Guid="{69131C28-618B-4662-9AFC-70767E50F05D}">
-                        <File Id="qga.exe" Source="qga.exe" KeyPath="yes"/>
-			<File Id="DevconHelper" Source="devcon.exe"/>
-			<File Id="PkiHelper" Source="pkihelper.exe"/>
+                        <File Id="qga.exe" Source="bin\$(env.DDK_ARCH)\qga.exe" KeyPath="yes"/>
+			<File Id="DevconHelper" Source="bin\$(env.DDK_ARCH)\devcon.exe"/>
+			<File Id="PkiHelper" Source="bin\$(env.DDK_ARCH)\pkihelper.exe"/>
                         <RegistryValue Root="HKLM" Key="Software\Invisible Things Lab\Qubes Tools" Name="Autostart" Type="string" Value='[BinDir]qga.exe'/>
                         <RegistryValue Root="HKLM" Key="Software\Invisible Things Lab\Qubes Tools" Name="UseDirtyBits" Type="integer" Value="0"/>
                         <RegistryValue Root="HKLM" Key="Software\Invisible Things Lab\Qubes Tools\qga" Name="MaxFps" Type="integer" Value="0"/>
                         <RegistryValue Root="HKLM" Key="Software\Invisible Things Lab\Qubes Tools\qga" Name="DisableCursor" Type="integer" Value="1"/>
                         <RegistryValue Root="HKLM" Key="Software\Invisible Things Lab\Qubes Tools\qga" Name="SeamlessMode" Type="integer" Value="0"/>
-                        <RegistryValue Root="HKLM" Key="System\CurrentControlSet\services\VgaSave" Name="Start" Type="integer" Value="4"/>
+                        <!--RegistryValue Root="HKLM" Key="System\CurrentControlSet\services\VgaSave" Name="Start" Type="integer" Value="4"/-->
                     </Component>
                     <Component Id="QgaWatchdog" Guid="{5A490AD9-203D-4634-9ABA-4FB02416D0BC}">
-                        <File Id="QgaWatchdog.exe" Source="QgaWatchdog.exe" KeyPath="yes"/>
+                        <File Id="QgaWatchdog.exe" Source="bin\$(env.DDK_ARCH)\QgaWatchdog.exe" KeyPath="yes"/>
                         <ServiceInstall
                         Id="ServiceInstaller"
                         Type="ownProcess"
@@ -220,7 +225,7 @@ DowngradeErrorMessage="A later version of [ProductName] is already installed. Se
                     </Component>
 		    
                     <Component Id="QubesDbDaemon" Guid="{1CE95F90-FBD1-4D1D-B955-C31D42F84D3C}">
-                        <File Id="QdbDaemon" Source="qubesdb-daemon.exe" KeyPath="yes"/>
+                        <File Id="QdbDaemon" Source="bin\$(env.DDK_ARCH)\qubesdb-daemon.exe" KeyPath="yes"/>
                         <ServiceInstall
                         Id="QdbService"
                         Type="ownProcess"
@@ -245,7 +250,7 @@ DowngradeErrorMessage="A later version of [ProductName] is already installed. Se
                     </Component>
 		    
                     <Component Id="QrexecAgent" Guid="{0e26617f-e5d9-4943-a08e-cf29013e9d72}">
-                        <File Id="qrexec_agent.exe" Source="qrexec-agent.exe" KeyPath="yes"/>
+                        <File Id="qrexec_agent.exe" Source="bin\$(env.DDK_ARCH)\qrexec-agent.exe" KeyPath="yes"/>
 
                         <ServiceInstall
                         Id="QrexecService"
@@ -271,14 +276,14 @@ DowngradeErrorMessage="A later version of [ProductName] is already installed. Se
                         />
                     </Component>
                     <Component Id="QrexecClientVm" Guid="{1e74cee2-523b-4870-8e24-49d4945c4a5c}">
-                        <File Id="ask_vm_and_run.exe" Source="ask-vm-and-run.exe" KeyPath="yes">
+                        <File Id="ask_vm_and_run.exe" Source="bin\$(env.DDK_ARCH)\ask-vm-and-run.exe" KeyPath="yes">
                         </File>
                     </Component>
                     <Component Id="QrexecWrapper" Guid="{EC103A81-6828-4ABA-9706-644DBBD4D615}">
-                        <File Id="qrexec_wrapper.exe" Source="qrexec-wrapper.exe" KeyPath="yes"/>
+                        <File Id="qrexec_wrapper.exe" Source="bin\$(env.DDK_ARCH)\qrexec-wrapper.exe" KeyPath="yes"/>
                     </Component>
                     <Component Id="AskVmAndRun" Guid="{b5700d68-2ceb-4764-9e4b-11ae33b2d05b}">
-                        <File Id="qrexec_client_vm.exe" Source="qrexec-client-vm.exe" KeyPath="yes">
+                        <File Id="qrexec_client_vm.exe" Source="bin\$(env.DDK_ARCH)\qrexec-client-vm.exe" KeyPath="yes">
                             <Shortcut
                             Id="qopen_dvm_sendto_shortcut"
                             Name="Edit in DispVM"
@@ -308,7 +313,7 @@ DowngradeErrorMessage="A later version of [ProductName] is already installed. Se
                         <RemoveRegistryValue Root="HKLM" Key="System\CurrentControlSet\Services\WinHttpAutoProxySvc" Name="DependOnService"/>
                     </Component>
                     <Component Id="NetworkSetup" Guid="{7201739e-35fb-11e3-9760-00163e5e6c10}">
-                        <File Id="network_setup.exe" Source="network-setup.exe" KeyPath="yes"/>
+                        <File Id="network_setup.exe" Source="bin\$(env.DDK_ARCH)\network-setup.exe" KeyPath="yes"/>
 
                         <ServiceInstall
                         Id="NetworkSetupService"
@@ -336,48 +341,48 @@ DowngradeErrorMessage="A later version of [ProductName] is already installed. Se
                         />
                     </Component>
                     <Component Id="ServicePolicy" Guid="{F9818E4E-76C4-40DE-A8F3-945336C954B1}">
-                        <File Id="disable_svc.bat" Source="disable_svc.bat" />
+                        <File Id="disable_svc.bat" Source="bin\$(env.DDK_ARCH)\disable_svc.bat" />
                     </Component>
                     <Component Id="AdvertiseTools" Guid="{DEDA44D9-6A58-4DE7-902A-643FB594B93C}">
-                        <File Id="advertise_tools.exe" Source="advertise-tools.exe" KeyPath="yes"/>
+                        <File Id="advertise_tools.exe" Source="bin\$(env.DDK_ARCH)\advertise-tools.exe" KeyPath="yes"/>
                     </Component>
 
                 </Directory>
 
                 <Directory Id="QubesRPCDir" Name="qubes-rpc">
                     <Component Id="QrexecServicesConfig" Guid="{9efff253-25a8-40ed-861a-0d576f0ca439}">
-                        <File Id="qubes.Filecopy" Source="qubes.Filecopy" KeyPath="yes"/>
-                        <File Id="qubes.ClipboardCopy" Source="qubes.ClipboardCopy"/>
-                        <File Id="qubes.ClipboardPaste" Source="qubes.ClipboardPaste"/>
-                        <File Id="qubes.VMShell" Source="qubes.VMShell"/>
-                        <File Id="qubes.OpenInVM" Name="qubes.OpenInVM" Source="qubes.OpenInVM"/>
-                        <File Id="qubes.WaitForSession" Source="qubes.WaitForSession"/>
-                        <File Id="qubes.SetGuiMode" Source="qubes.SetGuiMode"/>
-                        <File Id="qubes.GetAppMenus" Source="qubes.GetAppMenus"/>
-                        <File Id="qubes.StartApp" Source="qubes.StartApp"/>
-                        <File Id="qubes.GetImageRGBA" Source="qubes.GetImageRGBA"/>
-                        <File Id="qubes.SetDateTime" Source="qubes.SetDateTime"/>
-                        <File Id="qubes.OpenURL" Source="qubes.OpenURL"/>
+                        <File Id="qubes.Filecopy" Source="bin\AnyCPU\qubes-rpc\qubes.Filecopy" KeyPath="yes"/>
+                        <File Id="qubes.ClipboardCopy" Source="bin\AnyCPU\qubes-rpc\qubes.ClipboardCopy"/>
+                        <File Id="qubes.ClipboardPaste" Source="bin\AnyCPU\qubes-rpc\qubes.ClipboardPaste"/>
+                        <File Id="qubes.VMShell" Source="bin\AnyCPU\qubes-rpc\qubes.VMShell"/>
+                        <File Id="qubes.OpenInVM" Name="qubes.OpenInVM" Source="bin\AnyCPU\qubes-rpc\qubes.OpenInVM"/>
+                        <File Id="qubes.WaitForSession" Source="bin\AnyCPU\qubes-rpc\qubes.WaitForSession"/>
+                        <File Id="qubes.SetGuiMode" Source="bin\AnyCPU\qubes-rpc\qubes.SetGuiMode"/>
+                        <File Id="qubes.GetAppMenus" Source="bin\AnyCPU\qubes-rpc\qubes.GetAppMenus"/>
+                        <File Id="qubes.StartApp" Source="bin\AnyCPU\qubes-rpc\qubes.StartApp"/>
+                        <File Id="qubes.GetImageRGBA" Source="bin\AnyCPU\qubes-rpc\qubes.GetImageRGBA"/>
+                        <File Id="qubes.SetDateTime" Source="bin\AnyCPU\qubes-rpc\qubes.SetDateTime"/>
+                        <File Id="qubes.OpenURL" Source="bin\AnyCPU\qubes-rpc\qubes.OpenURL"/>
                     </Component>
                 </Directory>
 
 
                 <Directory Id="QubesRPCServicesDir" Name="qubes-rpc-services">
                     <Component Id="QrexecServices" Guid="{2543621b-2d67-4726-9a3b-7a1c471a1e19}">
-                        <File Id="file_sender.exe" Source="file-sender.exe" KeyPath="yes"/>
-                        <File Id="file_receiver.exe" Source="file-receiver.exe"/>
-                        <File Id="clipboard_copy.exe" Source="clipboard-copy.exe"/>
-                        <File Id="clipboard_paste.exe" Source="clipboard-paste.exe"/>
-                        <File Id="vm_file_editor.exe" Source="vm-file-editor.exe"/>
-                        <File Id="open_in_vm.exe" Source="open-in-vm.exe"/>
-                        <File Id="wait_for_logon.exe" Source="wait-for-logon.exe"/>
-                        <File Id="set_gui_mode.exe" Source="set-gui-mode.exe"/>
-                        <File Id="get_appmenus.ps1" Source="get-appmenus.ps1"/>
-                        <File Id="start_app.ps1" Source="start-app.ps1"/>
-                        <File Id="get_image_rgba.exe" Source="get-image-rgba.exe"/>
-                        <File Id="window_icon_updater.exe" Source="window-icon-updater.exe"/>
-                        <File Id="set_time.ps1" Source="set-time.ps1"/>
-                        <File Id="open_url.exe" Source="open-url.exe"/>
+                        <File Id="file_sender.exe" Source="bin\$(env.DDK_ARCH)\file-sender.exe" KeyPath="yes"/>
+                        <File Id="file_receiver.exe" Source="bin\$(env.DDK_ARCH)\file-receiver.exe"/>
+                        <File Id="clipboard_copy.exe" Source="bin\$(env.DDK_ARCH)\clipboard-copy.exe"/>
+                        <File Id="clipboard_paste.exe" Source="bin\$(env.DDK_ARCH)\clipboard-paste.exe"/>
+                        <File Id="vm_file_editor.exe" Source="bin\$(env.DDK_ARCH)\vm-file-editor.exe"/>
+                        <File Id="open_in_vm.exe" Source="bin\$(env.DDK_ARCH)\open-in-vm.exe"/>
+                        <File Id="wait_for_logon.exe" Source="bin\$(env.DDK_ARCH)\wait-for-logon.exe"/>
+                        <File Id="set_gui_mode.exe" Source="bin\$(env.DDK_ARCH)\set-gui-mode.exe"/>
+                        <File Id="get_appmenus.ps1" Source="bin\AnyCPU\get-appmenus.ps1"/>
+                        <File Id="start_app.ps1" Source="bin\AnyCPU\start-app.ps1"/>
+                        <File Id="get_image_rgba.exe" Source="bin\$(env.DDK_ARCH)\get-image-rgba.exe"/>
+                        <File Id="window_icon_updater.exe" Source="bin\$(env.DDK_ARCH)\window-icon-updater.exe"/>
+                        <File Id="set_time.ps1" Source="bin\AnyCPU\set-time.ps1"/>
+                        <File Id="open_url.exe" Source="bin\$(env.DDK_ARCH)\open-url.exe"/>
                     </Component>
                 </Directory>
 		
@@ -572,38 +577,6 @@ ConfigurableDirectory="INSTALLDIR"
     </Feature>
     
 </Feature>
-
-<CustomTable Id="MsiDriverPackages">
-    <Column Id="Component" Modularize="Column" Nullable="no" Type="string" Width="255" Description="An identifier that represents a driver package" PrimaryKey="yes"/>
-    <Column Id="Flags" Nullable="no" Type="int" Width="4" Description="DIFxApp configuration flags"/>
-    <Column Id="Sequence" Nullable="yes" Type="int" Width="4" Description="Installation sequence number"/>
-    <Row>
-        <Data Column="Component">XenifaceDriver</Data>
-        <Data Column="Flags">15</Data>
-        <Data Column="Sequence">2</Data>
-    </Row>
-    <Row>
-        <Data Column="Component">XenvbdDriver</Data>
-        <Data Column="Flags">15</Data>
-        <Data Column="Sequence">3</Data>
-    </Row>
-    <Row>
-        <Data Column="Component">XennetDriver</Data>
-        <Data Column="Flags">15</Data>
-        <Data Column="Sequence">5</Data>
-    </Row>
-    <Row>
-        <Data Column="Component">XenvifDriver</Data>
-        <Data Column="Flags">15</Data>
-        <Data Column="Sequence">4</Data>
-    </Row>    
-    <Row>
-        <Data Column="Component">qvideo</Data>
-        <Data Column="Flags">15</Data>
-        <Data Column="Sequence">10</Data>
-    </Row>    
-</CustomTable>
-
 
 </Product>
 </Wix>

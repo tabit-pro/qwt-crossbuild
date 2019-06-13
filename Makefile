@@ -58,7 +58,6 @@ qubes-windows-utils: qubes-core-vchan-xen
 qubes-core-agent-windows: qubes-core-qubesdb
 	cd $@-* && \
 	DDK_PATH=$(DDKPATH) WINDRES=$(WINDRES) CC=$(CC) ARCH=$(ARCH) CFLAGS="-I $(PWD)/include" LDFLAGS="-L $(OUTDIR)" make all
-	cp -f $@-*/include/*.h include
 	cp -fr $@-*/bin/$(ARCH)/* $(OUTDIR)
 	cp -fr $@-*/bin/$(ARCH)/advertise-tools.exe ./
 	cp -fr $@-*/bin/AnyCPU $(PWD)/bin/

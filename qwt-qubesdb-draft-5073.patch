@@ -1,0 +1,29 @@
+From fbf91946a649918c4b84bf3fbaa90eeccd89a142 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?=
+ <marmarek@invisiblethingslab.com>
+Date: Wed, 12 Jun 2019 22:14:52 +0200
+Subject: [PATCH] daemon: fix dom0 daemon hang if VM's daemon disconnects
+
+This is a partial solution for handling misbehaving VM's
+qubesdb-daemon. The part about its crashing. The other case not handled
+here, is when VM's instance is unresponsive but running.
+
+QubesOS/qubes-issues#5073
+---
+ daemon/db-daemon.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/qubes-core-agent-windows-mingw/daemon/db-daemon.c b/qubes-core-agent-windows-mingw/daemon/db-daemon.c
+index 7c90c2f..0e750a9 100644
+--- a/qubes-core-qubesdb-mingw/daemon/db-daemon.c
++++ b/qubes-core-qubesdb-mingw/daemon/db-daemon.c
+@@ -220,6 +220,9 @@ int mainloop(struct db_daemon_data *d) {
+                     }
+                     d->multiread_requested = 1;
+                 } else {
++                    /* do not send further updates, until VM's daemon restart
++                     * and re-sync */
++                    d->remote_connected = 0;
+                     break;
+                 }
+                 break;
