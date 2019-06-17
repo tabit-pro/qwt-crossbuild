@@ -4,7 +4,7 @@
 
 Name:		qubes-windows-tools
 Version:	4.0
-Release:	286
+Release:	294
 Summary:	Qubes Tools for Windows VMs
 Group:		Qubes
 License:	GPL
@@ -58,13 +58,6 @@ patch51:        qwt-vchan-test.patch
 # build with inlined __chkstk_ms
 patch52:	qwt-chkstk.patch
 
-# remove confusing DriverEntry
-Patch53:	qwt-gdi-fake-driverentry.patch
-
-Patch54:	qwt-qrexec-wrapper-5036.patch
-#Patch55:	qwt-qubesdb-draft-5073.patch
-#Patch56:	qwt-qet-image-rgba.patch
-
 %prep
 %setup -c
 for i in $(ls %{_sourcedir}/qubes*.zip);
@@ -75,8 +68,6 @@ cp -f %{S:18} ./
 mkdir -p include
 
 cp -f %{S:10} include
-
-cp -f %{S:17} qubes-gui-agent-windows-*/install-helper/pkihelper/pkihelper.c
 
 %autopatch -p1
 
