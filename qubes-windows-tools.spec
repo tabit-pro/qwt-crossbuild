@@ -52,11 +52,11 @@ patch0:         devcon-headers.patch
 #patch40:        qwt-gui-agent-cpu-usage.patch
 
 # dirty
-patch50:        qwt-xenvchan-test.patch
-patch51:        qwt-vchan-test.patch
+#patch50:        qwt-xenvchan-test.patch
+#patch51:        qwt-vchan-test.patch
 
 # build with inlined __chkstk_ms
-patch52:	qwt-chkstk.patch
+#patch52:	qwt-chkstk.patch
 
 %prep
 %setup -c
