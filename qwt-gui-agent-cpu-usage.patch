@@ -1,5 +1,5 @@
---- a/qubes-gui-agent-windows-mingw/gui-agent/main.c	2019-06-04 14:26:01.937663603 +0000
-+++ b/qubes-gui-agent-windows-mingw/gui-agent/main.c	2019-06-04 14:25:57.273652852 +0000
+--- a/qubes-gui-agent-windows-4.0.0/gui-agent/main.c	2019-06-04 14:26:01.937663603 +0000
++++ b/qubes-gui-agent-windows-4.0.0/gui-agent/main.c	2019-06-04 14:25:57.273652852 +0000
 @@ -794,24 +794,25 @@
      vchanIoInProgress = FALSE;
      exitLoop = FALSE;

@@ -7,7 +7,7 @@ STRIP=/usr/bin/x86_64-w64-mingw32-strip
 WINDRES=/usr/bin/x86_64-w64-mingw32-windres
 WINDMC=/usr/bin/x86_64-w64-mingw32-windmc
 DDKPATH=/usr/x86_64-w64-mingw32/sys-root/mingw/include/ddk
-DEBUG=-U_DEBUG -UDBG -UDEBUG
+DEBUG=-D_DEBUG -DDBG -DDEBUG
 
 TARGETS=devcon.exe qubes-core-agent-windows \
 	qubes-gui-agent-windows qubes-installer-qubes-os-windows-tools
@@ -83,7 +83,7 @@ qubes-gui-common:
 
 qubes-gui-agent-windows: qubes-gui-common
 	cd $@-* && \
-	DLLTOOL=$(DLLTOOL) STRIP=$(STRIP) DDK_PATH=$(DDKPATH) WINDRES=$(WINDRES) CC=$(CC) ARCH=$(ARCH) CFLAGS="-I $(PWD)/include" LDFLAGS="-L $(OUTDIR)" make all
+	DLLTOOL=$(DLLTOOL) STRIP=$(STRIP) DDK_PATH=$(DDKPATH) WINDRES=$(WINDRES) CC=$(CC) ARCH=$(ARCH) CFLAGS="-I $(PWD)/include -mwindows" LDFLAGS="-L $(OUTDIR)" make all
 	cp -f $@-*/include/*.h include
 	cp -f $@-*/bin/$(ARCH)/* $(OUTDIR)
 

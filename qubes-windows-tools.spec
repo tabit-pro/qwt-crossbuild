@@ -1,10 +1,6 @@
-
-%define devbranch mingw-fragments
-%define user marmarek
-
 Name:		qubes-windows-tools
 Version:	4.0
-Release:	309
+Release:	335
 Summary:	Qubes Tools for Windows VMs
 Group:		Qubes
 License:	GPL
@@ -20,15 +16,15 @@ BuildArch:	noarch
 # svn export https://github.com/microsoft/Windows-driver-samples/trunk/setup/devcon | tar -czvf devcon.tar.gz devcon
 Source0:	devcon.tar.gz
 # Get the latest qwt source tree
-Source1:	https://codeload.github.com/%{user}/qubes-core-vchan-xen/zip/%{devbranch}#/qubes-core-vchan-xen-%{devbranch}.zip
-Source2:	https://codeload.github.com/%{user}/qubes-core-agent-windows/zip/%{devbranch}#/qubes-core-agent-windows-%{devbranch}.zip
-Source3:	https://codeload.github.com/%{user}/qubes-windows-utils/zip/%{devbranch}#/qubes-windows-utils-%{devbranch}.zip
-Source4:	https://codeload.github.com/%{user}/qubes-core-qubesdb/zip/%{devbranch}#/qubes-core-qubesdb-%{devbranch}.zip
-Source5:	https://codeload.github.com/%{user}/qubes-gui-common/zip/mingw#/qubes-gui-common-mingw.zip
-Source6:	https://codeload.github.com/%{user}/qubes-gui-agent-windows/zip/%{devbranch}#/qubes-gui-agent-windows-%{devbranch}.zip
-Source7:	https://codeload.github.com/%{user}/qubes-installer-qubes-os-windows-tools/zip/%{devbranch}#/qubes-installer-qubes-os-windows-tools-%{devbranch}.zip
-Source8:	https://codeload.github.com/%{user}/qubes-vmm-xen-windows-pvdrivers/zip/%{devbranch}#/qubes-vmm-xen-windows-pvdrivers-%{devbranch}.zip
-Source9:	https://codeload.github.com/%{user}/qubes-vmm-xen-win-pvdrivers-xeniface/zip/mingw#/qubes-vmm-xen-win-pvdrivers-xeniface-mingw.zip
+Source1:	https://github.com/QubesOS/qubes-core-vchan-xen/archive/mm_f40b71ac.zip#/qubes-core-vchan-xen-mm_f40b71ac.zip
+Source2:	https://github.com/QubesOS/qubes-core-agent-windows/archive/mm_a2aea339.zip#/qubes-core-agent-windows-mm_a2aea339.zip
+Source3:	https://github.com/QubesOS/qubes-windows-utils/archive/v4.0.0.zip#/qubes-windows-utils-4.0.0.zip
+Source4:	https://github.com/QubesOS/qubes-core-qubesdb/archive/v4.1.3.zip#/qubes-core-qubesdb-4.1.3.zip
+Source5:	https://github.com/QubesOS/qubes-gui-common/archive/mm_f943945a.zip#/qubes-gui-common-mm_f943945a.zip
+Source6:	https://github.com/QubesOS/qubes-gui-agent-windows/archive/v4.0.0.zip#/qubes-gui-agent-windows-4.0.0.zip
+Source7:	https://github.com/QubesOS/qubes-installer-qubes-os-windows-tools/archive/v4.0.1-3.zip#/qubes-installer-qubes-os-windows-tools-4.0.1-3.zip
+Source8:	https://github.com/QubesOS/qubes-vmm-xen-windows-pvdrivers/archive/v4.0.0.zip#/qubes-vmm-xen-windows-pvdrivers-4.0.0.zip
+Source9:	https://github.com/QubesOS/qubes-vmm-xen-win-pvdrivers-xeniface/archive/mm_ff24d3b2.zip#/qubes-vmm-xen-win-pvdrivers-xeniface-mm_ff24d3b2.zip
 
 Source10: 	https://raw.githubusercontent.com/llvm-mirror/compiler-rt/master/lib/builtins/assembly.h
 
@@ -40,23 +36,35 @@ Source19:	diskpart.txt
 Source100:	Makefile
 
 # Download the latest stable xen binary drivers
-Source21:	http://xenbits.xen.org/pvdrivers/win/9.0.0/xenbus.tar
-Source22:	http://xenbits.xen.org/pvdrivers/win/9.0.0/xeniface.tar
-Source23:	http://xenbits.xen.org/pvdrivers/win/9.0.0/xenvif.tar
-Source24:	http://xenbits.xen.org/pvdrivers/win/9.0.0/xennet.tar
-Source25:	http://xenbits.xen.org/pvdrivers/win/9.0.0/xenvbd.tar
+Source21:	http://xenbits.xen.org/pvdrivers/win/8.2.2/xenbus.tar
+Source22:	http://xenbits.xen.org/pvdrivers/win/8.2.2/xeniface.tar
+Source23:	http://xenbits.xen.org/pvdrivers/win/8.2.2/xenvif.tar
+Source24:	http://xenbits.xen.org/pvdrivers/win/8.2.2/xennet.tar
+Source25:	http://xenbits.xen.org/pvdrivers/win/8.2.2/xenvbd.tar
 
-patch0:         devcon-headers.patch
+Patch0:         devcon-headers.patch
+
+# stalled
+Patch1:		qubes-core-vchan-xen-mingw-fragments.patch
+Patch2:		qubes-core-agent-windows-mingw-fragments.patch
+Patch3:		qubes-windows-utils-mingw-fragments.patch
+Patch4:		qubes-core-qubesdb-mingw-fragments.patch
+Patch5:		qubes-gui-agent-windows-mingw-fragments.patch
+Patch6:		qubes-installer-qubes-os-windows-tools-mingw-fragments.patch
+Patch7:		qubes-vmm-xen-windows-pvdrivers-mingw-fragments.patch
+Patch8:		qubes-vmm-xen-win-pvdrivers-xeniface-mingw.patch
+
+Patch11:	qubes-core-agent-windows-warn-incompat-proto.patch
+Patch12:	qubesdb-daemon-win32-fix.patch
 
 # remove CreateEvent from event processing loop
-#patch40:        qwt-gui-agent-cpu-usage.patch
+patch40:        qwt-gui-agent-cpu-usage.patch
+# build with inlined __chkstk_ms
+patch41:	qwt-chkstk.patch
 
 # dirty
 #patch50:        qwt-xenvchan-test.patch
 #patch51:        qwt-vchan-test.patch
-
-# build with inlined __chkstk_ms
-#patch52:	qwt-chkstk.patch
 
 %prep
 %setup -c
@@ -65,12 +73,26 @@ do unzip $i; done;
 cat %{_sourcedir}/xen*.tar | tar -xvf - -i
 cp -f %{S:100} ./
 cp -f %{S:18} ./
-cp -f %{S:17} qubes-gui-agent-windows-*/install-helper/pkihelper/
+mkdir -p qubes-gui-agent-windows-4.0.0/install-helper/pkihelper/
+cp -f %{S:17} qubes-gui-agent-windows-4.0.0/install-helper/pkihelper/
 mkdir -p include
 
 cp -f %{S:10} include
 
-%autopatch -p1
+patch -d qubes-core-vchan-xen-* -p1 < %{P:1}
+patch -d qubes-core-agent-windows-* -p1 < %{P:2}
+patch -d qubes-windows-utils-* -p1 < %{P:3}
+patch -d qubes-core-qubesdb-* -p1 < %{P:4}
+patch -d qubes-gui-agent-windows-* -p1 < %{P:5}
+patch -d qubes-installer-qubes-os-windows-tools-* -p1 < %{P:6}
+patch -d qubes-vmm-xen-windows-pvdrivers-* -p1 < %{P:7}
+patch -d qubes-vmm-xen-win-pvdrivers-xeniface-* -p1 < %{P:8}
+
+%patch0 -p1
+%patch11 -p0
+%patch12 -p0
+%patch40 -p1
+%patch41 -p1
 
 %description
 PV Drivers and Qubes Tools for Windows AppVMs.

@@ -1,5 +1,5 @@
---- a/qubes-core-agent-windows-mingw/Makefile	2019-06-05 03:37:28.000000000 +0000
-+++ b/qubes-core-agent-windows-mingw/Makefile	2019-06-07 13:39:04.234629240 +0000
+--- a/qubes-core-agent-windows-mm_a2aea339/Makefile	2019-06-05 03:37:28.000000000 +0000
++++ b/qubes-core-agent-windows-mm_a2aea339/Makefile	2019-06-07 13:39:04.234629240 +0000
 @@ -38,8 +38,8 @@
  $(OUTDIR_ANY)/service-policy.cfg: src/service-policy/service-policy.cfg
  	cp $^ $@
@@ -11,8 +11,8 @@
  
  $(RPC_FILES): $(OUTDIR_ANY)/qubes-rpc/%: src/qrexec-services/%
  	cp $^ $@
---- a/qubes-core-agent-windows-mingw/src/relocate-dir/chkstk.S	1970-01-01 00:00:00.000000000 +0000
-+++ b/qubes-core-agent-windows-mingw/src/relocate-dir/chkstk.S	2019-06-07 13:45:30.139518751 +0000
+--- a/qubes-core-agent-windows-mm_a2aea339/src/relocate-dir/chkstk.S	1970-01-01 00:00:00.000000000 +0000
++++ b/qubes-core-agent-windows-mm_a2aea339/src/relocate-dir/chkstk.S	2019-06-07 13:45:30.139518751 +0000
 @@ -0,0 +1,57 @@
 +#include "assembly.h"
 +
