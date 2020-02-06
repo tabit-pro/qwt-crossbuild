@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:difx="http://schemas.microsoft.com/wix/DifxAppExtension">
+    <Fragment>
+        <DirectoryRef Id="DriversDir">
+            <Directory Id="XenvifDir" Name="xenvif">
+                <Component Id="XenvifDriver" Guid="{90BC2F5A-7414-4FF6-96E4-5789DDB1AECF}">
+                    <File Id="XenvifInf" Source="xenvif\$(env.DDK_ARCH)\xenvif.inf" KeyPath="yes"/>
+                    <File Id="XenvifCat" Source="xenvif\$(env.DDK_ARCH)\xenvif.cat"/>
+                    <File Id="XenvifSys" Source="xenvif\$(env.DDK_ARCH)\xenvif.sys"/>
+                    <File Id="XenvifCoinst" Source="xenvif\$(env.DDK_ARCH)\xenvif_coinst.dll"/>
+		    <difx:Driver/>
+                </Component>
+            </Directory>
+        </DirectoryRef>
+        <!--CustomTable Id="MsiDriverPackage">
+            <Row>
+                <Data Column="Component">XenvifDriver</Data>
+                <Data Column="Flags">15</Data>
+                <Data Column="Sequence">4</Data>
+            </Row>
+        </CustomTable-->
+    </Fragment>
+</Wix>

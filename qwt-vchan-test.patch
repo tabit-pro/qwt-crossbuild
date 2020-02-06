@@ -1,5 +1,5 @@
---- a/qubes-core-vchan-xen-4.0.5/windows/src/vchan-test.c	2018-10-09 18:28:20.000000000 +0000
-+++ b/qubes-core-vchan-xen-4.0.5/windows/src/vchan-test.c	2019-06-04 13:54:19.688278901 +0000
+--- a/qubes-core-vchan-xen-mingw/windows/src/vchan-test.c	2018-10-09 18:28:20.000000000 +0000
++++ b/qubes-core-vchan-xen-mingw/windows/src/vchan-test.c	2019-06-04 13:54:19.688278901 +0000
 @@ -19,6 +19,7 @@
   *
   */

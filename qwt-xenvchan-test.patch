@@ -1,5 +1,5 @@
---- a/qubes-vmm-xen-windows-pvdrivers-4.0.0/src/xenvchan-test/xenvchan-test.c	2018-07-11 14:24:59.000000000 +0000
-+++ b/qubes-vmm-xen-windows-pvdrivers-4.0.0/src/xenvchan-test/xenvchan-test.c	2019-06-04 13:54:19.865279307 +0000
+--- a/qubes-vmm-xen-windows-pvdrivers-mingw/src/xenvchan-test/xenvchan-test.c	2018-07-11 14:24:59.000000000 +0000
++++ b/qubes-vmm-xen-windows-pvdrivers-mingw/src/xenvchan-test/xenvchan-test.c	2019-06-04 13:54:19.865279307 +0000
 @@ -40,6 +40,7 @@
  #include <xencontrol.h>
  

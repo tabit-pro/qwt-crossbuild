@@ -7,7 +7,7 @@
 -    LogInfo("Awaiting for a vchan client, write buffer size: %d", VchanGetWriteBufferSize(g_Vchan));
 +    DWORD bufsize;
 +    bufsize = VchanGetWriteBufferSize(g_Vchan);
-+    LogVerbose("Awaiting for a vchan client, write buffer size: %d", bufsize);
++    LogInfo("Awaiting for a vchan client, write buffer size: %d", bufsize);
 +
 +    watchedEvents[0] = g_ShutdownEvent;
 +    watchedEvents[1] = windowDamageEvent;
