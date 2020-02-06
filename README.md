@@ -12,8 +12,9 @@ In comparison with the original ITL's Qubes Tools qwt-crossbuild contains severa
 - [x] hide command prompt windows during setup execution (WixQuiteExec)
 - [x] sign and install drivers without prompt (libwdi-based pkihelper utility)
 - [x] remove format dialog (diskpart instead of prepare-volume)
-- [ ] troubleshoot bsod errors (0x101, 0xc5, 0x50 - the toughest elusive fighters)
+- [ ] troubleshoot bsod errors (0x101, 0xc5, 0x50)
 - [x] prepare reproducible/deterministic build (binaries only)
+- [x] support Qubes-r4.1 (qrexec v2 backward compatibility)
 
 ## QWT Runtime prerequisuites
 
@@ -22,19 +23,18 @@ In comparison with the original ITL's Qubes Tools qwt-crossbuild contains severa
 1. Backup
 
 ## Feature status
-| Feature | Windows 7 x64 (en,ru)| Windows 10 x64 (en,ru) | Windows 7/10 x86 |  Comments |
-| --- | :---: | :---: | :---: |  --- |
-| Qubes Video Driver | + | - | ? |  |
-| Qubes Network Setup | + | + | ? | |
-| Private Volume Setup (move profiles)  | + | + | ? | |
-| File sender/receiver | + | + | ? | |
-| Clipboard Copy/Paste | + | + | ? | |
-| Application shortcuts | + | + | ? | |
-| Copy/Edit in Disposible VM | + | + | ? | |
-| Block device attach | + | + | ? | Xen PV Driver required (not enabled by default) |
-| USB device attach | - | - | - | Except storage devices |
-| Audio | - | - | - | |
-| Memory Balancing | ? | ? | ? | Supported by Xen Drivers, testing required |
+| Feature | Windows 7 x64 (en,ru)| Windows 10 x64 (en,ru) |
+| --- | :---: | :---: |
+| Qubes Video Driver | + | - |
+| Qubes Network Setup | + | + |
+| Private Volume Setup (move profiles)  | + | + |
+| File sender/receiver | + | + |
+| Clipboard Copy/Paste | + | + |
+| Application shortcuts | + | + |
+| Copy/Edit in Disposible VM | + | + |
+| Block device | + | + |
+| USB device | - | - |
+| Audio | - | - |
 
 ## Build QWT
 
