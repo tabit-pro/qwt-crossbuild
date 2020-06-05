@@ -341,7 +341,7 @@ DowngradeErrorMessage="A later version of [ProductName] is already installed. Se
                         />
                     </Component>
                     <Component Id="ServicePolicy" Guid="{F9818E4E-76C4-40DE-A8F3-945336C954B1}">
-                        <File Id="disable_svc.bat" Source="bin\$(env.DDK_ARCH)\disable_svc.bat" />
+                        <File Id="preparation.bat" Source="bin\$(env.DDK_ARCH)\preparation.bat" />
                     </Component>
                     <Component Id="AdvertiseTools" Guid="{DEDA44D9-6A58-4DE7-902A-643FB594B93C}">
                         <File Id="advertise_tools.exe" Source="bin\$(env.DDK_ARCH)\advertise-tools.exe" KeyPath="yes"/>
@@ -410,7 +410,7 @@ DowngradeErrorMessage="A later version of [ProductName] is already installed. Se
 <CustomAction Id="Set_PowerSettings" Property="PowerSettings" Value='"cmd.exe" /c "[BinDir]power_settings.bat"'/>
 <CustomAction Id="PowerSettings" Impersonate="no" BinaryKey="WixCA" DllEntry="WixQuietExec" Execute="deferred" Return="ignore"/>
 
-<CustomAction Id="Set_DisableSvc" Property="DisableSvc" Value='"cmd.exe" /c "[BinDir]disable_svc.bat"' />
+<CustomAction Id="Set_DisableSvc" Property="DisableSvc" Value='"cmd.exe" /c "[BinDir]preparation.bat"' />
 <CustomAction Id="DisableSvc" BinaryKey="WixCA" DllEntry="CAQuietExec" Execute="deferred" Return="ignore" Impersonate="no" />
 
 <InstallExecuteSequence>

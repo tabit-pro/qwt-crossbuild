@@ -29,7 +29,7 @@ Source9:	https://github.com/QubesOS/qubes-vmm-xen-win-pvdrivers-xeniface/archive
 Source10: 	https://raw.githubusercontent.com/llvm-mirror/compiler-rt/master/lib/builtins/assembly.h
 
 # Add local sources
-Source16:	disable_svc.bat
+Source16:	preparation.bat
 Source17:	pkihelper.c
 Source18:	qubes-tools-combined.wxs
 Source19:	diskpart.ps1

@@ -1,12 +1,10 @@
 @echo off
 
-sc config dhcp start= disabled
+bcdedit /set {current} recoveryenabled no
+
+bcdedit /set {current} bootstatuspolicy ignoreallfailures
 
 sc config defragsvc start= disabled
-
-sc config AudioSrv start= disabled
-
-sc config AudioEndpointBuilder start= disabled
 
 sc config WSearch start= disabled
 
