@@ -59,6 +59,7 @@ Patch11:	qubes-core-agent-windows-warn-incompat-proto.patch
 Patch12:	qubesdb-daemon-win32-fix.patch
 
 Patch13:	qubes-gui-agent-windows-destroy.patch
+Patch14:	qubes-gui-agent-windows-watchdog-disable-session-change.patch
 
 # remove CreateEvent from event processing loop
 Patch40:        qwt-gui-agent-cpu-usage.patch
@@ -90,6 +91,7 @@ patch -d qubes-installer-qubes-os-windows-tools-* -p1 < %{P:6}
 patch -d qubes-vmm-xen-windows-pvdrivers-* -p1 < %{P:7}
 patch -d qubes-vmm-xen-win-pvdrivers-xeniface-* -p1 < %{P:8}
 patch -d qubes-gui-agent-windows-* -p1 < %{P:13}
+patch -d qubes-gui-agent-windows-* -p1 < %{P:14}
 
 %patch0 -p1
 %patch11 -p0
