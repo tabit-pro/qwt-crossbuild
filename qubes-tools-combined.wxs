@@ -275,14 +275,10 @@ DowngradeErrorMessage="A later version of [ProductName] is already installed. Se
                         Wait="yes"
                         />
                     </Component>
-                    <Component Id="QrexecClientVm" Guid="{1e74cee2-523b-4870-8e24-49d4945c4a5c}">
-                        <File Id="ask_vm_and_run.exe" Source="bin\$(env.DDK_ARCH)\ask-vm-and-run.exe" KeyPath="yes">
-                        </File>
-                    </Component>
                     <Component Id="QrexecWrapper" Guid="{EC103A81-6828-4ABA-9706-644DBBD4D615}">
                         <File Id="qrexec_wrapper.exe" Source="bin\$(env.DDK_ARCH)\qrexec-wrapper.exe" KeyPath="yes"/>
                     </Component>
-                    <Component Id="AskVmAndRun" Guid="{b5700d68-2ceb-4764-9e4b-11ae33b2d05b}">
+                    <Component Id="QrexecClientVm" Guid="{b5700d68-2ceb-4764-9e4b-11ae33b2d05b}">
                         <File Id="qrexec_client_vm.exe" Source="bin\$(env.DDK_ARCH)\qrexec-client-vm.exe" KeyPath="yes">
                             <Shortcut
                             Id="qopen_dvm_sendto_shortcut"
@@ -338,7 +334,6 @@ DowngradeErrorMessage="A later version of [ProductName] is already installed. Se
                         <File Id="qubes.OpenURL" Source="bin\AnyCPU\qubes-rpc\qubes.OpenURL"/>
                     </Component>
                 </Directory>
-
 
                 <Directory Id="QubesRPCServicesDir" Name="qubes-rpc-services">
                     <Component Id="QrexecServices" Guid="{2543621b-2d67-4726-9a3b-7a1c471a1e19}">
@@ -498,7 +493,6 @@ ConfigurableDirectory="INSTALLDIR"
         <ComponentRef Id="QrexecAgent"/>
         <ComponentRef Id="QrexecClientVm"/>
         <ComponentRef Id="QrexecWrapper"/>
-        <ComponentRef Id="AskVmAndRun"/>
         <ComponentRef Id="NetworkSetup"/>
         <ComponentRef Id="ServicePolicy"/>
         <ComponentRef Id="QrexecServicesConfig"/>
