@@ -518,6 +518,9 @@ ConfigurableDirectory="INSTALLDIR"
     Title="Qubes GUI Agent"
     Description="Windows Agent for seamless GUI integration."
     >
+        <Condition Level="0">
+		<![CDATA[NOT VersionNT = 601]]>
+        </Condition>
         <ComponentRef Id="GuiAgent"/>
         <ComponentRef Id="QgaWatchdog"/>
         <ComponentRef Id="qvideo"/>
