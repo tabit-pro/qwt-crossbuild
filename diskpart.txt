@@ -1,6 +1,0 @@
-select disk 1
-clean
-convert gpt
-create partition primary
-format quick fs=ntfs label="Qubes Private Image"
-assign letter="Q"

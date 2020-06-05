@@ -191,14 +191,14 @@ DowngradeErrorMessage="A later version of [ProductName] is already installed. Se
                     </Component>
 
                     <Component Id="PrepareVolume" Guid="{220A22F3-0B73-4A4C-B825-53132A88D1DF}">
-                        <File Id="diskpart.txt" Source="bin\$(env.DDK_ARCH)\diskpart.txt" KeyPath="yes" />
+                        <File Id="diskpart.ps1" Source="bin\$(env.DDK_ARCH)\diskpart.ps1" KeyPath="yes" />
                     </Component>
 		    
                     <Component Id="GuiAgent" Guid="{69131C28-618B-4662-9AFC-70767E50F05D}">
                         <File Id="qga.exe" Source="bin\$(env.DDK_ARCH)\qga.exe" KeyPath="yes"/>
 			<File Id="DevconHelper" Source="bin\$(env.DDK_ARCH)\devcon.exe"/>
 			<File Id="PkiHelper" Source="bin\$(env.DDK_ARCH)\pkihelper.exe"/>
-                        <RegistryValue Root="HKLM" Key="Software\Invisible Things Lab\Qubes Tools" Name="Autostart" Type="string" Value='[BinDir]qga.exe'/>
+			<RegistryValue Root="HKLM" Key="Software\Invisible Things Lab\Qubes Tools" Name="Autostart" Type="string" Value='[BinDir]qga.exe'/>
                         <RegistryValue Root="HKLM" Key="Software\Invisible Things Lab\Qubes Tools" Name="UseDirtyBits" Type="integer" Value="0"/>
                         <RegistryValue Root="HKLM" Key="Software\Invisible Things Lab\Qubes Tools\qga" Name="MaxFps" Type="integer" Value="0"/>
                         <RegistryValue Root="HKLM" Key="Software\Invisible Things Lab\Qubes Tools\qga" Name="DisableCursor" Type="integer" Value="1"/>
@@ -394,7 +394,7 @@ DowngradeErrorMessage="A later version of [ProductName] is already installed. Se
 <SetProperty Id="SignQvideoDriver" Value='"[BinDir]pkihelper.exe" -v -p "[DriversDir]qvideo"' Sequence="execute" Before="SignQvideoDriver"/>
 <CustomAction Id="SignQvideoDriver" Impersonate="no" BinaryKey="WixCA" DllEntry="WixQuietExec" Execute="deferred" Return="ignore"/>
 
-<SetProperty Id="RunPrepareVolume" Value='"[SystemFolder]diskpart.exe" /s "[BinDir]diskpart.txt"' Sequence="execute" Before="RunPrepareVolume"/>
+<SetProperty Id="RunPrepareVolume" Value='"powershell.exe" -executionpolicy bypass -noninteractive -inputformat none -file "[BinDir]diskpart.ps1"' Sequence="execute" Before="RunPrepareVolume"/>
 <CustomAction Id="RunPrepareVolume" Impersonate="no" BinaryKey="WixCA" DllEntry="WixQuietExec" Execute="deferred" Return="ignore"/>
 
 <SetProperty Id="RegisterVideoDevice" Value='"[BinDir]/devcon.exe" install "[DriversDir]qvideo\qvideo.inf" ITL_QubesVideo' Sequence="execute" Before="RegisterVideoDevice"/>
@@ -431,7 +431,7 @@ DowngradeErrorMessage="A later version of [ProductName] is already installed. Se
     </Custom>
     
     <Custom Action="RunPrepareVolume" Before="InstallFinalize">
-	$PrepareVolume=3 AND NOT Installed AND NOT REMOVE
+	$PrepareVolume=3 AND NOT Installed AND NOT REINSTALL AND NOT REMOVE~="ALL"
     </Custom>
 
     <Custom Action="Set_DisableSvc" Before="DisableSvc" />

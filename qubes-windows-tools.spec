@@ -32,7 +32,7 @@ Source10: 	https://raw.githubusercontent.com/llvm-mirror/compiler-rt/master/lib/
 Source16:	disable_svc.bat
 Source17:	pkihelper.c
 Source18:	qubes-tools-combined.wxs
-Source19:	diskpart.txt
+Source19:	diskpart.ps1
 Source100:	Makefile
 
 # Download the latest stable xen binary drivers
