@@ -59,13 +59,12 @@ Patch11:	qubes-core-agent-windows-warn-incompat-proto.patch
 Patch12:	qubesdb-daemon-win32-fix.patch
 
 # remove CreateEvent from event processing loop
-patch40:        qwt-gui-agent-cpu-usage.patch
+Patch40:        qwt-gui-agent-cpu-usage.patch
 # build with inlined __chkstk_ms
-patch41:	qwt-chkstk.patch
+Patch41:	qwt-chkstk.patch
 
-# dirty
-#patch50:        qwt-xenvchan-test.patch
-#patch51:        qwt-vchan-test.patch
+#fix wrong relative path when qrexec called with "QUBESRPC qubes.Filecopy+"
+Patch42:	qrexec-store-separator-to-fix-relative-path-construct.patch
 
 %prep
 %setup -c
@@ -94,6 +93,7 @@ patch -d qubes-vmm-xen-win-pvdrivers-xeniface-* -p1 < %{P:8}
 %patch12 -p0
 %patch40 -p1
 %patch41 -p1
+%patch42 -p1
 
 %description
 PV Drivers and Qubes Tools for Windows AppVMs.
