@@ -309,36 +309,9 @@ DowngradeErrorMessage="A later version of [ProductName] is already installed. Se
                         </File>
                     </Component>
 
-                    <Component Id="NetworkSetupRegistry" Guid="{7201739e-35fb-11e3-9760-00163e5e6c11}">
-                        <RemoveRegistryValue Root="HKLM" Key="System\CurrentControlSet\Services\WinHttpAutoProxySvc" Name="DependOnService"/>
-                    </Component>
                     <Component Id="NetworkSetup" Guid="{7201739e-35fb-11e3-9760-00163e5e6c10}">
-                        <File Id="network_setup.exe" Source="bin\$(env.DDK_ARCH)\network-setup.exe" KeyPath="yes"/>
 
-                        <ServiceInstall
-                        Id="NetworkSetupService"
-                        Type="ownProcess"
-                        Vital="yes"
-                        Name="QubesNetworkSetup"
-                        DisplayName="Qubes Network Setup"
-                        Description="Setup network according to Qubes VM settings"
-                        Start="auto"
-                        Account="LocalSystem"
-                        ErrorControl="ignore"
-                        Interactive="no"
-                        Arguments="-service"
-                        >
-                            <ServiceDependency Id="iphlpsvc" />
-                            <ServiceDependency Id="QdbDaemon" />
-                        </ServiceInstall>
-
-                        <ServiceControl
-                        Id="NetworkSetupServiceControl"
-                        Stop="both"
-                        Remove="uninstall"
-                        Name="QubesNetworkSetup"
-                        Wait="yes"
-                        />
+                        <File Id="qnetwork_setup.bat" Source="bin\$(env.DDK_ARCH)\qnetwork_setup.bat" KeyPath="yes"/>
                     </Component>
                     <Component Id="ServicePolicy" Guid="{F9818E4E-76C4-40DE-A8F3-945336C954B1}">
                         <File Id="preparation.bat" Source="bin\$(env.DDK_ARCH)\preparation.bat" />
@@ -508,6 +481,7 @@ ConfigurableDirectory="INSTALLDIR"
         Absent="allow"
         Title="Xen PV Network Drivers"
         Description="Xen paravirtual network class and device drivers."
+	Level="1001"
         >
             <ComponentRef Id="XenvifDriver"/>
             <ComponentRef Id="XennetDriver"/>
@@ -525,7 +499,6 @@ ConfigurableDirectory="INSTALLDIR"
         <ComponentRef Id="QrexecClientVm"/>
         <ComponentRef Id="QrexecWrapper"/>
         <ComponentRef Id="AskVmAndRun"/>
-        <ComponentRef Id="NetworkSetupRegistry"/>
         <ComponentRef Id="NetworkSetup"/>
         <ComponentRef Id="ServicePolicy"/>
         <ComponentRef Id="QrexecServicesConfig"/>

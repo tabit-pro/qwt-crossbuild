@@ -33,6 +33,7 @@ Source16:	preparation.bat
 Source17:	pkihelper.c
 Source18:	qubes-tools-combined.wxs
 Source19:	diskpart.ps1
+Source20:	qnetwork_setup.bat
 Source100:	Makefile
 
 # Download the latest stable xen binary drivers
@@ -106,7 +107,7 @@ export WINEDEBUG=fixme-all; export WIXPATH=/opt/wix;
 export DDK_ARCH=x64
 export WIN_BUILD_TYPE=chk; export VERSION=4.0.0.0;
 export QUBES_BIN=bin/${DDK_ARCH}
-cp -f %{S:19} %{S:16} bin/${DDK_ARCH}
+cp -f %{S:19} %{S:20} %{S:16} bin/${DDK_ARCH}
 ${WINEMU} ${WIXPATH}/candle.exe -arch ${DDK_ARCH} -ext WixDifxAppExtension -ext WixIIsExtension *.wxs;
 ${WINEMU} ${WIXPATH}/light.exe -sval *.wixobj -ext WixDifxAppExtension -ext WixUIExtension -ext WixIIsExtension -ext WixUtilExtension "Z:/opt/wix/difxapp_${DDK_ARCH}.wixlib" -o qubes-tools-${DDK_ARCH}.msi
 mkdir -p iso-content
