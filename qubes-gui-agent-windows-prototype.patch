@@ -1,0 +1,477 @@
+diff --color -ruw qubes-gui-agent-windows-4.0.0-patched/include/mssign32.h qubes-gui-agent-windows-4.0.0-patched-patched/include/mssign32.h
+--- qubes-gui-agent-windows-4.0.0-patched/include/mssign32.h	2020-12-15 08:51:49.740000000 +0100
++++ qubes-gui-agent-windows-4.0.0-patched-patched/include/mssign32.h	2020-12-15 08:57:38.874000000 +0100
+@@ -153,9 +153,9 @@
+ //-----------------------------------------------------------------------------
+ 
+ HRESULT WINAPI SignerSign(
+-    __in      SIGNER_SUBJECT_INFO *pSubjectInfo,
+-    __in      SIGNER_CERT *pSignerCert,
+-    __in      SIGNER_SIGNATURE_INFO *pSignatureInfo,
++         SIGNER_SUBJECT_INFO *pSubjectInfo,
++         SIGNER_CERT *pSignerCert,
++         SIGNER_SIGNATURE_INFO *pSignatureInfo,
+     __in_opt  SIGNER_PROVIDER_INFO *pProviderInfo,
+     __in_opt  LPCWSTR pwszHttpTimeStamp,
+     __in_opt  PCRYPT_ATTRIBUTES psRequest,
+@@ -163,9 +163,9 @@
+ );
+ 
+ typedef HRESULT (WINAPI *SignerSignPtr)(
+-    __in      SIGNER_SUBJECT_INFO *pSubjectInfo,
+-    __in      SIGNER_CERT *pSignerCert,
+-    __in      SIGNER_SIGNATURE_INFO *pSignatureInfo,
++         SIGNER_SUBJECT_INFO *pSubjectInfo,
++         SIGNER_CERT *pSignerCert,
++         SIGNER_SIGNATURE_INFO *pSignatureInfo,
+     __in_opt  SIGNER_PROVIDER_INFO *pProviderInfo,
+     __in_opt  LPCWSTR pwszHttpTimeStamp,
+     __in_opt  PCRYPT_ATTRIBUTES psRequest,
+@@ -173,33 +173,33 @@
+ );
+ 
+ HRESULT WINAPI SignerSignEx(
+-    __in      DWORD dwFlags,
+-    __in      SIGNER_SUBJECT_INFO *pSubjectInfo,
+-    __in      SIGNER_CERT *pSignerCert,
+-    __in      SIGNER_SIGNATURE_INFO *pSignatureInfo,
++         DWORD dwFlags,
++         SIGNER_SUBJECT_INFO *pSubjectInfo,
++         SIGNER_CERT *pSignerCert,
++         SIGNER_SIGNATURE_INFO *pSignatureInfo,
+     __in_opt  SIGNER_PROVIDER_INFO *pProviderInfo,
+     __in_opt  LPCWSTR pwszHttpTimeStamp,
+     __in_opt  PCRYPT_ATTRIBUTES psRequest,
+     __in_opt  LPVOID pSipData,
+-    __out     SIGNER_CONTEXT **ppSignerContext
++        SIGNER_CONTEXT **ppSignerContext
+ );
+ 
+ typedef HRESULT (WINAPI *SignerSignExPtr)(
+-    __in      DWORD dwFlags,
+-    __in      SIGNER_SUBJECT_INFO *pSubjectInfo,
+-    __in      SIGNER_CERT *pSignerCert,
+-    __in      SIGNER_SIGNATURE_INFO *pSignatureInfo,
++         DWORD dwFlags,
++         SIGNER_SUBJECT_INFO *pSubjectInfo,
++         SIGNER_CERT *pSignerCert,
++         SIGNER_SIGNATURE_INFO *pSignatureInfo,
+     __in_opt  SIGNER_PROVIDER_INFO *pProviderInfo,
+     __in_opt  LPCWSTR pwszHttpTimeStamp,
+     __in_opt  PCRYPT_ATTRIBUTES psRequest,
+     __in_opt  LPVOID pSipData,
+-    __out     SIGNER_CONTEXT **ppSignerContext
++        SIGNER_CONTEXT **ppSignerContext
+ );
+ 
+ HRESULT WINAPI SignerFreeSignerContext(
+-    __in  SIGNER_CONTEXT *pSignerContext
++     SIGNER_CONTEXT *pSignerContext
+ );
+ 
+ typedef HRESULT (WINAPI *SignerFreeSignerContextPtr)(
+-    __in  SIGNER_CONTEXT *pSignerContext
++     SIGNER_CONTEXT *pSignerContext
+ );
+diff --color -ruw qubes-gui-agent-windows-4.0.0-patched/qvideo/gdi/debug.c qubes-gui-agent-windows-4.0.0-patched-patched/qvideo/gdi/debug.c
+--- qubes-gui-agent-windows-4.0.0-patched/qvideo/gdi/debug.c	2018-07-11 18:29:59.000000000 +0200
++++ qubes-gui-agent-windows-4.0.0-patched-patched/qvideo/gdi/debug.c	2020-12-15 08:59:55.304000000 +0100
+@@ -48,8 +48,8 @@
+  ***************************************************************************/
+ 
+ VOID DebugPrint(
+-    __in ULONG DebugPrintLevel,
+-    __in CHAR *DebugMessage,
++    ULONG DebugPrintLevel,
++    CHAR *DebugMessage,
+     ...
+     )
+ {
+diff --color -ruw qubes-gui-agent-windows-4.0.0-patched/qvideo/gdi/enable.c qubes-gui-agent-windows-4.0.0-patched-patched/qvideo/gdi/enable.c
+--- qubes-gui-agent-windows-4.0.0-patched/qvideo/gdi/enable.c	2018-07-11 18:29:59.000000000 +0200
++++ qubes-gui-agent-windows-4.0.0-patched-patched/qvideo/gdi/enable.c	2020-12-15 08:58:18.067000000 +0100
+@@ -65,8 +65,8 @@
+ *
+ \**************************************************************************/
+ BOOL APIENTRY DrvEnableDriver(
+-    __in ULONG EngineVersion,
+-    __in ULONG cbEnableData,
++    ULONG EngineVersion,
++    ULONG cbEnableData,
+     __in_bcount(cbEnableData) DRVENABLEDATA *EnableData
+     )
+ {
+@@ -101,17 +101,17 @@
+ \**************************************************************************/
+ 
+ DHPDEV APIENTRY DrvEnablePDEV(
+-    __in PDEVMODEW DevMode,	// Pointer to DEVMODE
++    PDEVMODEW DevMode,	// Pointer to DEVMODE
+     __in_opt PWCHAR LogicalAddress,	// Logical address, for printer drivers
+-    __in ULONG NumberPatterns,	// Number of patterns, for printer drivers
++    ULONG NumberPatterns,	// Number of patterns, for printer drivers
+     __in_opt HSURF *StandardPatterns, // Return standard patterns, for printer drivers
+-    __in ULONG cbDevCaps, // Size of buffer pointed to by DevCaps
++    ULONG cbDevCaps, // Size of buffer pointed to by DevCaps
+     __out_bcount(cbDevCaps) ULONG *DevCaps,	// Pointer to GDIINFO structure that describes device capabilities
+-    __in ULONG cbDevInfo, // Size of the following DEVINFO structure
++    ULONG cbDevInfo, // Size of the following DEVINFO structure
+     __out_bcount(cbDevInfo) PDEVINFO DevInfo, // Physical device information structure
+     __in_opt HDEV EngDeviceHandle,	// GDI-supplied handle to the device, used for callbacks
+     __in_opt WCHAR *DeviceName,	// User-readable device name
+-    __in HANDLE DisplayHandle // Display device handle
++    HANDLE DisplayHandle // Display device handle
+     )
+ {
+     PQV_PDEV pdev = NULL;
+@@ -170,8 +170,8 @@
+ \**************************************************************************/
+ 
+ VOID APIENTRY DrvCompletePDEV(
+-    __inout DHPDEV PhysicalDeviceHandle, // physical device handle created in DrvEnablePDEV
+-    __in HDEV EngDeviceHandle // GDI handle for pdev
++    DHPDEV PhysicalDeviceHandle, // physical device handle created in DrvEnablePDEV
++    HDEV EngDeviceHandle // GDI handle for pdev
+     )
+ {
+     FUNCTION_ENTER();
+@@ -181,8 +181,8 @@
+ }
+ 
+ ULONG APIENTRY DrvGetModes(
+-    __in HANDLE DisplayHandle, // display device handle
+-    __in ULONG cbDevMode, // size of the DevMode buffer
++    HANDLE DisplayHandle, // display device handle
++    ULONG cbDevMode, // size of the DevMode buffer
+     __out_bcount_opt(cbDevMode) PDEVMODEW DevMode // display mode array
+     )
+ {
+@@ -273,8 +273,8 @@
+ }
+ 
+ ULONG AllocateSurfaceMemory(
+-    __inout PQV_SURFACE Surface,
+-    __in ULONG PixelDataSize
++    PQV_SURFACE Surface,
++    ULONG PixelDataSize
+     )
+ {
+     QVMINI_ALLOCATE_MEMORY request;
+@@ -314,7 +314,7 @@
+ }
+ 
+ VOID FreeSurfaceMemory(
+-    __inout PQV_SURFACE Surface
++    PQV_SURFACE Surface
+     )
+ {
+     DWORD status;
+@@ -345,7 +345,7 @@
+ }
+ 
+ VOID FreeSurface(
+-    __inout PQV_SURFACE Surface
++    PQV_SURFACE Surface
+     )
+ {
+     FUNCTION_ENTER();
+@@ -371,8 +371,8 @@
+     ULONG BitCount,
+     SIZEL Size,
+     ULONG Hooks,
+-    __out HSURF *EngSurfaceHandle,
+-    __out PQV_SURFACE *Surface,
++    HSURF *EngSurfaceHandle,
++    PQV_SURFACE *Surface,
+     PQV_PDEV Pdev
+     )
+ {
+@@ -481,7 +481,7 @@
+ 
+ // Set up a surface to be drawn on and associate it with a given physical device.
+ HSURF APIENTRY DrvEnableSurface(
+-    __inout DHPDEV PhysicalDeviceHandle
++    DHPDEV PhysicalDeviceHandle
+     )
+ {
+     PQV_PDEV pdev;
+@@ -526,7 +526,7 @@
+ \**************************************************************************/
+ 
+ VOID APIENTRY DrvDisableSurface(
+-    __inout DHPDEV PhysicalDeviceHandle
++    DHPDEV PhysicalDeviceHandle
+     )
+ {
+     PQV_PDEV pdev = (PQV_PDEV)PhysicalDeviceHandle;
+@@ -542,9 +542,9 @@
+ }
+ 
+ HBITMAP APIENTRY DrvCreateDeviceBitmap(
+-    __inout DHPDEV PhysiaclDeviceHandle,
+-    __in SIZEL BitmapSize,
+-    __in ULONG BitmapFormat // bits per pixel
++    DHPDEV PhysiaclDeviceHandle,
++    SIZEL BitmapSize,
++    ULONG BitmapFormat // bits per pixel
+     )
+ {
+     PQV_SURFACE surface = NULL;
+@@ -591,7 +591,7 @@
+ }
+ 
+ VOID APIENTRY DrvDeleteDeviceBitmap(
+-    __inout DHSURF DeviceSurfaceHandle
++    DHSURF DeviceSurfaceHandle
+     )
+ {
+     PQV_SURFACE surface;
+@@ -621,7 +621,7 @@
+ }
+ 
+ ULONG UserSupportVideoMode(
+-    __in ULONG cbInput, // size of the input buffer
++    ULONG cbInput, // size of the input buffer
+     __in_bcount(cbInput) QV_SUPPORT_MODE *QvSupportMode
+     )
+ {
+@@ -652,10 +652,10 @@
+ }
+ 
+ ULONG UserGetSurfaceData(
+-    __inout PQV_SURFACE Surface,
+-    __in ULONG cbInput,
++    PQV_SURFACE Surface,
++    ULONG cbInput,
+     __in_bcount(cbInput) QV_GET_SURFACE_DATA *Input,
+-    __in ULONG cbOutput,
++    ULONG cbOutput,
+     __out_bcount(cbOutput) QV_GET_SURFACE_DATA_RESPONSE *Output
+     )
+ {
+@@ -720,7 +720,7 @@
+ }
+ 
+ static ULONG UnmapPfnsFromClient(
+-    __inout PQV_SURFACE Surface
++    PQV_SURFACE Surface
+     )
+ {
+     QVMINI_UNMAP_PFNS request;
+@@ -754,8 +754,8 @@
+ }
+ 
+ ULONG UserReleaseSurfaceData(
+-    __inout PQV_SURFACE Surface,
+-    __in ULONG cbInput,
++    PQV_SURFACE Surface,
++    ULONG cbInput,
+     __in_bcount(cbInput) QV_RELEASE_SURFACE_DATA *Input
+     )
+ {
+@@ -787,7 +787,7 @@
+ // This function is called when a client process (gui agent) terminates without cleaning up first.
+ // This function frees up resource(s) registered by EngCreateDriverObj (damage notification event) and unmaps pfns.
+ BOOL CALLBACK ProcessCleanup(
+-    __in DRIVEROBJ *DriverObj
++    DRIVEROBJ *DriverObj
+     )
+ {
+     PQV_SURFACE surface = NULL;
+@@ -818,9 +818,9 @@
+ }
+ 
+ ULONG UserWatchSurface(
+-    __inout PQV_SURFACE Surface,
+-    __in HDEV EngDeviceHandle,
+-    __in ULONG cbInput,
++    PQV_SURFACE Surface,
++    HDEV EngDeviceHandle,
++    ULONG cbInput,
+     __in_bcount(cbInput) QV_WATCH_SURFACE *QvWatchSurface
+     )
+ {
+@@ -875,7 +875,7 @@
+ }
+ 
+ ULONG UserStopWatchingSurface(
+-    __inout PQV_SURFACE Surface
++    PQV_SURFACE Surface
+     )
+ {
+     ULONG status = QV_INVALID_PARAMETER;
+@@ -901,11 +901,11 @@
+ }
+ 
+ ULONG APIENTRY DrvEscape(
+-    __inout SURFOBJ *SurfaceObject,
+-    __in ULONG EscapeCode,
+-    __in ULONG cbInput,
++    SURFOBJ *SurfaceObject,
++    ULONG EscapeCode,
++    ULONG cbInput,
+     __in_bcount(cbInput) PVOID InputBuffer,
+-    __in ULONG cbOutput,
++    ULONG cbOutput,
+     __out_bcount(cbOutput) PVOID OutputBuffer
+     )
+ {
+diff --color -ruw qubes-gui-agent-windows-4.0.0-patched/qvideo/miniport/ddk_video.h qubes-gui-agent-windows-4.0.0-patched-patched/qvideo/miniport/ddk_video.h
+--- qubes-gui-agent-windows-4.0.0-patched/qvideo/miniport/ddk_video.h	2020-12-15 08:51:49.741000000 +0100
++++ qubes-gui-agent-windows-4.0.0-patched-patched/qvideo/miniport/ddk_video.h	2020-12-15 08:59:54.583000000 +0100
+@@ -52,6 +52,6 @@
+ 
+ VIDEOPORT_API VOID VideoPortDebugPrint(
+     VIDEO_DEBUG_LEVEL DebugPrintLevel,
+-    __in PSTR DebugMessage,
++    PSTR DebugMessage,
+     ...
+     );
+diff --color -ruw qubes-gui-agent-windows-4.0.0-patched/qvideo/miniport/memory.c qubes-gui-agent-windows-4.0.0-patched-patched/qvideo/miniport/memory.c
+--- qubes-gui-agent-windows-4.0.0-patched/qvideo/miniport/memory.c	2020-12-15 08:51:49.742000000 +0100
++++ qubes-gui-agent-windows-4.0.0-patched-patched/qvideo/miniport/memory.c	2020-12-15 09:09:15.472000000 +0100
+@@ -31,7 +31,7 @@
+  * @return NTSTATUS.
+  */
+ static NTSTATUS GetBufferPfnArray(
+-    __inout PQVM_BUFFER Buffer
++    PQVM_BUFFER Buffer
+     )
+ {
+     NTSTATUS status = STATUS_NO_MEMORY;
+@@ -98,7 +98,7 @@
+  * @return Buffer descriptor.
+  */
+ PQVM_BUFFER QvmAllocateBuffer(
+-    __in ULONG Size
++    ULONG Size
+     )
+ {
+     PQVM_BUFFER buffer = NULL;
+@@ -152,7 +152,7 @@
+  * @param Buffer Buffer descriptor.
+  */
+ VOID QvmFreeBuffer(
+-    __inout PQVM_BUFFER Buffer
++    PQVM_BUFFER Buffer
+     )
+ {
+     VideoDebugPrint((0, QFN("buffer %p, kva %p, aligned size %lu, pfn array %p, pfn array size %lu\n"),
+@@ -174,7 +174,7 @@
+  * @return NTSTATUS.
+  */
+ ULONG QvmMapBufferPfns(
+-    __inout PQVM_BUFFER Buffer
++    PQVM_BUFFER Buffer
+     )
+ {
+     NTSTATUS status;
+@@ -211,7 +211,7 @@
+ * @return NTSTATUS.
+ */
+ ULONG QvmUnmapBufferPfns(
+-    __inout PQVM_BUFFER Buffer
++    PQVM_BUFFER Buffer
+     )
+ {
+     NTSTATUS status;
+diff --color -ruw qubes-gui-agent-windows-4.0.0-patched/qvideo/miniport/memory.h qubes-gui-agent-windows-4.0.0-patched-patched/qvideo/miniport/memory.h
+--- qubes-gui-agent-windows-4.0.0-patched/qvideo/miniport/memory.h	2018-07-11 18:29:59.000000000 +0200
++++ qubes-gui-agent-windows-4.0.0-patched-patched/qvideo/miniport/memory.h	2020-12-15 08:59:30.333000000 +0100
+@@ -42,7 +42,7 @@
+ * @return Buffer descriptor.
+ */
+ PQVM_BUFFER QvmAllocateBuffer(
+-    __in ULONG Size
++    ULONG Size
+     );
+ 
+ /**
+@@ -50,7 +50,7 @@
+ * @param Buffer Buffer descriptor.
+ */
+ VOID QvmFreeBuffer(
+-    __inout PQVM_BUFFER Buffer
++    PQVM_BUFFER Buffer
+     );
+ 
+ /**
+@@ -59,7 +59,7 @@
+ * @return NTSTATUS.
+ */
+ ULONG QvmMapBufferPfns(
+-    __inout PQVM_BUFFER Buffer
++    PQVM_BUFFER Buffer
+     );
+ 
+ /**
+@@ -68,5 +68,5 @@
+ * @return NTSTATUS.
+ */
+ ULONG QvmUnmapBufferPfns(
+-    __inout PQVM_BUFFER Buffer
++    PQVM_BUFFER Buffer
+     );
+diff --color -ruw qubes-gui-agent-windows-4.0.0-patched/qvideo/miniport/qvmini.c qubes-gui-agent-windows-4.0.0-patched-patched/qvideo/miniport/qvmini.c
+--- qubes-gui-agent-windows-4.0.0-patched/qvideo/miniport/qvmini.c	2020-12-15 08:51:49.742000000 +0100
++++ qubes-gui-agent-windows-4.0.0-patched-patched/qvideo/miniport/qvmini.c	2020-12-15 08:59:53.897000000 +0100
+@@ -23,7 +23,7 @@
+ 
+ #if DBG
+ VOID QubesVideoNotImplemented(
+-    __in const char *s
++    const char *s
+     )
+ {
+     VideoDebugPrint((0, "[QVMINI] Not implemented: %s\n", s));
+@@ -99,11 +99,11 @@
+ }
+ 
+ VP_STATUS __checkReturn HwVidFindAdapter(
+-    __in void *hwDeviceExtension,
+-    __in void *hwContext,
+-    __in WCHAR *argumentString,
++    void *hwDeviceExtension,
++    void *hwContext,
++    WCHAR *argumentString,
+     __inout_bcount(sizeof(VIDEO_PORT_CONFIG_INFO)) PVIDEO_PORT_CONFIG_INFO configInfo,
+-    __out UCHAR *again
++    UCHAR *again
+     )
+ {
+     UNREFERENCED_PARAMETER(hwDeviceExtension);
+diff --color -ruw qubes-gui-agent-windows-4.0.0-patched/qvideo/miniport/qvmini.h qubes-gui-agent-windows-4.0.0-patched-patched/qvideo/miniport/qvmini.h
+--- qubes-gui-agent-windows-4.0.0-patched/qvideo/miniport/qvmini.h	2020-12-15 08:51:49.742000000 +0100
++++ qubes-gui-agent-windows-4.0.0-patched-patched/qvideo/miniport/qvmini.h	2020-12-15 08:59:04.493000000 +0100
+@@ -49,23 +49,23 @@
+ } QVMINI_DX, *PQVMINI_DX;
+ 
+ VP_STATUS __checkReturn HwVidFindAdapter(
+-    __in void *HwDeviceExtension,
+-    __in void *HwContext,
+-    __in WCHAR *ArgumentString,
++    void *HwDeviceExtension,
++    void *HwContext,
++    WCHAR *ArgumentString,
+     __inout_bcount(sizeof(VIDEO_PORT_CONFIG_INFO)) VIDEO_PORT_CONFIG_INFO *ConfigInfo,
+-    __out UCHAR *Again
++    UCHAR *Again
+     );
+ 
+ BOOLEAN __checkReturn HwVidInitialize(
+-    __in void *HwDeviceExtension
++    void *HwDeviceExtension
+     );
+ 
+ BOOLEAN __checkReturn HwVidStartIO(
+-    __in void *HwDeviceExtension,
++    void *HwDeviceExtension,
+     __in_bcount(sizeof(VIDEO_REQUEST_PACKET)) VIDEO_REQUEST_PACKET *RequestPacket
+     );
+ 
+ ULONG __checkReturn DriverEntry(
+-    __in void *Context1,
+-    __in void *Context2
++    void *Context1,
++    void *Context2
+     );

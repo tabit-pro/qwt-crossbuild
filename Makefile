@@ -39,7 +39,7 @@ qubes-vmm-xen-win-pvdrivers-xeniface:
 	cp -f $@-*/include/xeniface_ioctls.h include
 
 qubes-vmm-xen-windows-pvdrivers: qubes-vmm-xen-win-pvdrivers-xeniface
-	$(CC) $@-*/src/libxenvchan/*.c -std=c11 -fgnu89-inline -D__MINGW__ -D_INC_TCHAR -DNO_SHLWAPI_STRFCNS -DUNICODE -D_UNICODE -mwindows -D_WIN32_WINNT=0x0600 -L $(OUTDIR) -I include -I $@-*/include -lxencontrol -Wl,--no-insert-timestamp -DXENVCHAN_EXPORTS -D_NTOS_ -shared -o $(OUTDIR)/libxenvchan.dll
+	$(CC) $@-*/src/libxenvchan/*.c -std=c11 -fgnu89-inline -D__MINGW__ -D_INC_TCHAR -DNO_SHLWAPI_STRFCNS -DUNICODE -D_UNICODE -mwindows -D_WIN32_WINNT=0x0600 -L $(OUTDIR) -I include -I $@-*/include -lxencontrol -Wl,--no-insert-timestamp -DXENVCHAN_EXPORTS -D_NTOS_ -shared -o $/qubes-gui-agent-windows-4.0.0/qvideo/miniport/(OUTDIR)/libxenvchan.dll
 	cp -f $@-*/include/libxenvchan.h include
 	cp -f $@-*/include/libxenvchan_ring.h include
 
@@ -83,7 +83,7 @@ qubes-gui-common:
 
 qubes-gui-agent-windows: qubes-gui-common
 	cd $@-* && \
-	DLLTOOL=$(DLLTOOL) STRIP=$(STRIP) DDK_PATH=$(DDKPATH) WINDRES=$(WINDRES) CC=$(CC) ARCH=$(ARCH) CFLAGS="-I $(PWD)/include -mwindows" LDFLAGS="-L $(OUTDIR)" make all
+	DLLTOOL=$(DLLTOOL) STRIP=$(STRIP) DDK_PATH="$(DDKPATH) -D__in -D__inout" WINDRES=$(WINDRES) CC=$(CC) ARCH=$(ARCH) CFLAGS="-I $(PWD)/include -mwindows -D__in -D__inout" LDFLAGS="-L $(OUTDIR)" INCLUDES="-D__in -D__inout" make all
 	cp -f $@-*/include/*.h include
 	cp -f $@-*/bin/$(ARCH)/* $(OUTDIR)
 

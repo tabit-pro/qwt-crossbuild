@@ -1,14 +1,15 @@
-FROM registry.fedoraproject.org/fedora-minimal:latest
+FROM registry.fedoraproject.org/fedora-minimal:32
 
 RUN microdnf install -y \
     mingw32-gcc mingw64-gcc mingw32-gcc-c++ mingw64-gcc-c++ \
     mingw32-winpthreads-static mingw64-winpthreads-static \
-    mono-core cabextract wine.i686 tar unzip make curl vim-enhanced \
+    mono-core cabextract tar wine.i686 unzip make curl vim-enhanced \
     genisoimage patch git svn file rpm-build createrepo 
 
 # FIXME 
 # dotnet unattended installation doesn't work on the latest wine
 RUN microdnf install dnf libxcrypt-compat.i686
+RUN rpm -e --nodeps alternatives setup
 RUN dnf downgrade --releasever=28 -y wine.i686
 
 RUN curl -s -LJ https://raw.githubusercontent.com/Winetricks/winetricks/master/src/winetricks > /usr/local/bin/winetricks && chmod +x /usr/local/bin/winetricks
@@ -20,6 +21,7 @@ RUN curl -s -LJ --remote-name-all -C - \
 
 # Extract wix binaries into the /opt directory
 RUN unzip -d /opt/wix/ wix311-binaries.zip
+RUN dnf install -y rpmdevtools
 
 WORKDIR /build
 COPY * ./
