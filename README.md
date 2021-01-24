@@ -1,5 +1,8 @@
-# qwt-crossbuild
-Qubes Windows Tools crossbuild environment based on mingw, wine and docker
+# DEPRECATED
+
+Qubes Windows Tools crossbuild environment based on mingw, wine and docker is deprecated in favor of common rpm package building process.
+Take a look at https://github.com/tabit-pro/Qway-qubes-repo/tree/master/qubes-windows-tools
+
 
 [![Build Status](https://travis-ci.org/tabit-pro/qwt-crossbuild.svg?branch=master)](https://travis-ci.org/tabit-pro/qwt-crossbuild)
 
